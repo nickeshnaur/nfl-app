@@ -1,0 +1,173 @@
+/* Learn · Community · Fan life */
+
+/* ---------------------------------------------------------------- learn */
+.lr-dia{display:block;border-radius:10px;margin:14px 0}
+.lr-body h3{font:700 calc(18px*var(--fs))/1.3 var(--sans);margin:26px 0 8px}
+.lr-body p{font-size:calc(16px*var(--fs));line-height:1.55}
+.lr-points,.lr-roles,.lr-sigs{display:flex;flex-direction:column;background:var(--surface);border-radius:var(--r-lg);margin:12px 0 4px}
+.lr-pt,.lr-role,.lr-sig{display:flex;gap:14px;align-items:center;padding:12px 14px;font-size:14px;line-height:1.35}
+.lr-pt+.lr-pt,.lr-role+.lr-role,.lr-sig+.lr-sig{border-top:1px solid var(--line)}
+.lr-pt .num{font:700 22px/1 var(--stats);min-width:58px;color:var(--accent)}
+.lr-role .meta,.lr-pt .meta,.lr-sig .meta{font-size:13px}
+.lr-tag{flex:none;width:44px;height:28px;border-radius:6px;display:grid;place-items:center;font:700 11px/1 var(--sans);background:var(--accent-soft);color:var(--accent)}
+.lr-tag.def{background:color-mix(in srgb,var(--loss) 16%,transparent);color:var(--loss)}
+.lr-ol{padding-left:20px;margin:0 0 12px}
+.lr-ol li{margin-bottom:10px;font-size:calc(16px*var(--fs));line-height:1.5}
+.lr-hero{background:var(--surface);border-bottom:1px solid var(--line)}
+.lr-ic{width:36px;height:36px;border-radius:10px;background:var(--surface-2);display:grid;place-items:center;flex:none;color:var(--text-2)}
+.lr-ic.lg{width:44px;height:44px;border-radius:12px}
+.lr-ic.done{background:color-mix(in srgb,var(--win) 18%,transparent);color:var(--win)}
+.lr-opt{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:48px;padding:10px 14px;border-radius:10px;border:1px solid var(--line-2);background:var(--surface);font:700 calc(15px*var(--fs))/1.25 var(--sans);color:var(--text);text-align:left;transition:background .15s,border-color .15s}
+.lr-opt:active{background:var(--surface-2)}
+.lr-opt.right{border-color:var(--win);background:color-mix(in srgb,var(--win) 14%,var(--surface));color:var(--text)}
+.lr-opt.right .ico{color:var(--win)}
+.lr-opt.wrong{border-color:var(--loss);background:color-mix(in srgb,var(--loss) 12%,var(--surface))}
+.lr-opt.dim{opacity:.5}
+.lr-letter{font:700 13px/1 var(--sans);color:var(--text-3);padding:18px var(--pad) 8px}
+.lr-term .row-sub{white-space:normal}
+
+/* ---------------------------------------------------------------- community */
+.cm-av{border-radius:50%;display:inline-grid;place-items:center;color:#fff;font-weight:800;flex:none;box-shadow:0 0 0 2px var(--surface);font-family:var(--sans)}
+.cm-stack{display:flex}
+.cm-stack .cm-av+.cm-av{margin-left:-8px}
+.cm-fan{gap:12px}
+.cm-fan-t{display:flex;align-items:center;gap:8px}
+.cm-badge{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.16);color:#fff}
+.list .cm-badge,.sheet .cm-badge{background:var(--accent-soft);color:var(--accent)}
+.cm-badge.locked{background:var(--surface-2)!important;color:var(--text-3)!important}
+.cm-guide{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:var(--r-lg);background:var(--surface);font-size:14px}
+.cm-guide>.ico{color:var(--loss);margin-top:2px}
+.cm-me{background:var(--accent-soft)}
+.cm-chat{display:flex;flex-direction:column;gap:12px;padding-top:14px;padding-bottom:16px;min-height:50vh}
+.cm-msg{display:flex;gap:8px;align-items:flex-end;max-width:86%}
+.cm-who{display:flex;align-items:baseline;gap:8px;margin:0 0 4px 4px}
+.cm-who b{font:700 calc(13px*var(--fs))/1.2 var(--sans);color:var(--text)}
+.cm-who span{font:500 calc(12px*var(--fs))/1.2 var(--sans);color:var(--text-2)}
+.cm-msg.me{align-self:flex-end;flex-direction:row-reverse}
+.cm-bub{background:var(--surface-2);padding:9px 12px;border-radius:16px 16px 16px 4px;font-size:14.5px;line-height:1.35}
+.cm-msg.me .cm-bub{background:var(--accent);color:var(--accent-ink);border-radius:16px 16px 4px 16px}
+.cm-bot{padding:12px 14px;border-radius:14px;background:var(--surface);align-self:stretch}
+.cm-compose{position:sticky;bottom:calc(var(--tab-h) + 18px);background:var(--glass);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid var(--line);padding:8px var(--pad) 10px;z-index:30}
+.cm-quick{display:flex;gap:6px;overflow-x:auto;margin-bottom:8px;scrollbar-width:none}
+.cm-quick .chip{height:28px;padding:0 10px;font-size:12.5px}
+.cm-quick .chip.cm-emo{font-size:17px;padding:0 9px}
+/* pick'em (round 5 v2): side-by-side squared tiles; the pick a ring in the team's primary, never a fill */
+.cm-picks{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px}
+.cm-pick{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;padding:16px 8px 14px;border:0;border-radius:10px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line-2);color:var(--text);text-align:center}
+.cm-pick:disabled{opacity:1}
+.cm-pick.on{box-shadow:inset 0 0 0 2px var(--tc)}
+.cm-pick .logo.lg{width:48px;height:48px}
+.cm-pick .lk-nm{max-width:100%;margin-top:4px}
+.cm-pick.lost>:not(.cm-check){opacity:.6}
+.cm-check{position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:var(--tc);color:#fff}
+.cm-check .ico{width:12px;height:12px}
+.cm-pksc{margin:4px 0 0;font-size:28px}
+.cm-pkf{margin-top:10px;text-align:center}
+.cm-dot{width:28px;height:5px;border-radius:3px;background:var(--surface-3)}
+.cm-dot.ok{background:var(--win)}.cm-dot.bad{background:var(--loss)}
+.cm-res-l{display:flex;align-items:center;gap:8px;font:700 calc(14px*var(--fs))/1.25 var(--sans);color:var(--text)}
+.cm-res-v{font:700 calc(15px*var(--fs))/1 var(--stats);font-variant-numeric:tabular-nums}
+.cm-radio{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--line-2);display:grid;place-items:center;color:transparent;flex:none}
+.cm-radio.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.cm-grade{font:italic 900 28px/1 var(--display);margin-top:2px;letter-spacing:.02em}
+.cm-grade.avg{color:var(--text-2)}
+.cm-gbtn{flex:1;height:42px;border-radius:10px;background:var(--surface-2);font:italic 900 17px/1 var(--display);color:var(--text-2);letter-spacing:.02em}
+.cm-gbtn.on{background:var(--accent);color:var(--accent-ink)}
+
+/* ---------------------------------------------------------------- fan life */
+.fl-sw{display:inline-block;width:10px;height:10px;border-radius:3px;vertical-align:-1px}
+.fl-next{display:flex;align-items:center;gap:12px;padding:16px;border-radius:var(--r-lg);background:var(--team);color:#fff}
+/* tickets (round 5 v2): the seating chart, its legend, the section detail and the list row's date */
+.fl-seat{display:block;max-width:340px;margin:0 auto}
+.fl-seat-n{font:700 8.5px var(--stats);fill:var(--text)}
+.fl-seat-n.on{fill:#fff}.fl-seat-n.out{fill:var(--text-3)}
+.fl-legend{display:flex;justify-content:space-between;gap:8px;margin-top:10px;font:500 calc(12.5px*var(--fs))/1 var(--sans);color:var(--text-2)}
+.fl-legend span{display:inline-flex;align-items:center;gap:6px}
+.fl-legend i{width:12px;height:12px;border-radius:3px}
+.fl-from{font:700 1em/1 var(--stats);font-variant-numeric:tabular-nums;color:var(--text)}
+.fl-mu{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.fl-mu .lk-l2{min-width:0}
+.fl-secn{font:700 calc(17px*var(--fs))/1.25 var(--sans);color:var(--text)}
+.fl-lbl{font:700 calc(15px*var(--fs))/1.2 var(--sans);color:var(--text)}
+.fl-step{display:flex;align-items:center;gap:12px}
+.fl-step .fl-from{min-width:16px;text-align:center;font-size:calc(17px*var(--fs))}
+.fl-step .btn .ico{width:16px;height:16px;margin:0}
+.fl-sum span:last-child{font-family:var(--stats);font-variant-numeric:tabular-nums}
+.fl-tot{display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font:700 calc(15px*var(--fs))/1.2 var(--sans);color:var(--text)}
+.fl-tot b{font-size:calc(17px*var(--fs))}
+.fl-date{display:flex;flex-direction:column;align-items:center;width:40px;flex:none;gap:2px}
+.fl-date span{font:700 11px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--text-2)}
+.fl-date b{font:700 20px/1 var(--stats);color:var(--text)}
+.fl-ticket{border-radius:18px;overflow:hidden;background:var(--team);color:#fff;position:relative}
+.fl-ticket::after{content:"";position:absolute;right:-30px;top:10px;width:150px;height:150px;background:var(--hero-logo) center/contain no-repeat;opacity:.12;pointer-events:none}
+.fl-t-top{display:flex;justify-content:space-between;align-items:center;padding:14px 16px 0}
+.fl-t-seat{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:16px}
+.fl-t-seat .tiny{color:rgba(255,255,255,.7)}
+.fl-t-code{background:#fff;color:#111;margin:0 16px;border-radius:12px;padding:14px}
+.fl-t-code .tiny{color:#555}
+.fl-barcode{height:64px;border-radius:4px;background:repeating-linear-gradient(90deg,#111 0 2px,#fff 2px 4px,#111 4px 7px,#fff 7px 8px,#111 8px 9px,#fff 9px 12px,#111 12px 15px,#fff 15px 16px);background-size:160px 100%;animation:fl-scan 2.4s linear infinite;position:relative;overflow:hidden}
+.fl-barcode::after{content:"";position:absolute;top:0;bottom:0;width:30%;background:linear-gradient(90deg,transparent,rgba(74,163,255,.55),transparent);animation:fl-sweep 1.6s ease-in-out infinite}
+@keyframes fl-scan{to{background-position:160px 0}}
+@keyframes fl-sweep{0%{left:-30%}100%{left:100%}}
+.fl-t-act{padding:14px 16px;position:relative;z-index:1}
+.fl-vcard .thumb{position:relative}
+.fl-vlogos{position:absolute;left:10px;bottom:10px;display:flex;gap:6px}
+.fl-plate{display:grid;place-items:center;width:36px;height:36px;border-radius:8px;background:#fff}
+.fl-vis{position:absolute;right:8px;top:8px}
+.fl-shop-hero{display:flex;align-items:center;gap:8px;margin:8px var(--pad) 0;padding:18px;border-radius:var(--r-lg);color:#fff;overflow:hidden;position:relative}
+.fl-shop-h{font:900 italic 26px/.95 var(--display);text-transform:uppercase;color:#fff}
+.fl-shop-jsy{width:112px;flex:none}
+.fl-teamgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.fl-tg{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:14px 4px;border-radius:12px;background:var(--surface)}
+.fl-tg .lk-nm{font-size:13px;line-height:1;color:var(--text);white-space:nowrap}
+.fl-builder{background:var(--surface);padding:18px 0 14px;border-bottom:1px solid var(--line)}
+.fl-jwrap{display:flex;justify-content:center;margin-bottom:12px}
+.fl-jsy{display:block;height:auto;max-width:100%}
+.fl-jsy-no,.fl-jsy-nm,.fl-jsy-tv{font-family:var(--display);font-weight:900;font-style:italic}
+.fl-jsy-no{stroke-width:3px;paint-order:stroke;letter-spacing:-.02em}
+.fl-jsy-nm{letter-spacing:.08em}
+.fl-jsy-tv{font-size:17px}
+.fl-builder .seg{width:220px;margin:0 auto}
+.fl-size{flex:1;height:40px;border-radius:10px;border:1px solid var(--line-2);font:700 13px/1 var(--sans)}
+.fl-size.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.fl-prod-img{background:color-mix(in srgb,var(--team) 14%,var(--surface-2));padding:14px 22px}
+.fl-cc,.fl-flagc{width:36px;height:36px;border-radius:10px;background:var(--surface-2);display:grid;place-items:center;font:700 12px/1 var(--sans);color:var(--text-2);flex:none}
+.modal.fl-sm{background:var(--bg)}
+.modal.fl-sm .tabs button{flex:1}
+.card.cpad{padding:14px}
+.cm-fan .cm-av{background:rgba(0,0,0,.24)!important}
+.stat-tile.fl-small .v{font-size:19px}
+.cm-res .ico,.lr-opt .ico{display:inline-block;vertical-align:-2px}
+.cm-sys{text-align:center;margin:14px 0 10px}
+/* Learn: the score bug diagram (round 5 v2), the app's own bug with callouts */
+.lr-sb{padding:12px;border-radius:12px;background:var(--surface-2)}
+.lr-sbr{display:flex;justify-content:space-between;padding:0 8px}
+.lr-sbr:first-child{margin-bottom:6px}.lr-sbr:last-child{margin-top:6px}
+.lr-call{font:600 calc(12px*var(--fs))/1.2 var(--sans);color:var(--text-2)}
+.lr-sbc{display:flex;align-items:center;gap:14px;padding:10px 14px;border-radius:12px;background:var(--surface)}
+.lr-sbt{flex:1;min-width:0}
+.lr-sbs{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.lr-sbs b{font-size:calc(12.5px*var(--fs));color:var(--text)}
+/* learn-hero A (approved 2026-11-07): on the page, the fan card's segmented ladder (one segment per lesson), squared Start */
+.lr-hero{background:none;border:0;display:flex;flex-direction:column;gap:6px;padding-top:8px}
+.lr-eb{font:700 11px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--text-2)}
+.lr-t{font:900 italic 40px/.95 var(--display);padding-bottom:.08em}.lr-hero p{margin:0;font:500 15px/1.4 var(--sans);color:var(--text-2)}
+.lr-lad{display:flex;gap:4px;margin-top:12px}.lr-lad i{flex:1;height:5px;border-radius:3px;background:var(--surface-3,#d9dce2)}.lr-lad i.on{background:var(--accent)}
+.lr-f{display:flex;align-items:center;gap:12px;margin-top:10px}.lr-f>div{flex:1;display:flex;flex-direction:column;gap:3px}.lr-f b{font:700 15px/1.2 var(--sans)}.lr-f span{font:500 13px/1.2 var(--sans);color:var(--text-2)}.lr-hero .btn{border-radius:10px}
+/* answer-rows A (2026-11-08): trivia + poll answers are the onboarding quiz rows */
+.cm-ans{margin:0}.cm-ans .ob-qa{gap:12px;width:100%;text-align:left}.cm-ans .ob-qa[disabled]{opacity:1;cursor:default}
+.cm-ans .row-title.row-title{font-family:var(--sans)!important;font-weight:700!important;font-style:normal!important;text-transform:none!important;letter-spacing:0!important}
+.card .cm-ans{box-shadow:none;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+/* grade-picker A (2026-11-08): five squared grade buttons, ink when picked; the fans' grade in Display */
+.cm-gp-t{font:700 15px/1.2 var(--sans)}.cm-gp-f{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px}.cm-gp-f span{font:500 13px/1 var(--sans);color:var(--text-2)}
+.cm-gp-f b{font:900 italic 28px/1 var(--display);padding-bottom:.06em}
+.cm-gp-row{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}.cm-gp-row .sc-season{justify-content:center;height:40px;width:100%}
+/* pickem-game B (2026-11-08) */
+.cm-pick{box-shadow:inset 0 0 0 1.5px var(--line-2)}.cm-pick.on{box-shadow:inset 0 0 0 2px var(--text)}
+.cm-pk-nm{font:700 15px/1.2 var(--sans)!important;font-style:normal!important;text-transform:none!important;letter-spacing:0!important;margin-top:4px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cm-pk-rec{font:500 13px/1 var(--sans);color:var(--text-2)}.cm-pk-sc{margin-top:4px;font:900 italic 26px/1 var(--display);padding-bottom:.06em}
+/* fan-level A (2026-11-08): the fan card's ladder on a light row */
+.cm-fan{gap:12px}.cm-lad{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:10px}
+.cm-lad i{position:relative;height:5px;border-radius:3px;background:var(--surface-2);overflow:hidden}.cm-lad i.done{background:var(--text)}
+.cm-lad i b{position:absolute;left:0;top:0;bottom:0;background:var(--text);border-radius:3px}
+.cm-fan .row-title.row-title{font-family:var(--sans)!important;font-weight:700!important;font-style:normal!important;text-transform:none!important}

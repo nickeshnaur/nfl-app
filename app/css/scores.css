@@ -1,0 +1,151 @@
+/* ---------------------------------------------------------------- Scores tab */
+.sc-subnav{padding:0 0 8px}
+.sc-subnav .seg{margin:0 var(--pad)}
+.sc-subnav .seg button{height:30px}
+
+/* week strip */
+.sc-strip{display:flex;align-items:stretch;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.sc-season{font:700 calc(13.5px*var(--fs))/1 var(--sans);color:var(--text)}
+.sc-strip .sc-season{align-self:center;margin:0 4px 0 var(--pad)}
+.sc-weeks{display:flex;overflow-x:auto;scrollbar-width:none;flex:1;scroll-behavior:smooth}
+.sc-weeks::-webkit-scrollbar{display:none}
+.sc-wk{flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:8px 12px 7px;position:relative;min-width:66px}
+.sc-wk .l{font:700 13.5px/1 var(--sans);color:var(--text-2);display:flex;align-items:center;gap:4px;white-space:nowrap}
+.sc-wk .t-meta{font-size:calc(11.5px*var(--fs));line-height:1;white-space:nowrap}
+.sc-wk.on .l{color:var(--text)}
+.sc-wk.on::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:3px;background:var(--accent)}
+.sc-live-dot{width:6px;height:6px;border-radius:50%;background:var(--live);display:inline-block;animation:pulse 1.4s infinite}
+.sc-filters{padding-top:8px}
+.sc-filters .chip{height:30px}
+
+.sc-week-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin:18px 0 6px}
+.sc-list .learn-tip{margin:10px var(--pad) 0}
+.sc-day{margin-top:18px}
+.sc-day-h{font:700 12px/1 var(--sans);color:var(--text-3);letter-spacing:.04em;text-transform:uppercase;padding:0 var(--pad) 10px}
+.sc-games{display:flex;flex-direction:column;gap:8px;padding:0 var(--pad)}
+.sc-item{position:relative}
+.sc-tv{position:absolute;top:8px;right:8px;z-index:2}
+
+/* polished score card (scoped to Scores) */
+.sc-games .gcard{padding:12px 14px 0}
+.sc-games .gcard .gc-top{min-height:20px;padding-right:30px}
+.sc-games .gcard .gc-team{height:36px}
+.sc-games .gcard .gc-team .logo{width:28px;height:28px}
+.sc-games .gcard .gc-team .nm{font-size:16px}
+.sc-games .gcard .gc-team .sc{font-size:30px;letter-spacing:.02em}
+.sc-games .gcard .gc-foot{margin:8px -14px 0;padding:10px 14px 11px;border-top:1px solid var(--line)}
+.sc-games .gcard .badge.final{font-size:11.5px;color:var(--text)}
+
+.sc-byes{margin-top:22px}
+.sc-more{margin-top:24px;display:flex;flex-direction:column;gap:8px}
+.sc-more .row{background:var(--surface);border-radius:var(--r-lg)}
+.sc-more .row+.row{border-top:0}
+.sc-more .row>.ico:first-child{color:var(--text-2)}
+.sc-wopt{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--surface-3);color:var(--text-3);flex:none}
+.sc-wopt.ok{background:color-mix(in srgb,var(--win) 20%,transparent);color:var(--win)}
+
+/* ---------------------------------------------------------------- standings */
+.st-bar{display:flex;align-items:center;gap:10px;margin-top:14px}
+.st-bar .pill-tabs{flex:1;display:flex}
+.st-bar .pill-tabs button{flex:1}
+.st-bar .icon-btn{width:34px;height:34px}
+.st-tbl td:first-child{max-width:none}
+.st-team{display:flex;align-items:center;gap:8px}
+.st-team .logo{width:20px;height:20px}
+.st-team .nm{font-weight:600}
+.st-seed{font:700 12px/1 var(--stats);color:var(--text-3);width:14px;text-align:right}
+.st-cm{font:700 10px/1 var(--stats);color:var(--text);margin-left:-3px}
+.st-cut td{padding:0!important;border-top:0!important;background:transparent!important}
+.st-cut td span{display:block;padding:7px 12px;font:700 10.5px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);border-top:2px dashed var(--line-2);position:sticky;left:0;width:max-content}
+.st-l5{display:inline-flex;gap:2px}
+.st-l5 i{width:6px;height:12px;border-radius:2px;background:var(--surface-3)}
+.st-l5 i.W{background:var(--win)}.st-l5 i.L{background:var(--loss)}.st-l5 i.T{background:var(--text-3)}
+.tbl tr.tap:active td{background:var(--surface-2)}
+
+/* ---------------------------------------------------------------- playoff picture */
+.po-you{padding:12px 14px;border-radius:var(--r-lg);background:var(--surface)}
+.po-list .po-seed{display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid var(--line)}
+.po-list .po-seed:first-child{border-top:0}
+.po-seed{min-height:56px}
+.po-seed .n{width:20px;flex:none;font:700 calc(15px*var(--fs))/1 var(--stats);font-variant-numeric:tabular-nums;color:var(--text-2);text-align:right}
+.po-seed .lk-l2{flex:1}
+.po-seed.mine{background:var(--po-tint)}
+.po-cut{padding:8px 14px;font:700 10.5px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--text-3);border-top:2px dashed var(--line-2);background:var(--bg-2)}
+.po-wc{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.po-wcm{display:flex;align-items:center;justify-content:center;gap:5px;background:var(--surface);border-radius:var(--r);padding:10px 4px;font-size:13px}
+.po-wcm .num{font-weight:700;color:var(--text-2)}
+.po-tb{background:var(--surface);border-radius:var(--r-lg)}
+
+/* bracket */
+.br-scroll{overflow-x:auto;scrollbar-width:none;padding:14px var(--pad) 6px}
+.br-scroll::-webkit-scrollbar{display:none}
+.br{display:flex;gap:12px;width:max-content}
+.br-col{width:150px;display:flex;flex-direction:column}
+.br-h{font:700 11px/1 var(--sans);letter-spacing:.05em;text-transform:uppercase;color:var(--text-3);margin-bottom:10px;white-space:nowrap}
+.br-tiles{display:flex;flex-direction:column;justify-content:space-around;gap:10px;flex:1}
+.br-m{display:block;background:var(--surface);border-radius:var(--r);padding:8px 10px 6px;overflow:hidden;color:var(--text)}
+.br-m .lk-l1 .lk-tri{font-size:calc(15px*var(--fs))}.br-m .lk-l1 .lk-sc{font-size:calc(19px*var(--fs))}
+.br-m.tbd{padding:6px 0 0}
+.br-m.tbd{opacity:.65}
+.br-t{display:flex;align-items:center;gap:7px;padding:5px 10px;height:30px}
+.br-t .logo{width:20px;height:20px}
+.br-t .nm{font:700 13px/1 var(--sans);flex:1}
+.br-seed{font:700 11px/1 var(--stats);color:var(--text-3);width:10px}
+.br-st{margin-bottom:4px}
+.br-bye{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text-2);padding:8px 10px;border:1px dashed var(--line-2);border-radius:var(--r)}
+.sb-card{display:block;margin-top:14px;padding:18px 16px;border-radius:var(--r-lg);background:var(--surface);text-align:center;position:relative;overflow:hidden;box-shadow:inset 0 3px 0 var(--team,var(--gold))}
+.sb-h{font:italic 900 22px/1 var(--display);text-transform:uppercase;letter-spacing:.02em}
+.sb-row{display:flex;align-items:center;justify-content:space-between;margin-top:16px}
+.sb-team{display:flex;flex-direction:column;align-items:center;gap:6px;width:96px}
+.sb-team .ab{font:italic 900 15px/1 var(--display);letter-spacing:.02em}
+.sb-team .sc{font:700 40px/1 var(--stats);letter-spacing:-.03em}
+.sb-team.lost{opacity:.45}
+.sb-mid{flex:1;font:600 13px/1 var(--sans);color:var(--text-2)}
+.sb-champ{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font:700 13.5px/1 var(--sans);display:flex;align-items:center;justify-content:center;gap:6px;color:var(--gold)}
+
+/* playoff machine */
+.pm-panel{padding:16px 0 14px;border-bottom:1px solid var(--line);margin-top:4px}
+.pad-meter{margin:10px var(--pad) 0;height:4px}
+.pm-seeds{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pm-seed{display:flex;align-items:center;gap:6px;height:22px;font:700 12.5px/1 var(--sans)}
+.pm-seed .logo{width:16px;height:16px}
+.pm-seed .n{width:12px;color:var(--text-3);font-size:11px;text-align:right}
+.pm-seed.mine{color:var(--accent)}
+.pm-you{display:flex;align-items:center;gap:8px;font-size:13px;flex-wrap:wrap;padding:8px 10px;border-radius:var(--r);background:var(--surface)}
+.pm-you .tiny{width:100%;padding-left:30px}
+.pm-week{border-bottom:1px solid var(--line)}
+.pm-wh{display:flex;align-items:center;gap:10px;width:100%;padding:14px var(--pad);text-align:left}
+.pm-games{display:flex;flex-direction:column;gap:6px;padding:0 var(--pad) 14px}
+.pm-game{display:flex;align-items:center;gap:6px}
+.pm-at{font-size:12px;color:var(--text-3);width:14px;text-align:center}
+.pm-side{flex:1;display:flex;align-items:center;gap:8px;height:44px;padding:0 12px;border-radius:var(--r);background:var(--surface);font:700 14px/1 var(--sans);border:1.5px solid transparent;transition:background .15s,opacity .15s}
+.pm-side .tiny{margin-left:auto}
+.pm-side.on{border-color:var(--accent);background:var(--accent-soft)}
+.pm-side.off{opacity:.4}
+
+/* ---------------------------------------------------------------- multiview */
+.mv-chips{padding-top:2px}
+.mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px var(--pad) 0}
+.mv-grid.one{grid-template-columns:1fr}
+.mv-tile{display:block;background:var(--surface);border-radius:var(--r-lg);padding:12px;min-width:0;color:var(--text)}
+.mv-tile .lk-sc{font-size:calc(20px*var(--fs))}
+.mv-dd{font:500 calc(12.5px*var(--fs))/1.25 var(--sans);color:var(--text)}
+
+/* ---------------------------------------------------------------- calendar */
+.cal-list .cal-ev{display:flex;align-items:center;gap:14px;padding:12px 8px 12px 14px;border-top:1px solid var(--line)}
+.cal-list .cal-ev:first-child{border-top:0}
+.cal-ev.past{opacity:.5}
+.cal-ev.big .h4{font-size:16px}
+.cal-ev.big .cal-d{background:var(--accent);color:var(--accent-ink)}
+.cal-ev.big .cal-d .dw{color:inherit;opacity:.8}
+.cal-d{width:44px;height:48px;flex:none;border-radius:var(--r);background:var(--surface-2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.cal-d .dw{font:700 10px/1 var(--sans);text-transform:uppercase;letter-spacing:.05em;color:var(--text-3)}
+.cal-d .dn{font:700 19px/1 var(--stats)}
+.cal-today{display:flex;align-items:center;gap:8px;padding:6px 14px;background:color-mix(in srgb,var(--live) 10%,transparent)}
+.cal-today span{font:700 11px/1 var(--sans);letter-spacing:.05em;text-transform:uppercase;color:var(--live)}
+.cal-today::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--live)}
+.cal-today-sec{margin:24px var(--pad) -8px;border-radius:var(--r)}
+.sc-live .sc-day-h{color:var(--text);display:flex;align-items:center;gap:7px}
+.sc-rz{margin:12px var(--pad) 0}
+
+.mv-tile > .flex{flex-wrap:wrap;gap:6px}

@@ -1,0 +1,154 @@
+/* Design system page chrome. Specimens inside .ds-frame are styled only by the app's own CSS. */
+html,body{height:auto;background:var(--bg);overscroll-behavior:auto}
+body{color:var(--text)}
+.ds{display:grid;grid-template-columns:220px minmax(0,1fr);grid-template-rows:auto 1fr;min-height:100vh}
+.ds-top{grid-column:1/-1;position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 28px;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.ds-brand{display:flex;align-items:center;gap:12px}
+.ds-brand img{height:44px}
+.ds-brand h1{margin:0;font:900 italic 26px/1 var(--display);letter-spacing:.02em;text-transform:uppercase}
+.ds-brand p{margin:4px 0 0;font:500 12.5px/1 var(--sans);color:var(--text-2)}
+.ds-ctl{display:flex;gap:10px;flex-wrap:wrap}
+.ds-ctl label{display:flex;flex-direction:column;gap:4px;font:700 10.5px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+.ds-ctl select{height:36px;border-radius:99px;border:0;padding:0 30px 0 14px;background:var(--surface-3);color:var(--text);font:700 13px/1 var(--sans);letter-spacing:0;text-transform:none;appearance:none;-webkit-appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:calc(100% - 16px) 16px,calc(100% - 11px) 16px;background-size:5px 5px;background-repeat:no-repeat}
+.ds-nav{position:sticky;top:73px;align-self:start;height:calc(100vh - 73px);overflow:auto;padding:22px 12px 40px 20px;display:flex;flex-direction:column;gap:2px}
+.ds-nav a{padding:9px 12px;border-radius:10px;font:700 14px/1 var(--sans);color:var(--text-2)}
+.ds-nav a:hover{background:var(--surface);color:var(--text)}
+#ds-main{padding:8px 28px 120px;min-width:0}
+.ds-sec{padding-top:40px;scroll-margin-top:80px}
+.ds-sec-h h2{margin:0;font:900 italic 44px/.95 var(--display);letter-spacing:.02em;text-transform:uppercase}
+.ds-sec-h p{margin:10px 0 0;max-width:640px;color:var(--text-2);font-size:15px;line-height:1.45}
+.ds-spec{margin-top:26px;padding:22px;border-radius:24px;background:var(--surface);box-shadow:var(--shadow-card);scroll-margin-top:84px}
+.ds-spec-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.ds-spec-h h3{margin:0;font:900 italic 24px/1 var(--display);letter-spacing:.02em;text-transform:uppercase}
+.ds-spec code,.ds code{font:600 12px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--text-2);background:var(--surface-2);padding:3px 7px;border-radius:6px}
+.ds-note{margin:10px 0 0;max-width:720px;color:var(--text-2);font-size:14px;line-height:1.45}
+.ds-used{margin:8px 0 0;font-size:13px;color:var(--text-2)}
+.ds-used b{font:700 10.5px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--text);margin-right:6px}
+.ds-vars{display:flex;flex-wrap:wrap;gap:22px;margin-top:18px;align-items:flex-start}
+.ds-var{margin:0;display:flex;flex-direction:column;gap:8px;max-width:100%}
+.ds-var.wide{flex:1 1 100%}
+.ds-var figcaption{font:700 10.5px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+.ds-frame{width:393px;max-width:100%;padding:16px;border-radius:22px;background:var(--bg);position:relative;overflow:hidden}
+.ds-frame.bleed{padding:0 0 16px}
+.ds-frame.plain{background:none;padding:0;border-radius:0;overflow:visible}
+.ds-var.wide .ds-frame{width:auto}
+.ds-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ds-center{display:flex;align-items:center;justify-content:center;min-height:120px;padding:16px}
+.ds-dark{background:#11151b;border-radius:16px;min-width:260px}
+/* principles */
+.ds-principles{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:22px}
+.ds-pr{padding:18px;border-radius:20px;background:var(--surface);box-shadow:var(--shadow-card)}
+.ds-pr span{font:900 italic 15px/1 var(--display);color:var(--accent)}
+.ds-pr h4{margin:10px 0 0;font:900 italic 24px/1 var(--display);letter-spacing:.02em;text-transform:uppercase}
+.ds-pr p{margin:8px 0 0;font-size:14px;line-height:1.45;color:var(--text-2)}
+/* colour */
+.ds-sws{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.ds-sw{display:flex;flex-direction:column;gap:4px;font-size:12.5px}
+.ds-sw i{height:64px;border-radius:14px;box-shadow:inset 0 0 0 1px var(--line);margin-bottom:6px}
+.ds-sw b{font-size:13.5px}
+.ds-hex,.ds-sw-n{color:var(--text-2)}
+.ds-aa{align-self:flex-start;font:700 11px/1 var(--sans);padding:4px 7px;border-radius:99px;margin-top:2px}
+.ds-aa.ok{background:color-mix(in srgb,var(--win) 16%,transparent);color:var(--win-ink)}
+.ds-aa.no{background:color-mix(in srgb,var(--loss) 16%,transparent);color:var(--loss-ink)}
+.ds-teams{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.ds-team{position:relative;height:96px;border-radius:16px;padding:12px;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+.ds-team img{position:absolute;right:8px;top:8px;width:40px;height:40px;object-fit:contain}
+.ds-team b{font:900 italic 24px/1 var(--display);letter-spacing:.02em}
+.ds-team span{font:600 11px/1.2 var(--sans);margin-top:4px}
+/* type */
+.ds-fams{display:grid;gap:12px}
+.ds-fam{padding:16px;border-radius:16px;background:var(--bg)}
+.ds-fam-h{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+.ds-fam p{margin:10px 0 0;color:var(--text-2);font-size:13.5px}
+.ds-type{display:grid}
+.ds-trow{display:grid;grid-template-columns:260px 1fr;gap:20px;align-items:center;padding:16px 0;border-top:1px solid var(--line)}
+.ds-trow:first-child{border-top:0}
+.ds-tmeta{display:flex;flex-direction:column;gap:5px;align-items:flex-start;font-size:12.5px}
+.ds-measure,.ds-tuse{color:var(--text-2)}
+.ds-tsample{min-width:0}
+.ds-tsample .sec-head{margin:0}
+.ds-tsample .stat-tile{max-width:160px}
+/* brand + icons */
+.ds-logos{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:14px}
+.ds-logos>div,.ds-icons>div,.ds-hel{display:flex;flex-direction:column;align-items:center;gap:6px;font:700 11px/1 var(--sans);color:var(--text-2)}
+.ds-helmets{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
+.ds-hel{padding:12px;border-radius:16px;background:var(--bg)}
+.ds-hel-pair{display:flex;gap:4px}
+.ds-hel-pair .helmet{width:84px;height:auto;filter:drop-shadow(0 6px 8px rgba(0,0,0,.2))}
+.ds-icons{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:14px}
+.ds-icons>div{padding:14px 6px;border-radius:12px;background:var(--bg);color:var(--text)}
+.ds-icons span{color:var(--text-2);font-weight:600}
+.ds-shapes{display:flex;flex-wrap:wrap;gap:18px}
+.ds-shapes>div{display:flex;flex-direction:column;gap:5px;font-size:12.5px}
+.ds-shapes i{width:120px;height:80px;background:var(--surface-3);margin-bottom:6px}
+/* screens */
+.ds-screens{display:flex;flex-wrap:wrap;gap:22px;margin-top:22px}
+.ds-screens figure{margin:0;display:flex;flex-direction:column;gap:8px}
+.ds-screens figcaption{font:700 10.5px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+.ds-phone{width:236px;height:511px;border-radius:30px;overflow:hidden;box-shadow:0 0 0 6px #111,var(--shadow-card);background:#000}
+.ds-phone iframe{width:393px;height:852px;border:0;transform:scale(.6);transform-origin:0 0;display:block}
+.ds-devs{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.ds-devs button{font:600 13px/1 var(--sans);padding:9px 14px;border-radius:999px;background:var(--surface);color:var(--text);box-shadow:inset 0 0 0 1px var(--line)}
+.ds-devs button.on{background:var(--text);color:var(--bg);box-shadow:none}
+.ds-devs-n{font:13px/1.4 var(--sans);color:var(--text-2);margin:10px 0 0}
+@media (max-width:860px){
+  .ds{grid-template-columns:1fr}
+  .ds-top{position:static;padding:14px 16px}
+  .ds-nav{position:sticky;top:0;z-index:15;height:auto;flex-direction:row;overflow-x:auto;padding:10px 16px;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .ds-nav a{white-space:nowrap}
+  #ds-main{padding:0 16px 80px}
+  .ds-spec{padding:16px;border-radius:20px}
+  .ds-sec-h h2{font-size:34px}
+  .ds-trow{grid-template-columns:1fr;gap:10px}
+}
+.ds-tsurf-hel{position:absolute;right:-26px;bottom:-34px;width:190px;height:auto}
+.ds-wrap{flex-wrap:wrap;min-width:0;width:100%;padding:24px}
+/* the Home stage is sticky under a see-through header in the app; here it is just a card */
+.ds .hm-stage{position:relative;top:auto!important;margin-top:0;padding-top:20px}
+/* tier tabs: Foundations · Atoms · Molecules · Organisms · Screens */
+.ds-tiers{grid-column:1/-1;position:sticky;top:73px;z-index:19;display:flex;gap:6px;padding:10px 28px;overflow-x:auto;background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);scrollbar-width:none}
+.ds-tier{flex:none;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:10px 16px;border-radius:14px;text-align:left;color:var(--text-2)}
+.ds-tier b{font:900 italic 20px/1 var(--display);letter-spacing:.02em;text-transform:uppercase}
+.ds-tier span{font:500 12px/1.2 var(--sans);max-width:170px}
+.ds-tier[data-tier=approvals]{box-shadow:inset 0 0 0 2px var(--plus)}
+.ds-tier[data-tier=approvals] b{color:var(--plus)}
+.ds-tier.on[data-tier=approvals] b{color:inherit}
+.ds-tier:hover{background:var(--surface)}
+.ds-tier.on{background:var(--text);color:var(--bg)}
+.ds-nav{top:150px;height:calc(100vh - 150px)}
+.ds-nav a{font-weight:600;font-size:13px;padding:7px 12px}
+.ds-nav a.ds-nav-sec{font:800 11px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);margin-top:16px}
+.ds-nav a.ds-nav-sec:first-child{margin-top:0}
+.ds-sec{scroll-margin-top:160px}
+.ds-spec{scroll-margin-top:164px}
+.ds-sec-sub{margin-top:30px}
+.ds-sec-sub h3{margin:0;font:900 italic 26px/1 var(--display);letter-spacing:.02em;text-transform:uppercase}
+.ds-sec-sub p{margin:6px 0 0;color:var(--text-2);font-size:14px}
+.ds-sec-sub + .ds-screens{margin-top:14px}
+/* specimens that live on the phone frame in the app */
+.ds-glass{position:relative;height:330px;overflow:hidden;background:var(--bg);padding:12px var(--pad) 0}
+.ds-glass .tabbar{position:absolute;bottom:18px}
+.ds-glass-dark{position:absolute;inset:0}
+.ds-pin{position:relative;bottom:auto;height:52px}
+.ds-clip{max-height:620px;overflow:hidden;-webkit-mask:linear-gradient(#000 85%,transparent)}
+.ds-cel-stage{position:relative;height:560px;border-radius:18px;overflow:hidden;background:var(--surface-2);display:flex;align-items:flex-end;padding:16px}
+.ds-rz{background:var(--bg);padding-bottom:16px}
+@media (max-width:860px){ .ds-tiers{position:sticky;top:0;padding:10px 16px} .ds-nav{top:72px;height:auto} }
+
+/* a phone-sized frame for full-screen modals (milestone, weekly recap); not .ds-phone, which frames the live app */
+.ds-mphone{position:relative;width:340px;max-width:100%;height:620px;border-radius:28px;overflow:hidden;--status-h:12px}
+.ds-mphone .ms-confetti i{animation-iteration-count:1}
+
+/* video & live streams */
+.ds-watch{background:var(--bg)}
+.ds-watch .gc-player{position:relative;top:0}
+.ds-pipv{animation:none}
+.ds-mini{position:relative;left:auto;right:auto;bottom:auto;animation:none}
+/* team colour roles grid */
+.ds-roles{display:flex;flex-direction:column;gap:4px;max-width:560px}
+.ds-roles-h,.ds-roles-r{display:grid;grid-template-columns:70px repeat(5,1fr);gap:6px;align-items:center}
+.ds-roles-h span{font:700 10.5px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--text-3)}
+.ds-roles-r span{display:flex;align-items:center;gap:6px;font:700 12px/1 var(--sans)}
+.ds-roles-r i{height:26px;border-radius:6px;display:grid;place-items:center;box-shadow:inset 0 0 0 1px var(--line)}
+.ds-roles-r em{font:600 10px/1 var(--sans);font-style:normal}

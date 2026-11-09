@@ -1,0 +1,162 @@
+/* ============================================================================
+   Atoms (approved 2026-10-30, round 4). Loaded after molecules.css, so each atom here is the one definition:
+   the older per-screen versions are folded into it rather than kept alongside. Type faces for tricodes, scores,
+   names, records, clocks, dates, stats, eyebrows and buttons come from roles.css, not from here.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------- team logo: XS 16 · S 24 · M 32 · L 48 · XL 72, never a shadow */
+.logo{width:32px;height:32px;filter:none}
+.logo.xs{width:16px;height:16px}.logo.sm{width:24px;height:24px}.logo.md{width:32px;height:32px}
+.logo.lg{width:48px;height:48px}.logo.xl{width:72px;height:72px}
+.ex-feat .logo.xl,.hx-feature .logo.xl,.gc-side .logo.lg,.tm-hero-logo .logo.xl{filter:none}
+.tm-hero-logo .logo.xl{width:48px;height:48px}
+.hm-otc .logo.xl{width:72px;height:72px}
+.gc-side .logo.lg,.tm-tile .logo.lg{width:48px;height:48px}
+.gc-hero.mu .gc-side .logo.lg{width:32px;height:32px}
+.ar-tag .logo,.chip img,.chip .logo{width:20px;height:20px}
+
+/* ---------------------------------------------------------------- helmet: S 64 · M 120 · L 180, one short contact shadow */
+.helmet{filter:drop-shadow(0 4px 4px rgba(0,0,0,.28))}
+.helmet.s{height:64px}.helmet.m{height:120px}.helmet.l{height:180px}
+
+/* ---------------------------------------------------------------- avatar: S 24 · M 32 · L 44, team logo or initials on the team colour */
+.av,.ph-av-in,.cm-av,.w-av{position:relative;display:inline-grid;place-items:center;border-radius:50%;overflow:hidden;flex:none;color:#fff}
+.av.s{width:24px;height:24px}.av,.av.m,.ph-av-in{width:32px;height:32px}.av.l{width:44px;height:44px}
+.av img,.ph-av-in img{width:68%;height:68%;object-fit:contain}
+.w-av{width:32px;height:32px;font-size:13px;box-shadow:0 0 0 2px var(--surface)}
+.w-av.sm{width:24px;height:24px;font-size:10px;box-shadow:0 0 0 2px var(--surface)}
+.cm-av{box-shadow:0 0 0 2px var(--surface)}
+/* stacks overlap a quarter, with the same 2 px ring everywhere */
+.cm-stack .cm-av+.cm-av,.av-stack>*+*{margin-left:-8px}
+
+/* ---------------------------------------------------------------- icon button (option A): bare in headers, squared on pictures */
+.icon-btn{width:40px;height:40px;border-radius:10px}
+.icon-btn>.ico{width:24px;height:24px}
+.icon-btn:active{background:var(--surface-2)}
+.icon-btn.solid{background:var(--surface-2);border-radius:10px}
+.icon-btn .ib-dot{top:5px;right:5px;width:8px;height:8px;background:var(--status-live);box-shadow:0 0 0 2px var(--bg)}
+.rzh-tools .icon-btn{background:rgba(0,0,0,.6);color:#fff;border-radius:10px}
+.rzh-tools .icon-btn>.ico{width:20px;height:20px}
+.st-bar .icon-btn{width:40px;height:40px}
+
+/* ---------------------------------------------------------------- toggle (option A): round, Positive green when on */
+.toggle{width:50px;height:30px;border-radius:99px;background:var(--surface-3)}
+.toggle.on{background:var(--status-positive)}
+
+/* ---------------------------------------------------------------- chips: everything that filters or picks is one squared chip.
+   S 32 (default) or M 40 (the team switcher). Picked fills with the text colour, or with the team's primary for a team. */
+.hm-st-chip,.tm-sw,.ar-tag,.sc-bye,.sc-season,.ob-pchip,.tmx-scen button,.gcp-mode button{
+  flex:none;display:inline-flex;align-items:center;gap:6px;height:32px;padding:.29em 12px 0;border-radius:8px;border:0;
+  background:transparent;box-shadow:inset 0 0 0 1px var(--line-2);color:var(--text);white-space:nowrap}
+.hm-st-chip .ico,.hm-st-chip img,.tm-sw .ico,.tm-sw img,.ar-tag img,.sc-bye img,.sc-season .ico,.ob-pchip .ico,.tmx-scen button .ico{margin-top:-.29em}
+.tm-sw{height:40px;padding:.29em 14px 0 10px;font-size:calc(14px*var(--fs))}
+.tm-sw.on{background:var(--team);box-shadow:none;color:#fff}
+.tm-sw-all{background:transparent}
+.ar-tag,.sc-bye{padding-left:8px}
+/* a chip with a Display label (bye teams, article tags; round 5 v2): Display caps carry descender space under them, so the
+   label sets with none and is nudged up to the chip's optical centre, level with the middle of the logo */
+.sc-bye .lk-tri,.ar-tag .lk-nm{font-size:calc(14px*var(--fs));line-height:1;padding-bottom:0;position:relative;top:-2px}
+.sc-bye .logo{width:24px;height:24px}.ar-tag .logo{width:16px;height:16px}
+.ar-tags{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.ar-kind{margin-top:16px}
+.ob-pchip{padding-left:8px}
+.ob-pchip.prim{box-shadow:inset 0 0 0 1.5px var(--tc)}
+.tmx-scen button.on{background:var(--text);color:var(--bg);box-shadow:none}
+/* over video the mode switch keeps its dark track, the chips inside are squared */
+.gcp-mode{border-radius:10px}
+.gcp-mode button{height:32px;box-shadow:none;color:#fff}
+.gcp-mode button.on{background:#fff;color:#111}
+/* on a team colour (Home stage links): the same squared chip, on the white-on-colour surface */
+.fh-chip{height:32px;padding:.29em 12px 0;border-radius:8px}
+/* actions are buttons, not chips: Play in the live feed, score calls on the celebration */
+.btn.lf-play{margin-left:auto}
+.btn.cel-snd{position:absolute}
+
+/* ---------------------------------------------------------------- label pills: every label is a .badge.
+   The one-off labels take the badge's shape, size and face; soft on the page, solid on colour and pictures. */
+.mg-tag,.fx-flag,.mx-ball,.mx-rz,.ob-match-why span{
+  display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 9px .13em;border-radius:99px;border:0;
+  font:700 11.5px/1 var(--stats);letter-spacing:.07em;text-transform:uppercase;font-style:normal;white-space:nowrap}
+.mg-tag .ico,.mx-ball .ico{width:12px;height:12px;margin:0 0 -.13em}
+.mg-tag{background:var(--mg-d);color:#fff}
+.fx-flag,.ob-match-why span{background:var(--status-neutral);color:#fff}
+.mx-ball{background:var(--status-neutral);color:#fff}
+.mx-rz{background:var(--status-negative);color:#fff}
+
+/* ---------------------------------------------------------------- stat tile (option A): one tile on the surface, Display number, Meta label */
+.stat-tile{background:var(--surface);border-radius:14px;padding:14px 12px;gap:6px}
+.stat-tile .v{font:900 italic calc(32px*var(--fs))/.92 var(--display);letter-spacing:.02em;text-transform:uppercase;padding-bottom:.12em}
+.stat-tile .l,.stat-tile .r{font:500 calc(12.5px*var(--fs))/1.3 var(--sans);letter-spacing:0;text-transform:none;color:var(--text-2)}
+.stat-tile .l+.r{margin-top:-4px}
+.stat-tile.fl-small .v{font-size:calc(25px*var(--fs))}
+
+/* ---------------------------------------------------------------- key and value list: 44 px rows, hairlines, Body key, Title S value */
+.kv{display:block;margin:0;font-size:inherit}
+.kv>div{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px}
+.kv>div+div{border-top:1px solid var(--line)}
+.kv dt{font:400 calc(15px*var(--fs))/1.4 var(--sans);color:var(--text-2)}
+.kv dd{margin:0;text-align:right;font:700 calc(15px*var(--fs))/1.3 var(--sans);color:var(--text)}
+
+/* ---------------------------------------------------------------- list row: 56 px, Title S over Meta; unread is a dot, never a heavier font */
+.row{min-height:56px}
+.row .row-title{font:700 calc(15px*var(--fs))/1.3 var(--sans)}
+.row .row-sub{font:500 calc(12.5px*var(--fs))/1.3 var(--sans);color:var(--text-2);margin-top:2px}
+.ib-row{align-items:flex-start;gap:12px;padding:14px 16px}
+.ib-row .row-title{font-weight:700}
+.ib-row .row-sub{margin-top:4px}
+.ib-lead{flex:none;display:grid;place-items:center;width:32px;height:32px;margin-top:-2px}
+.ib-time{margin-top:4px}
+.ib-day{margin-top:24px}
+
+/* ---------------------------------------------------------------- glossary term and tip: Info underline; the tip on the Info soft surface */
+.term{border-bottom:1.5px dotted var(--status-info);color:inherit}
+.learn-tip{border:0;border-radius:12px;background:color-mix(in srgb,var(--status-info) var(--soft),var(--surface));color:var(--text)}
+.learn-tip>.ico{flex:none;color:var(--status-info-ink)}
+
+/* ---------------------------------------------------------------- ranking move (option B): a soft label */
+.badge.pr-mv{gap:2px;padding-left:6px}
+.badge.pr-mv .ico{width:12px;height:12px;margin:0 0 -.13em}
+
+/* ---------------------------------------------------------------- empty state and loading (option B, skeleton rows) */
+.empty{display:flex;flex-direction:column;align-items:center;gap:6px;padding:28px var(--pad);text-align:center;color:var(--text)}
+.empty>.ico{width:36px;height:36px;margin:0 0 4px;color:var(--text-2)}
+.empty .t-body-s{color:var(--text-2)}
+.empty .btn{margin-top:10px}
+.loading.sk-list{display:flex;flex-direction:column;gap:0;padding:8px var(--pad);place-items:initial}
+.sk-row{display:flex;align-items:center;gap:12px;min-height:56px}
+.sk-row .grow{display:flex;flex-direction:column;gap:8px}
+.sk{display:block;height:12px;border-radius:6px;background:var(--surface-3);animation:sk-pulse 1.2s ease-in-out infinite}
+.sk.s{height:10px}
+.sk.r{width:40px;height:40px;border-radius:50%;flex:none}
+@keyframes sk-pulse{50%{opacity:.55}}
+@media (prefers-reduced-motion:reduce){.sk{animation:none}}
+
+/* ---------------------------------------------------------------- NFL+ lock note: the logo leads, on the Info soft surface */
+.lock-note{gap:12px;padding:12px 14px;border-radius:12px;background:color-mix(in srgb,var(--status-info) var(--soft),var(--surface));color:var(--text)}
+.lock-note .ln-logo{flex:none;display:inline-flex;color:var(--plus,#004FFF)}
+.lock-note .ln-logo .plus-logo{height:16px;width:auto}
+
+/* ---------------------------------------------------------------- follow: Following and Your team are secondary; the star in the team's primary */
+.btn .fb-star{display:inline-flex}
+/* one follow control: the icon always takes the label colour (white on Follow, text on Following); only the Your team star wraps it in the team colour */
+.btn .ico{color:inherit}
+
+/* ---------------------------------------------------------------- meter: one bar. 6 px, radius 3, the surface-3 track; the fill is the
+   team's primary or a status colour. Head to head is two meters from the middle. Video progress is the one exception. */
+.meter,.cmp .bar,.gl-bar>div,.rk-m{height:6px;border-radius:3px;background:var(--surface-3);overflow:hidden}
+.meter i,.cmp .bar i,.gl-bar i,.rk-m b{border-radius:3px}
+.cmp .bar{margin-top:6px}
+.rk-m{max-width:none}
+.thumb-prog{height:3px;background:var(--status-info)}
+
+/* headshot initials (approved 2026-10-31, v2): Display C italic caps (the initials role) at 40% of the disc.
+   Display caps sit .06em low in their line box, so .12em of bottom padding lifts them to the optical centre */
+.hs-fallback{font-size:calc(44px*.4);padding-bottom:.12em;line-height:1}
+.hs.sm.hs-fallback{font-size:calc(32px*.4)}.hs.lg.hs-fallback{font-size:calc(64px*.4)}.hs.xl.hs-fallback{font-size:calc(104px*.4)}
+/* empty-state B (approved 2026-11-07): 56px squared icon tile, squared button */
+.empty{padding:32px var(--pad) 24px;gap:8px}.empty-i{width:56px;height:56px;border-radius:12px;background:var(--surface-2);display:grid;place-items:center;margin-bottom:4px}
+.empty-i .ico{width:24px;height:24px;color:var(--text)}.empty .btn{border-radius:10px;margin-top:8px}
+/* inbox-rows A (approved 2026-11-07) */
+.ib-row{position:relative}.ib-lead{width:40px;height:40px;margin-top:0;border-radius:10px;background:var(--surface-2);color:var(--text)}
+.ib-h{display:flex;gap:8px;align-items:baseline}.ib-h .row-title{flex:1;min-width:0}.ib-h .t-meta{flex:none}
+.ib-un{position:absolute;right:10px;top:50%;width:8px;height:8px;border-radius:50%;background:var(--live,#e5121b)}.ib-row.un .row-main{padding-right:14px}

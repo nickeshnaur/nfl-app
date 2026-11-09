@@ -1,0 +1,10 @@
+/* onboarding notes: Continue colour, A–Z picker, logo wall */
+.r9ob-foot{position:relative;margin:0 -12px}.r9ob-foot .ob-foot{border-top:0;padding-bottom:10px}
+.r9ob-foot .ob-cta{height:48px}
+.r9ob-foot.ink .ob-cta{background:var(--text);color:var(--bg)}
+.r9ob-foot.navy .ob-cta{background:#013369;color:#fff}
+.r9ob-foot.team.none .ob-cta{background:var(--text);color:var(--bg)}
+.r9ob-grid{max-height:620px;overflow:auto}
+.r9ob-wel .ob-marq-row{animation-play-state:paused;animation-delay:-14s}
+.r9ob-wel.o35 .ob-marq-row .logo{filter:none;opacity:.35}
+.r9ob-wel.o55 .ob-marq-row .logo{filter:none;opacity:.55}

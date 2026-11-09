@@ -1,0 +1,36 @@
+/* Lockups (approved round 5): one definition for the whole app, drawn by UI.lk1–lk5 in ui.js.
+   L1 team-score line · L2 team row · L3 player line · L4 stat pair · L5 status (the .badge atom).
+   Components place and size them (".x .lk-sc{font-size}"); they never restyle them. */
+.lk-tri,.lk-sc,.lk-nm,.lk-name{font-family:var(--display);font-weight:900;font-style:italic;text-transform:uppercase;letter-spacing:.02em;line-height:1;padding-bottom:.08em;color:var(--text)}
+/* L1 */
+.lk-l1{display:flex;align-items:center;gap:8px;min-height:28px;min-width:0}
+.lk-l1 .logo{width:24px;height:24px;flex:none}
+.lk-tri{font-size:calc(17px*var(--fs))}
+.lk-sc{margin-left:auto;font-size:calc(22px*var(--fs));font-variant-numeric:tabular-nums}
+.lk-poss{display:inline-block;flex:none;width:6px;height:6px;border-radius:50%;background:var(--status-live)}
+.lk-ball{display:inline-flex;color:var(--text-2)}
+.lk-seed{width:16px;font:700 calc(13px*var(--fs))/1 var(--stats);color:var(--text-2);text-align:right}
+.lk-l1.lost,.lk-l1.dim{opacity:.6}
+.lk-l1.on,.lk-l1.on .lk-tri,.lk-l1.on .lk-sc{color:#fff}
+/* L2 */
+.lk-l2{display:flex;align-items:center;gap:10px;min-height:40px;min-width:0}
+.lk-l2 .logo{width:32px;height:32px;flex:none}
+.lk-l2t{display:flex;flex-direction:column;gap:3px;min-width:0}
+.lk-nm,.lk-name{font-size:calc(16px*var(--fs));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lk-l2s{display:flex;align-items:baseline;white-space:nowrap}
+.lk-rec{font:500 calc(12.5px*var(--fs))/1.3 var(--stats);font-variant-numeric:tabular-nums;color:var(--text-2);white-space:nowrap}
+.lk-rec .r-record,.lk-more .r-record{color:var(--text-2)}
+.lk-l2 .lk-r,.lk-l3 .lk-r{margin-left:auto;flex:none}
+.lk-l2s .lk-meta{flex:0 1 auto}
+/* L3 */
+.lk-l3{display:flex;align-items:center;gap:10px;min-width:0}
+.lk-l3 .hs{flex:none}
+.lk-l3t,.lk-pn:has(>b){display:flex;flex-direction:column;gap:2px;min-width:0}
+.lk-pn,.lk-pn>b{font:700 calc(15px*var(--fs))/1.25 var(--sans);color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lk-meta,.lk-pn>span{font:500 calc(12.5px*var(--fs))/1.3 var(--sans);color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* L4 */
+.lk-l4{display:inline-flex;flex-direction:column;gap:2px;min-width:0}
+.lk-l4.r{align-items:flex-end;text-align:right}
+.lk-l4.side{flex-direction:row;align-items:baseline;gap:6px}
+.lk-l4 b{font:700 calc(17px*var(--fs))/1.1 var(--stats);font-variant-numeric:tabular-nums;color:var(--text)}
+.lk-l4 span{font:500 calc(12.5px*var(--fs))/1.3 var(--sans);color:var(--text-2)}

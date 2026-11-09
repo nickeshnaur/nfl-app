@@ -1,0 +1,1072 @@
+/* ============================================================================
+   FORWARD: the NFL app's visual language. Loaded last; it restyles the shared
+   pieces so every screen moves the same way. Five ingredients, nothing else:
+   - Gradients: team surfaces use the official 400→500 gradient into the 800 shade.
+   - Helmets: big, on team and matchup surfaces, facing the action.
+   - Large type: All-Pro Display italic for headlines, scores and numbers.
+   - Bold color: solid team/brand colour for accents; neutrals everywhere else.
+   - Logos: team logos and the shield carry identity; no decoration around them.
+   Controls stay simple: flat fills, round pills, straight underlines.
+   ========================================================================== */
+
+:root{
+  --nfl-navy:#013369; --nfl-red:#d50a0a; --rz:#e8412c;
+  --r-xl:20px; --r-lg:14px;
+  --panel:linear-gradient(180deg,#1d232d 0%,#11151b 100%);
+  --shadow-card:0 1px 2px rgba(0,0,0,.4);
+  --shadow-hero:0 16px 36px -20px rgba(0,0,0,.55);
+  /* accessible colour: every text colour clears WCAG AA (4.5:1) on the surfaces it sits on.
+     _build/contrast.mjs checks it. Fills keep the bright tone; text uses the *-ink tone. */
+  --text-3:#929298;
+  --live:#db333d; --rz:#d53c28; --plus:#2a70e6;
+  --win-ink:var(--win); --loss-ink:var(--loss); --warn-ink:var(--warn); --gold-ink:var(--gold);
+}
+:root[data-theme=light]{
+  --bg:#eef0f3; --bg-2:#e6e9ee; --surface:#ffffff; --surface-2:#f3f4f7; --surface-3:#e4e7ec;
+  --line:#e6e8ec; --line-2:#d3d7de;
+  --text:#0b0d12; --text-2:#4c5260; --text-3:#626770;
+  --win-ink:#1a7544; --loss-ink:#b34141; --warn-ink:#9a4a00; --gold-ink:#796537;
+  --glass:rgba(238,240,243,.84);
+  --shadow-card:0 1px 2px rgba(16,24,40,.05),0 8px 24px -12px rgba(16,24,40,.12);
+}
+
+/* ---------------------------------------------------------------- type: large, bold, italic */
+.h1{font:900 italic calc(36px*var(--fs))/.92 var(--display);text-transform:uppercase;letter-spacing:.02em}
+.phead-big,.phead-title.big{font:900 italic calc(32px*var(--fs))/.95 var(--display);text-transform:uppercase;letter-spacing:.02em}
+.sec{margin-top:34px}
+.sec-head{align-items:center;margin-bottom:14px}
+.sec-head .h2,.h2.display{font:900 italic calc(25px*var(--fs))/.95 var(--display);text-transform:uppercase;letter-spacing:.02em}
+.sec-head .more{font:700 12.5px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--text-2)}
+.eyebrow{letter-spacing:.1em}
+.display-i{font-family:var(--display);font-style:italic;font-weight:900;text-transform:uppercase;letter-spacing:.02em}
+
+.c-win{color:var(--win-ink)}.c-loss{color:var(--loss-ink)}.c-warn,.badge.warn{color:var(--warn-ink)}.c-gold,.you-ord.prim,.sb-champ{color:var(--gold-ink)}
+
+/* on colour surfaces (team gradients, brand cards) text is solid white: hierarchy comes from
+   size and weight, never from transparency, so it stays readable on every team's colours */
+.tm-hero-loc,.tm-hero-meta,.tm-sep,.tm-strip-k,.gc-rec,.gc-hero-meta,.mg-today,.mg-sub,.pl-fn,.pl-meta,
+.hm-sub,.hm-hero .tiny,.hm-hero .eyebrow,.hm-count span,.fl-t-seat .tiny,.cu-intro .eyebrow,.cu-intro .tiny{opacity:1;color:#fff}
+.tm-ghost{background:rgba(255,255,255,.16)}
+.badge.loss{color:var(--loss-ink)}.badge.win{color:var(--win-ink)}
+
+/* ---------------------------------------------------------------- surfaces */
+.card,.list,.gcard,.tbl-wrap{box-shadow:var(--shadow-card)}
+.card,.list,.tbl-wrap{border-radius:var(--r-lg)}
+.gcard{border-radius:var(--r-lg)}
+.tile,.stat-tile{border-radius:12px}
+
+/* ---------------------------------------------------------------- simple controls */
+.badge{border-radius:6px}
+/* tabs: Display C italic caps at the size of a Sans label (approved 2026-10-28); a little smaller inside cards and sheets */
+.tabs button{font:900 italic 15px/1 var(--display);letter-spacing:.02em;text-transform:uppercase;padding-bottom:.12em}
+.tabs.sm button,.card .tabs button,.gc-card .tabs button,.modal .tabs button{height:38px;font-size:13px}
+.tabs button.on::after{height:3px;bottom:-1px;left:0;right:0;border-radius:3px 3px 0 0;background:var(--accent)}
+.tabbar button.on::before{top:0;left:34%;right:34%;height:3px;border-radius:0 0 3px 3px}
+.tabbar button{font:700 10.5px/1 var(--sans)}
+.chip.on{font-weight:700}
+.seg button.on{font-weight:800}
+
+/* ---------------------------------------------------------------- buttons: flat fills */
+.btn{font-weight:800}
+.btn.primary{box-shadow:none}
+/* the big call-to-action: solid colour, Display italic */
+.btn.cta.team{--cta:var(--tg-b,var(--team))}
+
+/* ---------------------------------------------------------------- team surfaces */
+/* any element given App.teamVars() wears the team gradient: one recipe for every team surface */
+.tsurf,.hm-hero,.hero,.ob-done-hero.has-team,.you-band,.fh,.fx{background:linear-gradient(155deg,var(--tg-a,var(--team)) 0%,var(--tg-b,var(--team)) 100%)}
+
+/* ---------------------------------------------------------------- helmets */
+.helmet{display:block;width:auto;pointer-events:none;user-select:none;filter:drop-shadow(0 12px 16px rgba(0,0,0,.3))}
+
+/* ---------------------------------------------------------------- Home hero */
+.hm-hero{margin:14px var(--pad) 0;border-radius:var(--r-xl);padding:18px 16px;box-shadow:var(--shadow-hero)}
+.hm-hero::before{display:none}
+.hm-hero::after{right:-70px;top:-60px;width:260px;height:260px;opacity:.09}
+.hm-hero .stripe{display:none}
+.hm-kicker{font:900 italic 15px/1 var(--display);letter-spacing:.02em;text-transform:uppercase;color:#fff}
+.hm-display{font-size:30px;line-height:.95}
+.hm-count{gap:16px}
+.hm-count>div{min-width:48px}
+.hm-count b{font:900 italic 46px/1 var(--display);letter-spacing:.02em}
+.hm-mid-l .hm-count b{font-size:56px}
+.hm-count span{letter-spacing:.12em}
+.hm-score{font:900 italic 64px/1 var(--display);letter-spacing:.02em;gap:16px}
+.hm-ab{font:900 italic 20px/1 var(--display)}
+.hm-clock,.hm-final{font:900 italic 20px/1 var(--display);letter-spacing:.02em;text-transform:uppercase;color:#fff}
+.hm-final{opacity:.9}
+.hm-last,.hm-inj,.hm-picks{background:rgba(255,255,255,.16);border:0}
+.btn.hm-glass{background:rgba(255,255,255,.16);border:0}
+
+/* matchup surface (round 6, approved): the away gradient into the home gradient, blended across the middle 70% in oklab
+   (no muddy midpoint), under one even scrim so white text passes AA on every team. Team colours are never darkened. */
+.mu{position:relative;color:#fff;overflow:hidden;isolation:isolate}
+.mu-bg,.mx-bg{position:absolute;inset:0;z-index:-2;background:linear-gradient(90deg in oklab,var(--aa) 0%,var(--ab) 15%,var(--hb) 85%,var(--ha) 100%)}
+.mu-bg::after,.mx-bg::after{content:"";position:absolute;inset:0;background:var(--scrim)}
+.mu-helmets{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.mu-helmets .helmet{position:absolute;bottom:-16px;height:150px}
+.mu-helmets .helmet.a{left:-46px}
+.mu-helmets .helmet.h{right:-46px}
+
+
+/* ---------------------------------------------------------------- matchup hero (Home + Watch) */
+/* a head-to-head stage, edge to edge, on the matchup surface above; helmets face off across the bottom.
+   Details and actions float below on a plain card. */
+.mx{position:relative;margin:0 0 4px}
+.hm-mx{margin-top:8px}
+.w-mx{margin:0 calc(-1 * var(--pad))}
+.mx-stage{position:relative;container-type:inline-size;height:440px;overflow:hidden;isolation:isolate;color:#fff}
+.mx-helmets{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.mx-top{display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 16px 0;text-align:center}
+.mx-meta{font:600 12.5px/1 var(--sans);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.mx-sides{display:flex;justify-content:space-between;gap:12px;padding:12px 18px 0}
+.mx-side{display:flex;flex-direction:column;min-width:0;max-width:50%}
+.mx-side.h{align-items:flex-end;text-align:right}
+.mx-sc{font:900 italic min(88px,22cqi)/.9 var(--display);letter-spacing:.02em}
+/* a final's loser (round 6, hero-score A): score and name at 60%; the record is small text and stays full white */
+.mx-side.lost .mx-sc,.mx-side.lost .mx-name{opacity:.6}
+/* approved round 6 (hero-names A): the full name at one fixed size for every team, the record under it in the record role (Stats medium), full white */
+.mx-name{font:900 italic 24px/1 var(--display);letter-spacing:.02em;text-transform:uppercase;white-space:nowrap;margin-top:4px}
+.mx-rec{display:flex;align-items:center;font:500 12.5px/1.2 var(--stats);font-variant-numeric:tabular-nums;margin-top:6px;white-space:nowrap}
+.mx-ball{display:inline-flex;align-items:center;gap:3px;height:18px;padding:0 7px 0 5px;margin-right:7px;border-radius:99px;background:#fff;color:#0b0d12;font:800 10.5px/1 var(--sans);letter-spacing:.04em;text-transform:uppercase}
+.mx-side.h .mx-ball{order:2;margin:0 0 0 7px}
+.mx-ball .ico{width:12px;height:12px}
+.mx-body{position:relative;z-index:2;margin:-28px 12px 0;padding:16px;background:var(--surface);border-radius:var(--r-xl);box-shadow:var(--shadow-card)}
+.mx-sit{display:flex;align-items:center;gap:8px;font:900 italic 20px/1 var(--display);letter-spacing:.02em;text-transform:uppercase}
+.mx-rz{font:800 10.5px/1 var(--sans);font-style:normal;letter-spacing:.06em;color:#fff;background:var(--rz);padding:4px 8px;border-radius:99px}
+.mx-play{font:400 14px/1.4 var(--sans);color:var(--text-2);margin-top:8px}
+.mx-body>.mx-play:first-child{margin-top:0}
+.mx-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.mx-body>.mx-actions:first-child{margin-top:0}
+.mx-when{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.mx .hm-count{justify-content:flex-start;gap:14px}
+.mx .hm-count b{font:900 italic 40px/1 var(--display);letter-spacing:.02em;color:var(--text)}
+.mx .hm-count span{color:var(--text-3)}
+.mx-big{font:900 italic 34px/1 var(--display);letter-spacing:.02em;text-transform:uppercase}
+.mx-date{font:600 13px/1.3 var(--sans);color:var(--text-2);text-align:right}
+.mx-note{display:flex;align-items:center;gap:8px;color:var(--text-2)}
+.mx-recap{display:block}
+.mx-list{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.btn.ink{background:var(--text);color:var(--surface)}
+.btn.sq{width:44px;padding:0;flex:none}.btn.sm.sq{width:34px}
+
+/* ---------------------------------------------------------------- Game Center hero */
+.gc-hero.mu{padding:14px 12px 18px;background:none}
+.gc-hero.mu::before{display:none}
+/* approved round 6: the status centred on one line on top; each side is the helmet at the edge with the score over the tricode beside it */
+.gc-hero.mu .gc-st{display:flex;justify-content:center;margin-bottom:6px}
+.gc-hero.mu .gc-st .hst{flex-direction:row;gap:8px}
+.gc-hero.mu .gc-bug{align-items:flex-end;min-height:0}
+.gc-hero.mu .gc-side{position:relative;width:auto;flex-direction:row;align-items:flex-end;gap:10px;min-height:0}
+.gc-hero.mu .gc-side.h{flex-direction:row-reverse}
+.gc-tx{display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+.gc-side.h .gc-tx{align-items:flex-end}
+.gc-hero.mu .gc-sc{font-size:40px;min-width:0;text-align:inherit}
+.gc-hero.mu .gc-poss{top:50%;left:100%;transform:translateY(-50%);margin:0 0 0 6px}
+.gc-hero.mu .gc-side.h .gc-poss{left:auto;right:100%;margin:0 6px 0 0}
+.gc-hero.mu .gc-rec{opacity:1}
+/* a final's loser: score and tricode at 60% (large text, AA 3:1); the record is small text and stays full white */
+.gc-hero.mu .gc-side.lost{opacity:1}
+.gc-hero.mu .gc-side.lost .gc-sc,.gc-hero.mu .gc-side.lost .gc-ab{opacity:.6}
+/* the game page hero names each team by its tricode at 17 px (hero-names A), the record under it at 12.5 px */
+.gc-hero.mu .gc-ab{font:900 italic 17px/1 var(--display);letter-spacing:.02em}
+.gc-hero.mu .gc-rec{font:500 12.5px/1 var(--stats)}
+.gc-sc{font:900 italic 62px/1 var(--display);letter-spacing:.02em;min-width:64px;position:relative}
+.gc-hero-meta{font:700 11px/1.2 var(--sans);letter-spacing:.08em;text-transform:uppercase;opacity:.85}
+.gc-sit .b{font:900 italic 20px/1 var(--display);letter-spacing:.02em;text-transform:uppercase}
+
+/* ---------------------------------------------------------------- game cards */
+.gcard .gc-team .sc{font:900 italic 28px/1 var(--display);letter-spacing:.02em}
+.gcard .gc-team .nm{font-weight:800}
+.gcard.mine{box-shadow:var(--shadow-card),inset 4px 0 0 var(--accent)}
+
+/* yard-line tracker */
+.ytk{position:relative;height:26px;margin:10px 2px 2px}
+.ytk i{position:absolute;display:block}
+.ytk-line{left:12px;right:12px;top:12px;height:3px;border-radius:2px;background:var(--surface-3)}
+.ytk-ez{top:7px;width:8px;height:13px;border-radius:2px}
+.ytk-ez.a{left:0;background:var(--ez-a)}.ytk-ez.h{right:0;background:var(--ez-h)}
+.ytk-mid{left:50%;top:6px;width:2px;height:15px;margin-left:-1px;background:var(--line-2);border-radius:1px}
+.ytk-rz{top:12px;height:3px;width:calc((100% - 24px) * .2);background:var(--rz);border-radius:2px;opacity:.35}
+.ytk-rz.r{right:12px}.ytk-rz.l{left:12px}
+.ytk.hot .ytk-rz{opacity:1}
+.ytk-ball{position:absolute;top:13px;left:calc(12px + (100% - 24px) * var(--x) / 100);width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;background:#fff;border:2px solid var(--tc);display:grid;place-items:center;box-shadow:0 2px 6px rgba(0,0,0,.2);transition:left .6s cubic-bezier(.2,.8,.2,1)}
+.ytk-ball img{width:17px;height:17px;object-fit:contain}
+.ytk.hot .ytk-ball{box-shadow:0 0 0 4px color-mix(in srgb,var(--rz) 25%,transparent)}
+
+/* ---------------------------------------------------------------- RedZone */
+/* the official logo; height sets the size */
+.rz-logo{display:block;height:30px;width:auto}
+.rz-logo.sm{height:24px}
+.rz-logo.lg{height:44px}
+.rz-panel{display:block;background:var(--panel);color:#fff;border-radius:var(--r-xl);overflow:hidden;position:relative}
+.rz-mark{display:flex;align-items:center;justify-content:center;gap:10px}
+.rz-sub{font:700 11px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+
+.rzt{padding:4px 26px 0}
+.rzt-track{position:relative;height:72px}
+.rzt-track>i{position:absolute;display:block}
+.rzt-line{left:0;right:0;top:36px;height:3px;background:#5d6573;border-radius:2px}
+.rzt-hot{right:0;top:36px;height:3px;background:var(--rz);border-radius:2px}
+.rzt-tick{top:52px;width:1.5px;height:9px;margin-left:-.75px;background:#5d6573}
+.rzt-tick.major{height:20px;top:48px;background:#8a93a2}
+.rzt-labels{position:relative;height:22px;font:900 italic 17px/1 var(--display);letter-spacing:.02em;color:#8a93a2}
+.rzt-labels span{position:absolute;transform:translateX(-50%)}
+.rzt-node{position:absolute;top:36px;transform:translate(-50%,-50%);display:grid;place-items:center;border-radius:50%;transition:left .8s cubic-bezier(.2,.8,.2,1)}
+.rzt-node.dot{width:11px;height:11px;background:#fff;margin-top:1.5px}
+.rzt-node.count{width:40px;height:40px;background:var(--nfl-navy);color:#fff;font:900 italic 18px/1 var(--display);letter-spacing:.02em;margin-top:1.5px}
+.rzt-node.team{width:44px;height:44px;background:#fff;border:3px solid var(--tc);margin-top:1.5px;z-index:2}
+.rzt-node.team img{width:30px;height:30px;object-fit:contain}
+.rzt-node.team+.rzt-node.team{box-shadow:-3px 0 10px rgba(0,0,0,.45)}
+/* inside the 10: one soft pulse */
+.rzt-node.hot::before{content:"";position:absolute;inset:-10px;border-radius:50%;border:2px solid rgba(232,65,44,.7);animation:rzRing 1.8s ease-out infinite}
+@keyframes rzRing{0%{transform:scale(.75);opacity:0}25%{opacity:1}100%{transform:scale(1.15);opacity:0}}
+.rzt.light .rzt-line,.rzt.light .rzt-tick{background:var(--line-2)}
+.rzt.light .rzt-labels{color:var(--text-3)}
+.rzt.light .rzt-node.dot{background:var(--text-3)}
+
+/* RedZone card: media up top, CTA over it, tracker below */
+.rzc{border-radius:var(--r-xl);overflow:hidden;background:var(--panel);color:#fff;box-shadow:var(--shadow-hero)}
+.rzc-media{position:relative;aspect-ratio:16/10;overflow:hidden;background:#000}
+.rzc-media video,.rzc-media img{width:100%;height:100%;object-fit:cover;opacity:.78}
+.rzc-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.1),transparent 50%,#151a21)}
+.rzc-cta{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);z-index:2;min-width:250px}
+.rzc-live{position:absolute;left:14px;bottom:16px;z-index:2}
+.rzc-body{padding:12px 0 16px}
+.rzc-empty{padding:6px 20px 4px;text-align:center;color:rgba(255,255,255,.65);font-size:13.5px}
+/* compact RedZone panel */
+.rzp{padding:14px 0 10px}
+.rzp-head{display:flex;align-items:center;gap:10px;padding:0 14px 2px 16px}
+.rzp-head .ico{color:rgba(255,255,255,.6)}
+.rzp .rzt{padding:0 24px}
+
+/* ---------------------------------------------------------------- team heroes */
+.hero{padding:20px var(--pad) 22px;min-height:200px}
+.hero::before,.hero::after,.hero .stripe{display:none}
+.hero-helmet{position:absolute;right:-34px;bottom:58px;height:176px;z-index:0}
+.hero>*:not(.hero-helmet){position:relative;z-index:1}
+.tm-hero-name{font:900 italic 44px/.9 var(--display);letter-spacing:.02em;white-space:nowrap}
+/* the right side belongs to the helmet */
+.tm-hero-top{padding-right:108px}
+.tm-strip{position:relative;z-index:2}
+
+/* ---------------------------------------------------------------- numbers */
+.notice,.lock-note{border-radius:12px}
+.ticker{background:var(--surface)}
+.stat-tile .v{font:900 italic 28px/1 var(--display);letter-spacing:.02em}
+.big-num{font:900 italic calc(46px*var(--fs))/1 var(--display);letter-spacing:.02em}
+.score-xl{font:900 italic 64px/1 var(--display);letter-spacing:.02em}
+.headline{font-weight:800}
+
+/* ---------------------------------------------------------------- Watch hero */
+.w-hero-cd .num{font:900 italic 40px/1 var(--display);letter-spacing:.02em}
+.w-hero-title{font-style:italic;font-size:34px}
+
+/* ---------------------------------------------------------------- player, You, onboarding */
+.pl-ln{word-break:normal;overflow-wrap:normal;white-space:nowrap;font-style:italic;line-height:.9}
+.you-band{height:108px}
+.you-band::before,.you-band .stripe{display:none}
+.you-band::after{background:var(--helmet-l,var(--helmet)) center/contain no-repeat;opacity:1;width:190px;height:190px;right:-44px;top:-26px;filter:drop-shadow(0 10px 14px rgba(0,0,0,.3))}
+.you-name{font-size:30px}
+.ob-done-hero{position:relative;overflow:hidden}
+.ob-done-helmet{position:absolute;right:-40px;top:30px;width:230px;height:auto;animation:helmetIn .7s .1s cubic-bezier(.2,.8,.2,1) both}
+.ob-done-hero>*:not(.ob-done-helmet){position:relative;z-index:1}
+@keyframes helmetIn{from{transform:translateX(60px);opacity:0}to{transform:none;opacity:1}}
+
+/* ---------------------------------------------------------------- mini games */
+/* each game wears its own colour and field art (Mini Games Figma); the profile card on top is you as a player */
+.mg-sb{--mg:#a066f6;--mg-l:#b88cff;--mg-d:#22074f}
+.mg-rem{--mg:#5ccf78;--mg-l:#78dd90;--mg-d:#0e4d1f}
+.mg-gs{--mg:#2f9cf2;--mg-l:#6cc0ff;--mg-d:#061f4a}
+.mg-tag{display:inline-flex;align-items:center;gap:6px;height:24px;padding:.29em 10px 0;border-radius:99px;background:var(--mg-d);color:#fff;font:700 11.5px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase}
+.mg-tag .ico{margin-top:-.29em}
+.mg-art{position:absolute;right:0;bottom:0;width:150px;height:auto}
+.mg-art .l{fill:var(--mg-l)}
+.mg-art .l2{fill:color-mix(in srgb,var(--mg-l) 50%,var(--mg))}
+.mg-art .d{fill:color-mix(in srgb,var(--mg-d) 55%,var(--mg))}
+.mg-art .st{fill:color-mix(in srgb,var(--mg-d) 40%,var(--mg))}
+.mg-art .route,.mg-art .dash{fill:none;stroke:var(--mg-d);stroke-width:2.5;stroke-dasharray:6 5}
+.mg-art .brk{fill:none;stroke:var(--mg-d);stroke-width:2.5}
+.mg-art .dot{fill:var(--mg-d)}
+.mg-art .ball{fill:#2fa7ff;stroke:var(--mg-d);stroke-width:3}
+.mg-art .post{fill:none;stroke:#f2e600;stroke-width:3}
+.mg-art .yard{fill:none;stroke:#fff;stroke-width:1.5;opacity:.8}
+/* game card */
+.mg-rail{padding-top:2px;padding-bottom:6px}
+.mgc{position:relative;width:292px;height:188px;padding:16px 18px;border-radius:var(--r-lg);overflow:hidden;background:var(--mg);color:var(--mg-d);display:flex;flex-direction:column;align-items:flex-start}
+.mgc>*:not(.mg-art){position:relative}
+.mgc-n{margin-top:12px;font:italic 900 32px/1 var(--display);letter-spacing:.02em;text-transform:uppercase}
+.mgc-s{display:flex;align-items:center;gap:5px;margin-top:6px;font:500 15px/1.2 var(--sans)}
+.mgc-s b{font:800 12px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase}
+.mg-btn{margin-top:auto;display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 18px .12em;border-radius:10px;background:var(--mg-d);color:#fff;font:900 italic 15px/1 var(--display);letter-spacing:.02em;text-transform:uppercase}
+/* list row */
+.mg-list{padding:0 16px}
+.mgr{display:flex;align-items:center;gap:14px;padding:12px 0;color:var(--mg-d)}
+.mgr+.mgr{border-top:1px solid var(--line)}
+.mgr .grow{display:flex;flex-direction:column;align-items:flex-start}
+.mgr-art{position:relative;width:80px;height:80px;flex:none;border-radius:12px;overflow:hidden;background:var(--mg)}
+.mgr-art .mg-art{width:116px;right:-8px}
+.mgr-n{margin-top:8px;font:italic 900 22px/1 var(--display);letter-spacing:.02em;text-transform:uppercase;color:var(--text)}
+.mgr-s{margin-top:4px;font:400 14px/1.2 var(--sans);color:var(--text-2)}
+.mgr>.ico{color:var(--text)}
+/* profile card */
+.mgp{position:relative;display:block;padding:18px;border-radius:var(--r-lg);background:var(--surface);box-shadow:var(--shadow-card);overflow:hidden;color:var(--text)}
+.mgp::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:var(--c)}
+.mgp-top{display:flex;justify-content:space-between;gap:8px;padding-bottom:16px;border-bottom:1px solid var(--line-2)}
+.mgp-n{font:italic 900 24px/1.05 var(--display);letter-spacing:.02em;text-transform:uppercase}
+.mgp-rk{display:flex;align-items:center;gap:6px;margin-top:10px;font:700 13px/1 var(--sans);text-transform:uppercase;color:var(--text-2)}
+.mgp-rk b{color:var(--text)}
+.mg-pen{width:130px;height:auto;flex:none}
+.mg-pen text{fill:#fff;font:900 italic 17px/1 var(--display);letter-spacing:.02em}
+.mgp-nums{display:grid;grid-template-columns:1fr 1fr;margin-top:14px}
+.mgp-nums span{font:700 12px/1 var(--sans);text-transform:uppercase;color:var(--text-2)}
+.mgp-nums b{display:flex;align-items:center;gap:6px;margin-top:8px;font:900 italic 28px/1 var(--display);letter-spacing:.02em}
+.mg-fp{display:inline-grid;place-items:center;height:20px;padding:0 5px;border-radius:3px;background:var(--win-ink);color:#fff;font:900 italic 13px/1 var(--display);letter-spacing:.02em}
+.mg-dots{display:inline-flex;gap:4px;margin-left:6px}
+.mg-dots i{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--line-2);display:grid;place-items:center}
+.mg-dots i.on{border-color:transparent;background:var(--win-ink);color:#fff}
+.mg-dots i .ico{width:12px;height:12px}
+/* a game, before it's built */
+.mg-hold{position:relative;margin:16px var(--pad) 0;min-height:340px;padding:20px;border-radius:var(--r-lg);overflow:hidden;background:var(--mg);color:var(--mg-d);display:flex;flex-direction:column;align-items:flex-start}
+.mg-hold>*:not(.mg-art){position:relative}
+.mg-hold .mg-art{width:240px}
+.tm-hero-meta .nowrap{white-space:nowrap}
+
+/* ---------------------------------------------------------------- Home, made for you */
+/* your team owns the top: gradient, helmet facing in, big name, what changed since you last looked */
+.fh{position:relative;overflow:hidden;isolation:isolate;container-type:inline-size;color:#fff;padding:18px var(--pad) 18px;min-height:212px}
+.fh-hel{position:absolute;right:-34px;top:18px;width:min(210px,52cqi);height:auto;z-index:-1}
+.fh-in{position:relative;max-width:72%}
+.fh-hello{font:700 13px/1.2 var(--sans)}
+.fh-name{display:block;font:900 italic 56px/.9 var(--display);letter-spacing:.02em;text-transform:uppercase;margin-top:6px;white-space:nowrap}
+.fh-line{font:600 13px/1.3 var(--sans);margin-top:8px}
+.fh-since{margin-top:14px}
+.fh-k{display:block;font:700 10.5px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase}
+.fh-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;width:calc(100cqi - 2 * var(--pad))}
+.fh-chip{display:inline-flex;align-items:center;height:30px;padding:0 12px;border-radius:99px;background:rgba(255,255,255,.16);font:700 12.5px/1 var(--sans);white-space:nowrap}
+.fh-tuned{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font:600 12px/1 var(--sans);white-space:nowrap}
+.fh-tuned .ico{width:14px;height:14px}
+.fh+.hm-ticker,.fh+.ticker{margin-top:0}
+/* what's at stake */
+.sk{margin:0 var(--pad);padding:16px;border-radius:var(--r-xl)}
+.sk-lines{display:grid;gap:8px}
+.sk-line{font:500 15px/1.35 var(--sans)}
+.sk-line b{font:900 italic 18px/1 var(--display);letter-spacing:.02em;text-transform:uppercase}
+.sk-next{display:flex;align-items:center;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font:700 14px/1.2 var(--sans)}
+.sk-tbl{margin-top:12px;display:grid;gap:2px}
+.sk-row{display:flex;align-items:center;gap:10px;height:40px;padding:0 10px;border-radius:10px;font-size:14px}
+.sk-row.me{background:color-mix(in srgb,var(--tc) 12%,transparent);box-shadow:inset 4px 0 0 var(--tc)}
+.sk-n{width:14px;font:900 italic 15px/1 var(--display);color:var(--text-2)}
+.sk-gb{width:34px;text-align:right;color:var(--text-2)}
+.sk-rival{display:flex;align-items:center;gap:12px;margin-top:12px;padding-top:14px;border-top:1px solid var(--line)}
+/* made for you modules */
+.fy-calm{margin:0 var(--pad);padding:16px}
+.fy-calm .list{margin:0}
+.fy-tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fy-when{display:flex;flex-direction:column;align-items:flex-start;gap:3px;width:64px;flex:none}
+.fy-when b{font:900 italic 16px/1 var(--display);letter-spacing:.02em;text-transform:uppercase}
+.fy-when span{font:600 11px/1 var(--sans);color:var(--text-2)}
+/* your team's game, as a strip inside the header */
+.fh-game{display:flex;align-items:center;gap:10px;margin-top:14px;width:calc(100cqi - 2 * var(--pad));padding:8px 8px 8px 12px;border-radius:16px;background:rgba(255,255,255,.16)}
+.fh-g-main{display:flex;align-items:center;gap:8px;flex:1;min-width:0;font:600 13px/1.2 var(--sans)}
+.fh-g-main .logo{flex:none;width:22px;height:22px}
+.fh-g-sc{font:900 italic 17px/1 var(--display);letter-spacing:.02em;text-transform:uppercase;white-space:nowrap}
+.fh-g-sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fh-game .btn{flex:none}
+/* no team yet: the hero invites you to pick one */
+.fh-pick{min-height:300px}
+.fh-pick .fh-in{max-width:100%}
+.fh-pick .fh-line{max-width:64%;font-weight:500;line-height:1.4}
+.fh-helmets{position:absolute;right:-56px;top:20px;width:230px;height:200px;z-index:-1}
+.fh-helmets .helmet{position:absolute;width:150px;height:auto}
+.fh-helmets .helmet:nth-child(1){right:70px;top:0}
+.fh-helmets .helmet:nth-child(2){right:0;top:40px}
+.fh-helmets .helmet:nth-child(3){right:90px;top:86px}
+.fh-logos{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.fh-logo{width:46px;height:46px;border-radius:14px;background:#fff;display:grid;place-items:center}
+.fh-logo .logo{width:30px;height:30px}
+.btn.fh-ghost{background:rgba(255,255,255,.16);color:#fff}
+.fh-g-col{display:flex;flex-direction:column;gap:3px;min-width:0}
+
+/* ---- Home stage (.fx): your team, everything that matters now, layered for parallax ---- */
+/* the game card */
+.fx-game{margin-top:22px;padding:14px;border-radius:22px;background:rgba(255,255,255,.16);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.fx-g-k{display:flex;align-items:center;gap:8px;font:700 11.5px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase}
+.fx-flag{margin-left:auto;padding:4px 8px;border-radius:99px;background:#fff;color:var(--tg-b,#111);font:800 10.5px/1 var(--sans);letter-spacing:.06em}
+.fx-g-vs{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:14px}
+.fx-g-side{display:flex;align-items:center;gap:10px;min-width:0}
+.fx-g-vs .fx-g-side:last-child{flex-direction:row-reverse;text-align:right}
+.fx-disc{flex:none;width:44px;height:44px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.fx-disc img{width:32px;height:32px;object-fit:contain}
+.fx-g-ab{font:900 italic 22px/1 var(--display);letter-spacing:.02em}
+.fx-g-r{font:600 12px/1 var(--sans);margin-top:3px}
+.fx-at{font:900 italic 18px/1 var(--display);text-transform:uppercase}
+.fx-g-when{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.18)}
+.fx-g-t{font:600 12.5px/1.3 var(--sans);text-align:right}
+.fx-g-acts{display:flex;gap:8px;margin-top:14px}
+.fx-g-acts .btn{flex:1;justify-content:center}
+.btn.fx-ghost{background:rgba(255,255,255,.16);color:#fff}
+/* the season strip */
+.fx-run{margin-top:18px}
+.fx-run-h{display:flex;align-items:baseline;justify-content:space-between}
+.fx-run-n{font:600 12px/1 var(--sans)}
+@keyframes fx-pulse{50%{opacity:.4}}
+/* numbers */
+.fx-nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:18px}
+.fx-num{padding:10px;border-radius:14px;background:rgba(255,255,255,.16);display:flex;flex-direction:column;gap:3px;min-width:0}
+.fx-num b{font:900 italic 26px/1 var(--display)}
+.fx-num span{font:600 11.5px/1.15 var(--sans)}
+.fx-num em{font:700 11px/1 var(--sans);font-style:normal;letter-spacing:.02em;margin-top:2px}
+
+/* stage + sheet: the stage stays put (sticky, top set by mountStage) and the rest of Home slides up over it */
+.hm-page:has(.hm-sheet){padding-bottom:0}
+.hm-page .phead{transition:background .25s,border-color .2s}
+.hm-page.on-stage .phead{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom-color:transparent;color:#fff}
+.hm-page.on-stage .phead .icon-btn{color:#fff}
+.hm-stage{position:sticky;top:0;z-index:0;margin-top:-52px}
+.fh-pick.hm-stage{padding-top:70px;padding-bottom:64px}
+.hm-sheet{position:relative;z-index:1;margin-top:-28px;background:var(--bg);border-radius:28px 28px 0 0;box-shadow:0 -12px 32px rgba(0,0,0,.22);padding-bottom:calc(var(--tab-h) + 40px);overflow:clip}
+.hm-grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:10px auto 0}
+.hm-st{padding:12px var(--pad) 6px}
+.hm-st-k{font:700 10.5px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--text-2)}
+.hm-st-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.hm-st-chip{display:inline-flex;align-items:center;height:32px;padding:0 13px;border-radius:99px;background:var(--surface);border:1px solid var(--line);font:700 13px/1 var(--sans);color:var(--text);white-space:nowrap}
+.hm-st-tuned{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font:600 12.5px/1 var(--sans);color:var(--text-2);white-space:nowrap}
+.hm-st-tuned .ico{width:14px;height:14px}
+.hm-sheet .hm-ticker,.hm-sheet .ticker{margin-top:8px}
+/* the stage */
+.fx{overflow:hidden;isolation:isolate;container-type:inline-size;color:#fff;padding:68px var(--pad) 50px}
+.fx::before{content:"";position:absolute;inset:0;z-index:-2;background:radial-gradient(110% 60% at 100% 0%,rgba(255,255,255,.2),transparent 60%),radial-gradient(90% 50% at 0% 100%,rgba(0,0,0,.3),transparent 70%)}
+.fx-hel{position:absolute;right:-34px;top:64px;z-index:-1;width:min(212px,52cqi);height:auto;filter:drop-shadow(0 18px 24px rgba(0,0,0,.3))}
+.fx-in{position:relative}
+.fx-hello{font:700 13px/1.2 var(--sans)}
+.fx-name{display:block;font:900 italic 68px/.86 var(--display);letter-spacing:.01em;text-transform:uppercase;margin-top:8px;white-space:nowrap}
+.fx-wl{font:900 italic 44px/.9 var(--display);letter-spacing:.02em;margin-top:10px}
+.fx-wl small{font:800 12px/1 var(--sans);font-style:normal;letter-spacing:.08em;text-transform:uppercase;margin-left:10px;vertical-align:.6em}
+.fx-meta{font:700 13px/1.3 var(--sans);margin-top:6px;max-width:60cqi}
+.fx-say{font:600 16px/1.3 var(--sans);margin:10px 0 0;max-width:60cqi;text-wrap:balance}
+.fx-k{display:block;font:700 10.5px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase}
+/* stage: compact enough that the sheet peeks on a phone */
+.fx{padding-bottom:42px}
+.fx-meta{max-width:72cqi}
+.fx-say{margin-top:8px;font-size:15.5px}
+.fx-game{margin-top:16px;padding:12px 14px}
+.fx-g-vs{margin-top:10px}
+.fx-disc{width:40px;height:40px}.fx-disc img{width:29px;height:29px}
+.fx-g-when{margin-top:10px;padding-top:10px}
+.fx-g-acts{margin-top:12px}
+.fx-g-acts .btn{height:40px}
+.fx-run{margin-top:14px}
+.fx-nums{margin-top:12px;gap:6px}
+.fx-num{padding:8px 10px;gap:2px}
+.fx-num b{font-size:22px}
+.fx-num span{font-size:11px}
+.hm-grab{background:var(--text-3);opacity:.45}
+.fh-pick .fh-name{white-space:normal;max-width:58%}
+.fh-pick .fh-helmets{top:74px}
+.fh-pick .fh-line{max-width:56%}
+
+/* ---- Game Center: Live tab (catch up, key moments, feed) ---- */
+.lv-h{font:900 italic 24px/1 var(--display);text-transform:uppercase;letter-spacing:.01em}
+.lv-cu{margin:16px var(--pad) 0;padding:18px;border-radius:22px;background:var(--surface);border:1px solid var(--line)}
+.lv-story{font:500 16px/1.5 var(--sans);margin:12px 0 0;color:var(--text)}
+.lv-pts{list-style:none;margin:14px 0 0;padding:14px 0 0;border-top:1px solid var(--line);display:grid;gap:12px}
+.lv-pts li{display:flex;gap:10px;align-items:flex-start;font:500 15px/1.4 var(--sans)}
+.lv-pts .lv-ic{flex:none;display:grid;place-items:center;width:20px;height:22px}.lv-pts .ico{width:20px;height:20px}
+.lv-pts .lk-pn{display:inline}
+.lv-cu-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.lv-km{margin-top:26px}
+/* key moments slider (round 5, option b) */
+.km3-head{align-items:baseline;margin-bottom:12px}
+.km3-n{font:500 calc(12.5px*var(--fs))/1 var(--sans);font-style:normal;text-transform:none;letter-spacing:0;color:var(--text-2)}
+.km3-rail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 var(--pad);padding:0 var(--pad);scrollbar-width:none}
+.km3-rail::-webkit-scrollbar{display:none}
+.km3{flex:none;width:min(272px,78cqi,78vw);scroll-snap-align:start;display:flex;flex-direction:column;gap:8px;padding:16px 14px 14px;border-radius:16px;background:var(--surface);box-shadow:inset 0 4px 0 var(--tp)}
+.km3-k{display:flex;align-items:center;gap:6px;font:500 calc(12.5px*var(--fs))/1.3 var(--sans);color:var(--text-2)}.km3-k .logo{width:20px;height:20px}
+.km3-play{font:700 calc(16px*var(--fs))/1.3 var(--sans);color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}
+.km3-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-top:auto}
+.km3-sc{display:inline-flex;align-items:baseline;gap:14px}
+.km3-s{display:inline-flex;align-items:baseline;gap:4px}.km3-s.dim{opacity:.6}
+.km3-s .lk-tri{font-size:calc(15px*var(--fs))}.km3-s .lk-sc{margin-left:0;font-size:calc(26px*var(--fs))}
+.km3-dots{display:flex;justify-content:center;gap:6px;margin-top:12px}
+.km3-dots i{width:6px;height:6px;border-radius:3px;background:var(--line-2);transition:width .2s}.km3-dots i.on{width:18px;background:var(--text)}
+/* feed */
+.lv-feed{margin-top:26px}
+.lf-live{display:inline-flex;align-items:center;gap:6px;font:700 12px/1 var(--sans);color:var(--loss-ink,var(--live));text-transform:none;font-style:normal;letter-spacing:0}
+.lf-live i{width:8px;height:8px;border-radius:50%;background:var(--live);animation:fx-pulse 1.2s ease-in-out infinite}
+@keyframes fx-pulse{50%{opacity:.35}}
+.lf{position:relative;margin:12px var(--pad) 0;padding-left:36px}
+.lf::before{content:"";position:absolute;left:13px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.lf-item{position:relative;margin-bottom:10px}
+.lf-dot{position:absolute;left:-36px;top:12px;width:28px;height:28px;border-radius:50%;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center}
+.lf-dot .logo{width:18px;height:18px}
+.lf-dot .ico{width:14px;height:14px}
+.lf-card{display:block;padding:12px 14px;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
+.lf-item.big .lf-card{border-left:4px solid var(--tc)}
+.lf-top{display:flex;justify-content:space-between;gap:8px}
+.lf-k{font:800 11px/1 var(--sans);letter-spacing:.07em;text-transform:uppercase}
+.lf-item.big .lf-k{color:var(--tc)}
+.lf-when{font:600 12px/1 var(--sans);color:var(--text-2)}
+.lf-t{font:600 15px/1.35 var(--sans);margin-top:6px}
+.lf-item.big .lf-t{font-size:16.5px}
+.lf-foot{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;margin-top:8px}
+.lf-foot:empty{display:none}
+.lf-sc{font:900 italic 15px/1 var(--display);letter-spacing:.02em}
+/* the approved reaction pills (round 5 play row v2) */
+.lf-rx{display:flex;flex-wrap:wrap;gap:6px}.lf-rx .rx-chip{height:28px;padding:0 9px;font-size:14px;color:var(--text)}
+.lf-play{margin-left:auto;display:inline-flex;align-items:center;gap:5px;height:28px;padding:0 11px;border-radius:99px;background:var(--text);color:var(--surface);font:700 12px/1 var(--sans)}
+.lf-play .ico{width:11px;height:11px}
+.lf-ins .lf-card{background:transparent;border-style:dashed}
+.lf-bar{height:6px;border-radius:3px;background:var(--bg-2);margin-top:10px;overflow:hidden}
+.lf-bar i{display:block;height:100%;border-radius:3px}
+.lf-q{display:flex;justify-content:space-between;align-items:center;margin:4px 0 14px -36px;padding:8px 12px;border-radius:12px;background:var(--bg-2);font:700 12px/1 var(--sans);text-transform:uppercase;letter-spacing:.05em;color:var(--text-2)}
+.lf-q b{font:900 italic 14px/1 var(--display);color:var(--text);letter-spacing:.02em}
+
+/* ---- Game hero: helmets stay inside the screen ---- */
+
+/* ---- pinned score bug ---- */
+/* sticky measures from inside the page's bottom padding (tab bar + 40px); measured on a 393x852 phone, -12px sits just above the tab bar */
+.gc-pin{position:sticky;bottom:-12px;height:0;z-index:30;pointer-events:none}
+.gc-pin .pb-in{position:absolute;left:var(--pad);right:var(--pad);bottom:0;isolation:isolate;display:flex;align-items:stretch;height:52px;border-radius:12px;overflow:hidden;color:#fff;background:linear-gradient(90deg,var(--ca) 0%,var(--ca) 22%,var(--ch) 78%,var(--ch) 100%);box-shadow:0 10px 30px rgba(0,0,0,.35);transform:translateY(130%);opacity:0;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .25s;text-align:left}
+.gc-pin .pb-in::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--scrim)}
+.gc-pin.show .pb-in{transform:none;opacity:1;pointer-events:auto}
+.pb-t{display:flex;align-items:center;gap:6px;padding:0 10px;min-width:0}
+.pb-t.h{flex-direction:row-reverse}
+.pb-t .lk-tri,.pb-t .lk-sc{color:#fff}
+.pb-t .lk-sc{margin:0 0 0 4px;font-size:calc(24px*var(--fs))}.pb-t.h .lk-sc{margin:0 4px 0 0}
+.pb-t.lost>*{opacity:.6}
+.pb-disc{flex:none;width:26px;height:26px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.pb-disc img{width:20px;height:20px;object-fit:contain}
+.pb-poss{flex:none;width:6px;height:6px;border-radius:50%;background:#fff}
+.pb-mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:0;padding:0 8px}
+.pb-mid .badge:not(.live){background:rgba(255,255,255,.18);color:#fff}
+.pb-dd{font-size:calc(11.5px*var(--fs));line-height:1.1;text-align:center;max-width:100%;color:rgba(255,255,255,.85)}
+
+/* ---- score celebration ---- */
+.cel{position:absolute;inset:0;container-type:size;z-index:200;display:grid;place-items:center;color:#fff;overflow:hidden;cursor:pointer;animation:cel-fade .25s ease-out both}
+.cel.out{animation:cel-out .38s ease-in both}
+/* round 5 celebrate v2: the team's own colour, flat; no stripes, no glow, nothing darkened */
+.cel-bg{position:absolute;inset:0;background:var(--tc)}
+.cel-in{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 20px;max-width:440px}
+.cel-hel{width:170px;animation:cel-hel .7s cubic-bezier(.2,1.4,.3,1) both}
+.cel-hel .helmet{width:100%;height:auto;filter:drop-shadow(0 18px 24px rgba(0,0,0,.45))}
+.cel-word{display:flex;flex-wrap:wrap;justify-content:center;font:900 italic 72px/.9 var(--display);white-space:nowrap;text-transform:uppercase;letter-spacing:.01em;margin-top:6px;text-shadow:0 2px 0 rgba(0,0,0,.18)}
+.cel-word span{display:inline-block;animation:cel-letter .5s cubic-bezier(.2,1.5,.3,1) both;animation-delay:calc(.18s + var(--i) * .045s)}
+.cel-team{font:800 14px/1.2 var(--sans);letter-spacing:.08em;text-transform:uppercase;margin-top:10px;animation:cel-up .4s .55s both}
+.cel-score{display:flex;gap:10px;margin-top:18px;animation:cel-up .4s .7s both}
+.cel-sd{display:flex;align-items:center;gap:8px;padding:8px 14px 8px 8px;border-radius:16px;background:rgba(255,255,255,.16)}
+.cel-sd.on{background:#fff;color:#111}
+.cel-sd img{width:30px;height:30px;object-fit:contain;background:#fff;border-radius:50%;padding:3px}
+.cel-sd span{font:900 italic 15px/1 var(--display);text-transform:uppercase;letter-spacing:.02em}
+.cel-sd b{font:900 italic 34px/1 var(--display);min-width:40px;text-align:right;transition:transform .09s}
+.cel-sd b.tick{transform:scale(1.3)}
+.cel-play{font:600 15px/1.35 var(--sans);margin-top:16px;max-width:320px;animation:cel-up .4s .85s both}
+.cel-snd{position:absolute;right:14px;bottom:calc(var(--tab-h) + 16px);display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:99px;background:rgba(0,0,0,.4);color:#fff;font:700 12px/1 var(--sans)}
+.cel.calm *{animation:none!important}
+@keyframes cel-fade{from{opacity:0}}
+@keyframes cel-out{to{opacity:0;transform:scale(1.04)}}
+@keyframes cel-hel{from{opacity:0;transform:translateY(40px) scale(.6) rotate(-12deg)}}
+@keyframes cel-letter{from{opacity:0;transform:translateY(60%) scale(.4)}}
+@keyframes cel-up{from{opacity:0;transform:translateY(14px)}}
+.cel-word{gap:0 .25em}
+.cel-w{display:inline-flex}
+
+/* ---- RedZone channel page: always dark, like the broadcast ---- */
+.rz-page{--bg:#08080a;--bg-2:#121216;--surface:#141418;--surface-2:#1c1c22;--surface-3:#26262d;--line:rgba(255,255,255,.1);--text:#fff;--text-2:#bdbdc5;--text-3:#9a9aa3;--glass:rgba(8,8,10,.82);background:var(--bg);color:var(--text)}
+.rz-page .phead{color:#fff}
+.rz-page .phead .icon-btn{color:#fff}
+.rzh{padding:0 0 18px;background:radial-gradient(120% 60% at 50% 0%,rgba(213,60,40,.35),transparent 70%)}
+.rzh-player{position:relative;aspect-ratio:16/10;overflow:hidden;background:#000;isolation:isolate}
+.rzh-player video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.rzh-shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,transparent 30%,transparent 55%,rgba(0,0,0,.8) 100%)}
+.rzh-top{position:absolute;left:14px;right:14px;top:12px;display:flex;align-items:center;gap:8px}
+.rzh-top .rz-logo{height:22px}
+.rzh-v{margin-left:auto;display:inline-flex;align-items:center;gap:5px;font:700 12px/1 var(--sans);color:#fff;background:rgba(0,0,0,.5);padding:5px 9px;border-radius:99px}
+.rzh-v .ico{width:12px;height:12px}
+.rzh-play{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.92);color:#111;display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.rzh-play .ico{width:26px;height:26px;margin-left:3px}
+.rzh-cta{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);display:inline-flex;align-items:center;gap:8px;white-space:nowrap;height:46px;padding:0 18px;border-radius:99px;background:var(--rz);color:#fff;font:800 14px/1 var(--sans)}
+.rzh-off{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);text-align:center;color:#fff}
+.rzh-off-k{font:700 11px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase}
+.rzh-off-t{font:900 italic 30px/1 var(--display);text-transform:uppercase;margin-top:8px;white-space:nowrap}
+.rzh-chyw{padding:10px var(--pad) 0}
+/* playing: the video's own controls work, so the overlays let taps through and the bottom stays clear */
+.rzh-player.playing .rzh-shade{background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,transparent 34%)}
+.rzh-player.playing .rzh-shade,.rzh-player.playing .rzh-top{pointer-events:none}
+.rzh-tools{display:flex;gap:6px;pointer-events:auto}
+.rzh-tools .icon-btn{background:rgba(0,0,0,.6);color:#fff}
+.rzh-player .gcp-held{z-index:1}
+.rzh-chy{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 10px;border-radius:12px;background:rgba(0,0,0,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-left:4px solid var(--tc);color:#fff}
+.rzh-chy-k{font:800 10px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;background:var(--rz);padding:4px 6px;border-radius:4px}
+.rzh-chy-sc{display:inline-flex;align-items:center;gap:5px;font:800 13px/1 var(--sans)}
+.rzh-chy-sc .logo{width:16px;height:16px}
+.rzh-chy-sc b{font:900 italic 15px/1 var(--display)}
+.rzh-chy-dd{font:600 12px/1.2 var(--sans);width:100%}
+.rzh-bar{display:flex;gap:8px;padding:14px var(--pad) 0}
+.rzh-bar .btn{flex:1;justify-content:center;height:46px}
+.rzh-bar .btn[disabled]{opacity:.6}
+.rzh-ghost{background:var(--surface-2)!important;color:#fff!important}
+.rzh-inc{display:flex;align-items:center;gap:6px;padding:10px var(--pad) 0;font:600 12.5px/1.2 var(--sans);color:var(--text-2)}
+.rzh-inc .ico{width:13px;height:13px;color:#4cd07d}
+.rz-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:6px var(--pad) 0}
+.rz-stats>div{padding:12px;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
+.rz-stats b{display:block;font:900 italic 34px/1 var(--display)}
+.rz-stats span{display:block;font:600 11.5px/1.2 var(--sans);color:var(--text-2);margin-top:4px}
+.rz-stats .hot{border-color:var(--rz);background:linear-gradient(160deg,rgba(213,60,40,.35),var(--surface) 70%)}
+.rz-sec{margin-top:26px}
+.rz-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:0 var(--pad)}
+.rz-h span{font:900 italic 22px/1 var(--display);text-transform:uppercase}
+.rz-h em{font:600 12px/1 var(--sans);font-style:normal;color:var(--text-2)}
+.rz-box{margin:12px var(--pad) 0;padding:14px;border-radius:20px;background:var(--surface);border:1px solid var(--line)}
+.rz-calm{font:500 14px/1.4 var(--sans);color:var(--text-2)}
+.rz-drives{display:grid;gap:8px;margin-top:14px}
+.rz-drive{display:flex;align-items:center;gap:10px;padding:10px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line)}
+.rz-drive.hot{border-color:var(--rz);box-shadow:0 0 0 1px var(--rz) inset;animation:rz-glow 1.6s ease-in-out infinite}
+@keyframes rz-glow{50%{box-shadow:0 0 0 1px var(--rz) inset,0 0 18px rgba(213,60,40,.45)}}
+.rz-dl{flex:none;width:38px;height:38px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 0 0 3px var(--tc)}
+.rz-dl img{width:26px;height:26px;object-fit:contain}
+.rz-d1{font:800 14.5px/1.2 var(--sans)}
+.rz-d1 span{font-weight:600;color:var(--text-2)}
+.rz-d2{font:500 12.5px/1.3 var(--sans);color:var(--text-2);margin-top:3px}
+.rz-dsc{display:flex;flex-direction:column;align-items:center;min-width:30px}
+.rz-dsc b{font:900 italic 20px/1 var(--display)}
+.rz-dsc i{font:700 10px/1 var(--sans);font-style:normal;color:var(--text-2);margin-top:2px}
+.rz-tds{display:grid;gap:8px;margin:12px var(--pad) 0}
+.rz-td{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;background:var(--surface);border:1px solid var(--line);text-align:left;color:var(--text)}
+.rz-td-l{flex:none;width:34px;height:34px;border-radius:10px;background:#fff;display:grid;place-items:center;border-bottom:3px solid var(--tc)}
+.rz-td-l img{width:24px;height:24px;object-fit:contain}
+.rz-td-t{font:700 14px/1.3 var(--sans)}
+.rz-td-s{font:500 12px/1.2 var(--sans);color:var(--text-2);margin-top:3px}
+.rz-td-p{flex:none;width:30px;height:30px;border-radius:50%;background:#fff;color:#111;display:grid;place-items:center}
+.rz-td-p .ico{width:12px;height:12px;margin-left:2px}
+.rz-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px var(--pad) 0}
+.rz-g{display:block;border-radius:14px;overflow:hidden;background:var(--surface);border:1px solid var(--line)}
+.rz-g.hot{border-color:var(--rz);box-shadow:0 0 0 1px var(--rz) inset}
+.rz-gt{display:flex;align-items:center;gap:7px;padding:7px 10px;border-left:4px solid var(--tc)}
+.rz-gt img{width:20px;height:20px;object-fit:contain;background:#fff;border-radius:50%;padding:1px}
+.rz-gt span{font:800 13px/1 var(--sans);flex:1}
+.rz-gt b{font:900 italic 20px/1 var(--display)}
+.rz-gt.ball span::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#ffd23f;margin-left:6px;vertical-align:middle}
+.rz-gf{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;background:var(--surface-2);font:600 11.5px/1 var(--sans);color:var(--text-2)}
+.rz-gf em{font:800 10px/1 var(--sans);font-style:normal;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--rz);padding:3px 5px;border-radius:4px}
+.rz-alert{display:flex;align-items:center;gap:12px;margin:0 var(--pad);padding:14px;border-radius:18px;background:var(--surface);border:1px solid var(--line)}
+.rz-about{display:flex;gap:8px;margin:24px var(--pad) 0;font:500 12.5px/1.45 var(--sans);color:var(--text-2)}
+.rz-about .ico{flex:none;width:14px;height:14px;margin-top:2px}
+
+/* ===== Liquid Glass tab bar: a floating capsule over the content (iOS 26 style).
+   The page scrolls under it; a glass lens slides to the current tab (--i set in core.js). */
+.tabbar{left:12px;right:12px;bottom:22px;height:64px;padding:0;background:none;border:0;backdrop-filter:none;-webkit-backdrop-filter:none;display:block}
+.tb-glass{position:relative;height:100%;display:flex;padding:4px;border-radius:32px;isolation:isolate;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--bg) 78%,transparent),color-mix(in srgb,var(--bg) 86%,transparent));
+  backdrop-filter:blur(14px) saturate(1.9) brightness(1.04);-webkit-backdrop-filter:blur(14px) saturate(1.9) brightness(1.04);
+  box-shadow:0 10px 30px rgba(0,0,0,.22),0 1px 3px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(255,255,255,.12),inset 0 0 0 .5px rgba(255,255,255,.28)}
+/* specular rim: a bright edge that fades round the capsule, like light catching curved glass */
+.tb-glass::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;z-index:2;
+  background:linear-gradient(135deg,rgba(255,255,255,.75),rgba(255,255,255,.08) 35%,rgba(255,255,255,0) 60%,rgba(255,255,255,.35));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.tb-lens{position:absolute;top:4px;bottom:4px;left:4px;width:calc((100% - 8px) / 5);border-radius:28px;z-index:0;pointer-events:none;
+  transform:translateX(calc(var(--i, 0) * 100%));transition:transform .42s cubic-bezier(.3,1.35,.5,1);
+  background:color-mix(in srgb,var(--text) 10%,transparent);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -1px 1px rgba(0,0,0,.06),0 2px 8px rgba(0,0,0,.08)}
+.tabbar button{z-index:1;gap:3px;border-radius:28px;color:var(--text-2);font:700 10px/1 var(--sans);letter-spacing:.01em}
+.tabbar button.on{color:var(--text)}
+.tabbar button.on::before{display:none}
+.tabbar button:active{transform:scale(.94);transition:transform .12s}
+.tabbar .tb-badge{top:6px}
+/* you, in the header: your team's logo as an avatar */
+.ph-av-in{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;overflow:hidden}
+.ph-av-in img{width:22px;height:22px;object-fit:contain}
+.minibar{bottom:calc(var(--tab-h) + 30px)}
+/* the glass takes on a dark tint over dark pages (RedZone) */
+#device:has(.stack.on > .rz-page:not(.hidden)) .tabbar{--bg:#08080a;--text:#fff;--text-2:#bdbdc5}
+#device:has(.stack.on > .rz-page:not(.hidden)) .tb-glass{box-shadow:0 10px 30px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.22),inset 0 0 0 .5px rgba(255,255,255,.14)}
+#device:has(.stack.on > .rz-page:not(.hidden)) .tb-glass::before{opacity:.45}
+
+/* ===== team picker: one row above every team page. "All 32" stays put, the chips scroll (your teams, a divider, then everyone else) */
+.tm-picker{display:flex;align-items:center;gap:0;padding-left:var(--pad)}
+.tm-picker .tm-switch{flex:1;min-width:0;padding:4px var(--pad) 4px 8px;-webkit-mask:linear-gradient(90deg,transparent,#000 10px)}
+.tm-sw-all{padding:0 12px;gap:6px;background:var(--surface);color:var(--text)}
+.tm-sw-other{border-color:var(--line)}
+.tm-sw-div{flex:none;width:1px;align-self:stretch;margin:6px 2px;background:var(--line-2)}
+.tm-jump{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 0 8px}
+.tm-jump-t{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px;border-radius:14px;background:var(--surface);font:600 12.5px/1.1 var(--sans);color:var(--text)}
+.tm-jump-t .tm-star{position:absolute;top:6px;right:6px;color:var(--accent)}
+.tm-jump{padding:0 var(--pad) 8px}
+.tabbar.tb-dark{--bg:#08080a;--text:#fff;--text-2:#bdbdc5}
+.tabbar.tb-dark .tb-glass{box-shadow:0 10px 30px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.22),inset 0 0 0 .5px rgba(255,255,255,.14)}
+.tabbar.tb-dark .tb-glass::before{opacity:.45}
+
+/* tinted badges: the text is pulled toward the text colour so it clears AA on its own tint, in either theme */
+.badge.accent{color:color-mix(in srgb,var(--accent) 72%,var(--text))}
+.badge.loss{color:color-mix(in srgb,var(--loss-ink) 85%,var(--text))}
+
+/* ---------------------------------------------------------------- RedZone mini panel (top of Scores): short, and follows the theme */
+.rz-logo.rz-on-light{display:none}
+:root[data-theme=light] .rz-logo.rz-on-dark{display:none}
+:root[data-theme=light] .rz-logo.rz-on-light{display:block}
+.rzp{padding:12px 0 8px}
+.rzp .rz-logo.sm{height:28px}
+.rzp .rzt-track{height:44px}
+.rzp .rzt-line,.rzp .rzt-hot{top:20px}
+.rzp .rzt-tick{top:31px;height:6px}
+.rzp .rzt-tick.major{top:28px;height:13px}
+.rzp .rzt-node{top:20px}
+.rzp .rzt-node.team{width:34px;height:34px;border-width:2.5px}
+.rzp .rzt-node.team img{width:22px;height:22px}
+.rzp .rzt-node.count{width:30px;height:30px;font-size:15px}
+.rzp .rzt-node.hot::before{inset:-7px}
+.rzp .rzt-labels{height:14px;font:700 calc(11.5px*var(--fs))/1 var(--stats);font-style:normal;letter-spacing:.04em;color:var(--text-2)}
+/* the count (round 5 v2): one Sans bold line in the text colour beside the logo */
+.rzp-n{flex:1;font:700 calc(15px*var(--fs))/1.2 var(--sans);color:var(--text)}
+:root[data-theme=light] .rzp{background:var(--surface);color:var(--text);border:1px solid var(--line)}
+:root[data-theme=light] .rzp-head .ico{color:var(--text-2)}
+:root[data-theme=light] .rzp .rzt-line,:root[data-theme=light] .rzp .rzt-tick{background:var(--line-2)}
+:root[data-theme=light] .rzp .rzt-node.dot{background:var(--text-3)}
+:root[data-theme=light] .rzp .rzt-node.team+.rzt-node.team{box-shadow:-3px 0 8px rgba(0,0,0,.18)}
+
+/* score takeover in the app: below the header, under the floating tab bar */
+#device > .cel.in-app{z-index:45;bottom:0}
+.cel .cel-snd{bottom:16px}
+.cel.in-app .cel-snd{bottom:100px}
+
+/* ---------------------------------------------------------------- milestone modal: a fan's own moment */
+.modal.ms-modal{background:transparent}
+.ms-card{position:absolute;inset:0;display:grid;place-items:center;color:#fff;overflow:hidden}
+/* round 5 milestone v2: the team's own sheet gradient (the brand colour for the streak), nothing darkened */
+.ms-bg{position:absolute;inset:0;background:linear-gradient(155deg,var(--tg-a,var(--ms-a)) 0%,var(--tg-b,var(--ms-a)) 100%)}
+.ms-confetti{position:absolute;inset:0;pointer-events:none}
+.ms-confetti i{position:absolute;top:-20px;left:var(--x);width:8px;height:14px;border-radius:2px;background:var(--c);transform:rotate(var(--r));animation:ms-fall 2.6s var(--d) cubic-bezier(.3,.6,.4,1) both}
+@keyframes ms-fall{0%{transform:translateY(0) rotate(var(--r));opacity:1}100%{transform:translateY(105vh) rotate(calc(var(--r) + 540deg));opacity:.2}}
+.ms-x{position:absolute;right:12px;top:calc(var(--status-h) + 8px);background:rgba(255,255,255,.16);color:#fff;z-index:2}
+.ms-in{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 28px;max-width:420px;animation:ms-in .5s cubic-bezier(.2,1.3,.3,1) both}
+@keyframes ms-in{0%{transform:scale(.85);opacity:0}100%{transform:none;opacity:1}}
+.ms-badge{width:104px;height:104px;border-radius:50%;background:#fff;color:var(--ms-a);display:grid;place-items:center;box-shadow:0 0 0 8px rgba(255,255,255,.18),0 18px 40px rgba(0,0,0,.35)}
+.ms-badge img{width:68px;height:68px;object-fit:contain}
+.ms-badge .ico{width:48px;height:48px}
+.ms-eb{margin-top:22px;font:800 12px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;opacity:.9}
+.ms-title{margin-top:10px;font:900 italic 46px/.95 var(--display);text-transform:uppercase}
+.ms-sub{margin-top:12px;font:500 15.5px/1.4 var(--sans)}
+.ms-stats{display:flex;gap:8px;margin-top:20px}
+.ms-stats>div{min-width:84px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.16)}
+.ms-stats b{display:block;font:900 italic 24px/1 var(--display)}
+.ms-stats span{display:block;margin-top:4px;font:600 11px/1 var(--sans);opacity:.9}
+.ms-actions{display:flex;gap:10px;margin-top:26px}
+.ms-share{background:rgba(255,255,255,.16);color:#fff}
+@media (prefers-reduced-motion:reduce){.ms-confetti{display:none}.ms-in{animation:none}}
+
+/* ---------------------------------------------------------------- Learn football: penalty diagrams */
+.lr-pens{display:grid;gap:14px;margin:12px 0 18px}
+.lr-pen{margin:0}
+.lr-pen figcaption{margin-top:6px;font:500 13.5px/1.4 var(--sans);color:var(--text-2)}
+.lr-pen figcaption b{color:var(--text);margin-right:6px}
+.pen-anim{display:block;width:100%;height:auto}
+.pen-anim .fld{fill:#2e6b3a}
+.pen-anim .yl{stroke:rgba(255,255,255,.22);stroke-width:1.5}
+.pen-anim .los{stroke:#9fd0ff;stroke-width:2;stroke-dasharray:4 4}
+.pen-anim .ball{fill:#8a4b24;stroke:#fff;stroke-width:.8}
+.pen-anim .o{fill:#2f6fe0;stroke:#fff;stroke-width:1.5}
+.pen-anim .x path{stroke:#fff;stroke-width:3;stroke-linecap:round}
+.pen-anim .bad.o{animation:pa-bad 3.2s infinite}
+.pen-anim .x.bad path{animation:pa-badx 3.2s infinite}
+@keyframes pa-bad{0%,25%{fill:#2f6fe0}35%,100%{fill:#e8412c}}
+@keyframes pa-badx{0%,25%{stroke:#fff}35%,100%{stroke:#ff6b57}}
+.pen-anim .pa-flag{transform:translate(150px,-20px);animation:pa-flag 3.2s infinite}
+.pen-anim .pa-flag path{fill:#ffd60a}.pen-anim .pa-flag .pole{fill:none;stroke:#ffd60a;stroke-width:1.5}
+@keyframes pa-flag{0%,50%{transform:translate(160px,-24px);opacity:0}62%{transform:translate(160px,60px);opacity:1}90%{transform:translate(160px,56px);opacity:1}100%{transform:translate(160px,56px);opacity:0}}
+.pen-anim .pa-jump{animation:pa-jump 3.2s infinite}
+@keyframes pa-jump{0%,20%,45%,100%{transform:none}28%,36%{transform:translateX(7px)}}
+.pen-anim .pa-cross{animation:pa-cross 3.2s infinite}
+@keyframes pa-cross{0%,15%{transform:none}30%,90%{transform:translateX(-20px)}100%{transform:none}}
+.pen-anim .pa-push{animation:pa-push 3.2s infinite}
+.pen-anim .pa-held{animation:pa-held 3.2s infinite}
+.pen-anim .pa-grab{stroke:#e8412c;stroke-width:3;stroke-linecap:round;opacity:0;animation:pa-grab 3.2s infinite}
+@keyframes pa-push{0%,15%{transform:none}35%,90%{transform:translateX(6px)}100%{transform:none}}
+@keyframes pa-held{0%,15%{transform:none}30%{transform:translate(-8px,-14px)}45%,90%{transform:translate(-4px,-4px)}100%{transform:none}}
+@keyframes pa-grab{0%,30%{opacity:0}38%,90%{opacity:1}100%{opacity:0}}
+.pen-anim .pa-route{animation:pa-route 3.2s infinite}
+.pen-anim .pa-cover{animation:pa-cover 3.2s infinite}
+.pen-anim .pa-pass{animation:pa-pass 3.2s infinite}
+@keyframes pa-route{0%,10%{transform:none}50%,90%{transform:translate(110px,-10px)}100%{transform:none}}
+@keyframes pa-cover{0%,10%{transform:none}38%{transform:translate(70px,0)}50%,90%{transform:translate(78px,0)}100%{transform:none}}
+@keyframes pa-pass{0%,35%{transform:none;opacity:0}36%{opacity:1}60%{transform:translate(105px,40px);opacity:1}61%,100%{opacity:0;transform:translate(105px,40px)}}
+@media (prefers-reduced-motion:reduce){.pen-anim *{animation:none!important}.pen-anim .pa-flag{transform:translate(160px,56px)}}
+
+/* ---------------------------------------------------------------- RedZone: players you follow in range (under the tracker) */
+.rzp-head{color:inherit}
+/* players you follow in range (round 5 v2): L3 + an L4 pair, under a hairline */
+.rzf{margin:12px 16px 2px;padding-top:4px;border-top:1px solid rgba(255,255,255,.12)}
+.rzf-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;color:inherit}
+.rzf-row .lk-l3{flex:1}
+.rzf-more{font:500 calc(12.5px*var(--fs))/1 var(--sans);color:var(--text-2);padding:6px 0}
+:root[data-theme=light] .rzp .rzf,.rz-box .rzf{border-top-color:var(--line)}
+.rz-box .rzf{margin:10px 0 0}
+
+/* ===== Android: a flat bar docked across the bottom instead of the Liquid Glass capsule (time machine › Device); labels as on iOS */
+:root[data-platform=android]{--tab-h:62px}
+:is(:root[data-platform=android],.plat-android) .tabbar{left:0;right:0;bottom:0;height:80px}
+:is(:root[data-platform=android],.plat-android) .tb-glass{border-radius:0;padding:0 0 14px;background:var(--surface);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 -1px 0 var(--line)}
+:is(:root[data-platform=android],.plat-android) .tb-glass::before,:is(:root[data-platform=android],.plat-android) .tb-lens{display:none}
+:is(:root[data-platform=android],.plat-android) .tabbar button{border-radius:0;color:var(--text-3)}
+:is(:root[data-platform=android],.plat-android) .tabbar button.on{color:var(--text)}
+/* the current tab: a small Live-red dot under its label (round 6, app-chrome v2) */
+:is(:root[data-platform=android],.plat-android) .tabbar button.on::after{content:"";position:absolute;left:50%;bottom:8px;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--live)}
+:is(:root[data-platform=android],.plat-android) .tabbar button:active{transform:none}
+:is(:root[data-platform=android],.plat-android) .tabbar .tb-badge{top:6px}
+:is(:root[data-platform=android],.plat-android) .tabbar.tb-dark .tb-glass{background:#141417;box-shadow:0 -1px 0 rgba(255,255,255,.08)}
+
+/* ---------------------------------------------------------------- team tiles (All 32 sheet, onboarding, follow a team) */
+/* every team as a tall tile: abbreviation in big italics, helmet over it, logo under; picked fills with the team gradient */
+.ttiles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.ttile{position:relative;display:flex;flex-direction:column;align-items:center;min-width:0;padding:12px 4px;border-radius:12px;border:1px solid var(--line-2);background:var(--surface);overflow:hidden;transition:transform .1s}
+.ttile>b{font:900 italic 28px/1 var(--display);letter-spacing:.02em;color:var(--text)}
+.ttile .helmet{width:78%;height:auto;margin-top:-10px;filter:drop-shadow(0 6px 6px rgba(0,0,0,.18))}
+.ttile .logo{width:26px;height:26px;margin-top:8px}
+.ttile.on{border-color:transparent;background:linear-gradient(155deg,var(--tg-a),var(--tg-b) 100%);box-shadow:0 12px 22px -8px var(--tg-b)}
+.ttile.on>b{color:#fff}
+.ttile[disabled]{cursor:default}
+.ttile-badge{position:absolute;top:6px;right:6px;display:inline-flex;color:var(--gold-ink)}
+.ttile.on .ttile-badge{color:#fff}
+.ob-teams .ttile{padding:10px 2px}
+.ob-teams .ttile>b{font-size:24px}
+
+/* ---------------------------------------------------------------- standings: each table is a card titled in italics; your team's row wears its gradient */
+.st-card{margin:0 var(--pad);background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--shadow-card);overflow:hidden}
+.st-card .tbl-wrap{margin:0;border-radius:0;box-shadow:none}
+.st-card-h{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 12px 6px}
+.st-card-h>span{font:900 italic 22px/1 var(--display);letter-spacing:.02em;text-transform:uppercase}
+.st-card-h .more{display:flex;align-items:center;gap:2px;font:700 12.5px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--text-2);white-space:nowrap}
+.st-tm{display:flex;align-items:center;gap:8px}
+.st-tm .logo{width:24px;height:24px}
+.st-tm b{font:900 italic 18px/1 var(--display);letter-spacing:.02em}
+.tbl tr.me{background:linear-gradient(90deg,var(--tg-b) 0 170px,var(--tg-a))}   /* solid under the pinned team cell, so a scrolled table shows no seam */
+.tbl tr.me td{background:transparent;color:#fff;border-top-color:transparent}
+.tbl tr.me td:first-child{background:var(--tg-b)}
+.tbl tr.me td *,.tbl tr.me .st-seed,.tbl tr.me .st-cm{color:#fff}
+.tbl tr.me+tr td{border-top-color:transparent}
+
+/* section head with a line of description (approved 2026-10-28) */
+.sec-head.has-sub{align-items:flex-start}
+.sec-head.has-sub .more{margin-top:6px}
+.sec-head-s{margin-top:6px;font:400 calc(14px*var(--fs))/1.4 var(--sans);color:var(--text-2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* ============================================================================
+   Round 2 of the Approvals (2026-10-29): foundations and atoms
+   ========================================================================== */
+/* NFL+ brand: the logo (UI.plusLogo) is #004FFF; its surfaces use the #004FFF → #3372FF gradient */
+:root{--plus:#004FFF;--plus-2:#3372FF;--plus-g:linear-gradient(110deg,#004FFF,#3372FF);--plus-mark:#004FFF}
+:root[data-theme=dark]{--plus-mark:#3372FF}
+.plus-logo{display:inline-block;height:.82em;width:auto;flex:none;fill:currentColor;vertical-align:-.04em}
+.badge.plus,.badge.premium{background:var(--plus-g);color:#fff;gap:4px}
+.badge.plus .plus-logo,.badge.premium .plus-logo{height:9px;margin-top:-.29em}
+.w-plan-n{display:flex;align-items:center;gap:8px;color:var(--plus-mark)}
+.w-plan-n .plus-logo{height:18px}
+.w-plan-n span{font:700 calc(17px*var(--fs))/1 var(--sans);color:var(--text);padding-top:.29em}
+
+/* Type roles: every piece of text uses one of thirteen named styles (Foundations › Type roles).
+   Display C is the voice (names, the moment's number, section heads, tabs); All-Pro Sans is the information. */
+.t-dxl,.t-dl,.t-dm,.t-ds,.t-dxs{font-family:var(--display);font-weight:900;font-style:italic;text-transform:uppercase;letter-spacing:.02em}
+.t-dxl{font-size:calc(44px*var(--fs));line-height:.9}.t-dl{font-size:calc(32px*var(--fs));line-height:.92}.t-dm{font-size:calc(25px*var(--fs));line-height:.95}
+.t-ds{font-size:calc(19px*var(--fs));line-height:1}.t-dxs{font-size:calc(15px*var(--fs));line-height:1}
+.t-title,.h3{font:700 calc(17px*var(--fs))/1.25 var(--sans);letter-spacing:0;text-transform:none}
+.t-title-s,.h4{font:700 calc(15px*var(--fs))/1.3 var(--sans);letter-spacing:0;text-transform:none}
+.t-body{font:400 calc(15px*var(--fs))/1.45 var(--sans)}
+.t-body-s{font:400 calc(13.5px*var(--fs))/1.4 var(--sans);color:var(--text-2)}
+.t-label{font:700 calc(14px*var(--fs))/1 var(--sans)}
+.t-eyebrow,.eyebrow{font:700 calc(11px*var(--fs))/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--text-2)}
+.t-meta,.meta,.tiny{font:500 calc(12.5px*var(--fs))/1.3 var(--sans);color:var(--text-2)}
+.t-stat{font:600 calc(14px*var(--fs))/1 var(--stats);font-variant-numeric:tabular-nums}
+.h1{font:900 italic calc(32px*var(--fs))/.92 var(--display);text-transform:uppercase;letter-spacing:.02em}
+.h2{font:700 calc(17px*var(--fs))/1.25 var(--sans);letter-spacing:0}
+.sec-head .h2,.h2.display{font:900 italic calc(25px*var(--fs))/.95 var(--display);text-transform:uppercase;letter-spacing:.02em}
+/* metadata is never Display: kickoff times and days are Meta */
+
+/* Controls (option A): buttons, segments and chips are one family. Sizes L 48 · M 40 · S 32, squared 10 / 8px,
+   All-Pro Sans bold, sentence case, optically centred (Sans capitals sit .29em high, so the top gets that much more room).
+   Hierarchy: .primary · secondary (plain .btn) · .ghost (tertiary) · .plus / .premium (upsell, NFL+) · .cta (RedZone) · on colour (.white, glass) */
+.btn{height:40px;padding:.29em 16px 0;border-radius:10px;font:700 calc(15px*var(--fs))/1 var(--sans);letter-spacing:0;text-transform:none;gap:8px;background:var(--surface-3);color:var(--text);border:0;box-shadow:none;transition:transform .12s}
+.btn svg{width:16px;height:16px;flex:none;margin-top:-.29em}
+.btn .plus-logo{height:12px;width:auto;margin-top:-.29em}
+.btn.l{height:48px;padding:.29em 20px 0;font-size:calc(16px*var(--fs));border-radius:10px;font-style:normal;text-transform:none;letter-spacing:0}
+.btn.l svg{width:18px;height:18px}.btn.l .plus-logo{height:13px}
+.btn.sm,.btn.xs{height:32px;padding:.29em 12px 0;border-radius:8px;font-size:calc(13px*var(--fs));gap:6px}
+.btn.sm svg,.btn.xs svg{width:14px;height:14px}.btn.sm .plus-logo,.btn.xs .plus-logo{height:10px}
+.btn.sq{width:40px;padding:0}.btn.sm.sq,.btn.xs.sq{width:32px}.btn.sq svg{margin-top:0}
+.btn.primary{background:var(--accent);color:var(--accent-ink,#fff)}
+.btn.ghost{background:transparent;border:0;box-shadow:inset 0 0 0 1px var(--line-2);color:var(--text)}
+.btn.ink{background:var(--text);color:var(--surface)}
+.btn.plus,.btn.premium{background:var(--plus-g);color:#fff}
+.btn.cta{background:var(--cta,var(--rz));color:#fff}
+.btn.white{background:#fff;color:#0b0d12}
+.btn.tm-ghost,.btn.fh-ghost,.btn.fx-ghost,.btn.hm-glass{background:rgba(255,255,255,.18);color:#fff;border:0}
+.btn:active{transform:scale(.97)}
+.btn[disabled]{opacity:.4}
+.rzh-bar .btn{height:48px}
+.icon-btn.solid{border-radius:10px}
+.tm-round{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.18)}
+.seg,.pill-tabs{display:flex;gap:2px;padding:4px;border-radius:12px;background:var(--surface-2)}
+.pill-tabs{display:inline-flex}
+.seg button,.pill-tabs button{height:32px;padding:.29em 12px 0;border-radius:8px;font:700 calc(13px*var(--fs))/1 var(--sans);color:var(--text-2);box-shadow:none;white-space:nowrap}
+:root[data-theme] .seg button.on,:root[data-theme] .pill-tabs button.on{color:#fff;background:linear-gradient(110deg,#0b1526 10%,#4b5667 100%);box-shadow:none;font-weight:700}
+:root[data-theme] .seg button.on[style]{background:linear-gradient(110deg,var(--tg-b),var(--tg-a))}
+.chip{height:32px;padding:.29em 12px 0;border-radius:8px;border:0;box-shadow:inset 0 0 0 1px var(--line-2);font:700 calc(13px*var(--fs))/1 var(--sans);color:var(--text)}
+.chip svg,.chip img{margin-top:-.29em}
+.chip.on{background:var(--text);color:var(--bg);box-shadow:none;font-weight:700}
+.chip.accent.on{background:var(--accent);color:var(--accent-ink)}
+
+/* Status colours (approved 2026-10-29): six meanings, each a solid (fill) and a soft (tint) form with the text that passes AA on it.
+   Live and Negative are both NFL red; Live adds the pulsing dot. Info is NFL+ blue, so the app has one blue.
+   The old names (--live --win --loss --warn and their -ink tones) now point here. */
+:root{
+  --status-live:#D50A0A; --status-live-ink:#FF6B6B;
+  --status-positive:#1A7F37; --status-positive-ink:#4CD37F;
+  --status-warning:#F5B400; --status-warning-on:#0B0D12; --status-warning-ink:#FFC940;
+  --status-negative:#D50A0A; --status-negative-ink:#FF6B6B;
+  --status-info:#004FFF; --status-info-ink:#8DB0FF;
+  --status-neutral:#3A3D44; --status-neutral-ink:#C4C6CC;
+  --soft:22%;
+}
+:root[data-theme=light]{
+  --status-live-ink:#B30000; --status-positive-ink:#146C2E; --status-warning-ink:#7A4300; --status-negative-ink:#B30000;
+  --status-info-ink:#0040D6; --status-neutral:#2B2F36; --status-neutral-ink:#4C5260; --soft:13%;
+}
+:root,:root[data-theme=light]{
+  --live:var(--status-live); --win:var(--status-positive); --loss:var(--status-negative); --warn:var(--status-warning); --info:var(--status-info);
+  --win-ink:var(--status-positive-ink); --loss-ink:var(--status-negative-ink); --warn-ink:var(--status-warning-ink);
+}
+
+/* Status pills (approved, option B): one size, All-Pro Stats bold caps, tracked. Stats sits low in its line, so the room goes underneath.
+   Lists and tables take the soft form; .solid (and Live, always) for pictures and heroes. */
+.badge{height:22px;padding:0 9px .13em;gap:5px;border-radius:99px;border:0;font:700 11.5px/1 var(--stats);letter-spacing:.07em;text-transform:uppercase;font-style:normal;
+  background:color-mix(in srgb,var(--status-neutral) var(--soft),var(--surface));color:var(--status-neutral-ink)}
+.badge::before{margin-top:.13em}
+.badge.live{background:var(--status-live);color:#fff;font:700 11.5px/1 var(--stats);letter-spacing:.07em;height:22px;padding:0 9px .13em}
+.badge.live::before{width:6px;height:6px}
+.badge.win,.badge.free{background:color-mix(in srgb,var(--status-positive) var(--soft),var(--surface));color:var(--status-positive-ink)}
+.badge.warn{background:color-mix(in srgb,var(--status-warning) var(--soft),var(--surface));color:var(--status-warning-ink)}
+.badge.loss{background:color-mix(in srgb,var(--status-negative) var(--soft),var(--surface));color:var(--status-negative-ink)}
+.badge.accent,.badge.info{background:color-mix(in srgb,var(--status-info) var(--soft),var(--surface));color:var(--status-info-ink)}
+.badge.final{background:transparent;color:var(--text-2);padding:0 0 .13em}
+.badge.outline{background:transparent;box-shadow:inset 0 0 0 1px var(--line-2);color:var(--text-2)}
+.badge.solid.win{background:var(--status-positive);color:#fff}.badge.solid.warn{background:var(--status-warning);color:var(--status-warning-on)}
+.badge.solid.loss{background:var(--status-negative);color:#fff}.badge.solid.info,.badge.solid.accent{background:var(--status-info);color:#fff}
+.badge.solid:not(.win):not(.warn):not(.loss):not(.info):not(.accent):not(.live){background:var(--status-neutral);color:#fff}
+.badge.plus,.badge.premium{background:var(--plus-g);color:#fff;gap:5px}
+.badge.plus .plus-logo,.badge.premium .plus-logo{height:10px;margin:0 0 -.13em}
+
+/* Media overlays (approved): one play button (dark glass) S 32 · M 44 · L 64; length as a Neutral pill in Stats; Live top left;
+   the NFL+ corner tab top right; watched progress along the bottom. Under the picture: Title S, then Meta. */
+.thumb .play{width:32px;height:32px;left:10px;bottom:10px;background:rgba(0,0,0,.6);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.thumb .play svg{width:14px;height:14px}
+.thumb.m .play,.w-feat .thumb .play,.hm-feat .thumb .play{width:44px;height:44px;left:12px;bottom:12px}
+.thumb.m .play svg,.w-feat .thumb .play svg,.hm-feat .thumb .play svg{width:18px;height:18px}
+.thumb .dur{right:10px;bottom:10px;height:22px;display:inline-flex;align-items:center;padding:0 8px .13em;border-radius:99px;background:var(--status-neutral);color:#fff;font:700 11.5px/1 var(--stats);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.thumb .lock{right:10px;top:10px}
+.thumb-prog{position:absolute;left:0;bottom:0;height:3px;background:var(--accent)}
+.plus-tab{position:absolute;top:0;right:10px;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:36px;height:38px;padding-bottom:6px;background:var(--plus-g);color:#fff;clip-path:polygon(0 0,100% 0,100% 86%,50% 100%,0 86%)}
+/* round 5 video card v2: a smaller tab, a bigger mark (the mark is 26 of the tab's 36 px, was 22 of 44) */
+.plus-tab .plus-logo{height:15px}
+.plus-tab:has(small){width:44px;height:48px}.plus-tab:has(small) .plus-logo{height:14px}
+.plus-tab small{font:700 7px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase}
+
+/* design system context screen: the element under review */
+.ds-hl{outline:3px solid #004FFF;outline-offset:3px;border-radius:inherit;scroll-margin:120px}
+/* approved round 6 (redzone-ask B): no red glow; a free fan gets one lock note under the chyron */
+.rzh{background:none}
+.rzh-note{margin:12px var(--pad) 0;padding:14px;border-radius:12px;background:var(--surface)}
+.rzh-nh{display:flex;gap:10px;align-items:flex-start;font:500 14px/1.35 var(--sans)}
+.rzh-nb{display:flex;gap:8px;margin-top:12px}
+.btn.rzh-line{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px #fff;border-radius:10px;gap:8px}
+/* the Approvals page's picked option, drawn inside the app frame */
+.ds-swap{display:block}
+.ds-swap-full{position:absolute;inset:var(--status-h,0) 0 0;z-index:60;overflow-y:auto;background:var(--bg);padding:16px var(--pad) 120px;scrollbar-width:none}
+.ds-swap-full::-webkit-scrollbar{display:none}
+/* approved round 6 (redzone-stats A v2): the season-line tiles; only "Inside the 20" gets the dark red, a soft 180° glow */
+.rz-stats>div,.rz-stats>div.hot{display:flex;flex-direction:column;gap:4px;padding:12px;border-radius:12px;border:0;background:var(--surface);box-shadow:none}
+.rz-stats>div.hot{background:linear-gradient(180deg,rgba(213,60,40,.28) 0%,var(--surface) 42%)}
+.rz-stats b{font:900 italic 24px/.9 var(--display);padding-bottom:.08em}
+.rz-stats span{font:500 12px/1.2 var(--sans);margin-top:0}
+/* switcher rule: seg() now draws small tabs; flush = sits inside an already padded block */
+.tabs.flush{gap:20px}.pad .tabs.flush,.pad-all .tabs.flush{padding:0}
+.sc-subnav .tabs{margin:0 var(--pad)}
+.set-group>.list{margin:0 var(--pad)}
+.set-group .ob-qa{width:100%;text-align:left}
+.ob-qa:not(.on)>.ob-radio{background:none!important;border-color:var(--line-2)!important}.ob-qa:not(.on)>.ob-radio::after{display:none}
+
+/* ---- approvals built 2026-11-08 ---- */
+/* page intro (page-intro A): one Body line in the text colour under the title, no card, bar or info box */
+.pg-intro{margin:8px var(--pad) 4px;font:500 15px/1.4 var(--sans);color:var(--text)}.pg-intro-l{color:var(--accent);font-weight:700;text-decoration:underline;cursor:pointer}
+/* the 40px squared lead tile (Notifications) carrying a row's logo or icon (icon-rows B) */
+.lead-tile{width:40px;height:40px;flex:none;border-radius:10px;background:var(--surface-2);display:grid;place-items:center;color:var(--text)}
+/* squared chip row (Super Bowls filter): filters, logo chips, dropdown chips */
+.sq-chips{display:flex;gap:8px;flex-wrap:wrap}.sq-chips .sc-season{display:inline-flex;align-items:center;gap:6px}
+.sq-chips .sc-season.on{background:var(--text);color:var(--bg);border-color:var(--text)}.sq-chips .sc-season .logo{display:block}
+/* Super Bowl row (franchise-sb B): numeral in Display + year, both teams with the winner bold, scores in Display */
+.sb-row{gap:12px;align-items:center}.sb-row-n{width:56px;flex:none;display:flex;flex-direction:column;gap:4px}
+.sb-row-n b{font:900 italic 22px/1 var(--display);text-transform:uppercase;padding-bottom:.08em}.sb-row-n span{font:600 12px/1 var(--sans);color:var(--text-2)}
+.sb-row-l{display:flex;align-items:center;gap:10px;padding:3px 0;font:500 15px/1.2 var(--sans)}.sb-row-l span{flex:1}
+.sb-row-l b{font:900 italic 20px/1 var(--display);min-width:28px;text-align:right}.sb-row-l.w span{font-weight:700}
+.sb-row .row-sub{margin-top:4px}
+/* franchise header (franchise-hero A): full width, gradient 180° full at 42%, white only, the fan-card stat row */
+.fr-hero{padding:20px var(--pad) 22px;color:#fff;background:linear-gradient(180deg,var(--tg-a) 0%,var(--tg-b) 42%)}
+.fr-hero-t{display:flex;align-items:center;gap:12px}.fr-hero-t>div{flex:1;min-width:0}
+.fr-hero-eb{font:700 11px/1.3 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:#fff}
+.fr-hero-n{margin-top:8px;font:900 italic 34px/.95 var(--display);padding-bottom:.08em;color:#fff}
+.fr-hero-s{display:flex;margin-top:18px}.fr-hero-s>div{flex:1;display:flex;flex-direction:column;gap:6px;padding:0 10px;border-left:1px solid #fff}.fr-hero-s>div:first-child{border-left:0;padding-left:0}
+.fr-hero-s b{font:900 italic 32px/1 var(--display);color:#fff}.fr-hero-s span{font:700 11px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:#fff}
+/* team promo card (promo-card A) */
+.promo{padding:20px;border-radius:12px;color:#fff;background:linear-gradient(180deg,var(--tg-a) 0%,var(--tg-b) 42%)}
+.promo-t{display:flex;align-items:center;gap:12px}.promo-t>div{flex:1;min-width:0}
+.promo-eb{font:700 11px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:#fff}
+.promo-n{margin-top:8px;font:900 italic 28px/.95 var(--display);padding-bottom:.08em;color:#fff}
+.promo p{margin:6px 0 0;font:500 14px/1.35 var(--sans);color:#fff}.promo .btn{border-radius:10px;gap:6px}
+.promo-art{flex:none;display:block}.promo-art svg{display:block;width:84px;height:auto}
+/* stadium card (stadium-list A): 16:7 photo, logo beside the name */
+.st-card-b{display:flex;align-items:center;gap:10px;padding:12px 14px}.st-card-l{display:flex;gap:4px;flex:none}
+/* calendar rows (calendar-rows B): full text for the past, Done as Meta, squared date tile */
+.cal-ev.past{opacity:1}.cal-d{border-radius:8px}.cal-done{flex:none;padding-right:6px}
+/* tables (table-mine A): your team gets the team-colour edge, no fill; sorted header bold in the text colour; tricode Sans bold */
+.tbl tr.hl td,.tbl tr.hl td:first-child{background:var(--surface)}
+.tbl tr.hl td:first-child{box-shadow:inset 4px 0 0 var(--team,var(--accent))}
+.tbl th.sort{color:var(--text);font-weight:800}
+.tbl-tri{font:700 13px/1 var(--sans)}
+/* lesson page (lesson-page A): Display caps section heads; point values Display in the text colour, 56px column */
+.lr-body h3{font:900 italic calc(22px*var(--fs))/1 var(--display);text-transform:uppercase;letter-spacing:.01em;margin:28px 0 10px;padding-bottom:.06em}
+.lr-pt .num{font:900 italic 26px/1 var(--display);width:56px;min-width:56px;color:var(--text)}
+/* sb-rows v3 B (2026-11-08): 30px numeral, winner's team-colour edge */
+.list>.row.sb-row{margin-top:0;box-shadow:inset 4px 0 0 var(--e)}.sb-row .sb-row-n{width:68px}.sb-row .sb-row-n b{font-size:30px}
+/* ranked-rows v3 A (2026-11-08) */
+.rk-row{gap:12px}.rk-row.mine{box-shadow:inset 4px 0 0 var(--e)}
+.rk-n{width:20px;flex:none;font:700 15px/1 var(--sans);font-variant-numeric:tabular-nums;text-align:center}
+.rk-r{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex:none}
+.rk-v{font:900 italic 26px/1 var(--display);text-transform:uppercase;padding-bottom:.06em}
+.rk-mv{font:600 12.5px/1 var(--sans);color:var(--text-2)}.rk-mv.up{color:var(--win-ink)}.rk-mv.down{color:var(--loss-ink)}
+.rk-row .row-main .row-title.row-title{font-family:var(--sans)!important;font-weight:700!important;font-style:normal!important;text-transform:none!important;letter-spacing:0!important}
+/* summary-stats A (2026-11-08): the fan-card stat row in a white card */
+.stat-row{background:var(--surface);border-radius:var(--r-lg,12px);padding:16px}
+.stat-row-eb{font:700 11px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--text-2);margin-bottom:12px}
+.stat-row-r{display:flex}.stat-row-r>div{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;padding:0 12px;border-left:1px solid var(--line-2)}.stat-row-r>div:first-child{border-left:0;padding-left:0}
+.stat-row-r b{font:900 italic 30px/1 var(--display);text-transform:uppercase;padding-bottom:.06em;white-space:nowrap}.stat-row-r span{font:700 11px/1.2 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--text-2)}
+.rk-row .rk-r{display:flex!important;flex-direction:column;align-items:flex-end;text-align:right;min-width:0}
+/* hint-box A (approved 2026-11-08): every grey hint box is one Body line in the text colour, no box, no icon */
+.notice.notice,.notice.notice.pl-fb{background:none!important;padding:0!important;border-radius:0!important;display:block;margin:8px var(--pad) 4px;font:500 15px/1.4 var(--sans);color:var(--text)}
+.notice>svg,.notice>.icon,.notice>i.ic{display:none!important}.pad>.notice{margin-left:0;margin-right:0}
+.notice+.btn,.notice+.sc-season{margin:8px var(--pad) 0}
+/* sub-tabs A: second-level switchers are the squared chip row */
+.chips-gap{width:8px;flex:none}.gc-ddrow .chips.gc-fv-c{padding:0;flex:none}.chip .logo,.chip img{width:18px;height:18px;margin-right:6px}
+.pad .chips,.pad-all .chips{padding:0}
+/* progress-ring A: ladder (steps) and bar (share) */
+.p-lad{display:flex;gap:4px;margin-top:12px}.p-lad i{flex:1;height:5px;border-radius:3px;background:var(--surface-3,#d9dce2)}.p-lad i.on{background:var(--text)}
+.p-bar{height:6px;border-radius:3px;background:var(--surface-3,#d9dce2);margin-top:12px;overflow:hidden}.p-bar i{display:block;height:100%;background:var(--text);border-radius:3px}
+.mk-row .chip{flex:none}
+/* replay-rows A: two logos stacked in the 40px squared tile */
+.mu-tile{width:40px;height:40px;flex:none;border-radius:8px;background:var(--surface-2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}.mu-tile .logo,.mu-tile img{width:17px;height:17px}
+.ic-tile{width:40px;height:40px;flex:none;border-radius:10px;background:var(--surface-2);color:var(--text);display:grid;place-items:center}
+/* trip-timeline A */
+.fr-trip .fr-hero-n{font-size:26px}.fr-trip-v{margin-top:6px;font:500 14px/1.3 var(--sans);color:#fff}.fr-trip .fr-hero-s b{font-size:clamp(20px,6.5vw,30px)}
+.tl-t{width:72px;flex:none;font:700 14px/1.2 var(--sans)!important;font-style:normal!important}.tl-row{align-items:flex-start}
+.stat-row{container-type:inline-size}.stat-row-r b{font-size:clamp(20px,7.4cqw,30px)}
+/* table-mine rule on Home's What's at stake: your team gets the team-colour edge, no fill; names in Sans */
+.stk-row.me{background:none!important;color:var(--text)!important;box-shadow:inset 4px 0 0 var(--e)!important;border-radius:0}.stk-row.me+.stk-row{box-shadow:0 -1px 0 var(--line)}
+.stk-row.me .logo{background:none;padding:0}
+.stk-row .stk-nm.stk-nm{font-family:var(--sans)!important;font-weight:700!important;font-style:normal!important;text-transform:none!important;letter-spacing:0!important;color:var(--text)!important}
+.stk-row.me *{color:var(--text)!important}

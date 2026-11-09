@@ -1,0 +1,227 @@
+/* Watch tab ---------------------------------------------------------------- */
+.w-sub{height:22px}
+.w-link{display:flex;align-items:center;gap:2px;color:var(--text-2);font-weight:600}
+
+/* hero: split team-colour field, flat, with the score in Stats type */
+.w-hero{position:relative;border-radius:14px;overflow:hidden;color:#fff;background:#0b0b0d;min-height:208px}
+.w-hero-bg{position:absolute;inset:0;display:flex}
+.w-hero-bg i{flex:1;display:block}
+.w-hero-bg i:first-child{background:var(--ca)}
+.w-hero-bg i:last-child{background:var(--ch)}
+.w-hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.18),rgba(0,0,0,.62))}
+.w-hero-off{background:#0d1b2e}
+.w-hero-off::after{content:"";position:absolute;right:-30px;bottom:-40px;width:200px;height:200px;border:28px solid rgba(255,255,255,.05);border-radius:50%}
+.w-hero-in{position:relative;padding:14px 16px 16px;z-index:1}
+.w-hero-net,.w-hero-eb{font:600 11.5px/1 var(--sans);letter-spacing:.02em;opacity:.85}
+.w-hero-eb{text-transform:uppercase;letter-spacing:.06em}
+.w-hero-sb{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
+.w-hero-t{display:flex;flex-direction:column;align-items:center;gap:6px;width:76px;font:italic 900 15px/1 var(--display);letter-spacing:.02em}
+.w-hero-t .logo{filter:drop-shadow(0 2px 6px rgba(0,0,0,.35))}
+.w-hero-s{font:700 46px/1 var(--stats);letter-spacing:-.03em;white-space:nowrap}
+.w-hero-cd{text-align:center}
+.w-hero-cd .num{font:700 34px/1 var(--stats);letter-spacing:-.02em}
+.w-hero-cd div:last-child{font-size:12px;opacity:.85;margin-top:6px}
+.w-hero-dd{text-align:center;font-size:13px;margin-top:10px;opacity:.92;min-height:17px}
+.w-hero-title{font:italic 900 30px/1 var(--display);text-transform:uppercase;margin-top:12px;letter-spacing:.02em}
+.w-hero-note{font-size:12px;opacity:.8;margin-top:10px}
+.w-hero .btn{height:40px;font-size:13.5px;padding:0 15px}
+.btn.w-glass{background:rgba(255,255,255,.16);color:#fff;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+
+/* game rail */
+.w-game{width:200px;background:var(--surface);border-radius:14px;padding:12px;display:block;overflow:hidden}
+.w-gl{margin-top:8px}
+.w-gl .lk-l1::before{content:"";flex:none;width:4px;height:20px;border-radius:2px;background:var(--c)}
+.w-gl .lk-l1:nth-child(1){--c:var(--ca)}.w-gl .lk-l1:nth-child(2){--c:var(--ch)}
+.w-gfoot{margin-top:8px}
+
+/* video cards / posters */
+.w-card{display:block}
+.w-card .thumb,.w-poster .w-pimg{border-radius:10px}
+.w-ph{position:absolute;inset:0;background:var(--team);display:grid;place-items:center}
+.w-tl{position:absolute;left:8px;top:8px}
+.w-tr{position:absolute;right:8px;top:8px}
+.w-poster{display:block}
+.w-pimg{position:relative;overflow:hidden;padding:12px;display:flex;flex-direction:column;justify-content:flex-end;color:#fff}
+/* round 5 poster v2: a quieter 10 px eyebrow so the show name leads; one 12 px margin all round */
+.w-peb{font:700 calc(10px*var(--fs))/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.w-pt{font:italic 900 21px/.95 var(--display);text-transform:uppercase;overflow-wrap:anywhere;letter-spacing:.02em}
+.w-plogo{position:absolute;left:12px;top:12px}.w-plogo .logo{width:28px;height:28px}
+.w-pimg.sq{border-radius:10px;padding:8px;color:#fff}
+
+/* soft lock line */
+.w-soft{display:flex;align-items:center;gap:8px;margin:-4px var(--pad) 12px;font-size:12.5px;color:var(--text-2)}
+.w-soft span{flex:1}
+.w-soft b{color:var(--text);font-weight:600;white-space:nowrap}
+.w-sf{display:flex;gap:6px;align-items:center;margin-top:-4px}
+
+/* RedZone + channel tiles */
+.w-rz{display:flex;align-items:center;gap:14px;padding:14px;border-radius:12px;background:var(--surface)}
+.w-rz-mark{width:58px;height:58px;border-radius:10px;background:#d50a0a;color:#fff;font:900 italic 15px/.9 var(--display);display:grid;place-items:center;text-align:center;flex:none;letter-spacing:.02em}
+.w-rz-mark.big{width:auto;height:auto;font-size:44px;background:none;position:absolute;inset:0;display:grid;place-items:center;opacity:.95}
+.w-chan{display:flex;align-items:center;gap:14px;padding:12px 12px 12px 14px;border-radius:12px;background:var(--surface)}
+.w-chan-logo{width:58px;height:58px;border-radius:10px;background:#013369;color:#fff;font:italic 900 17px/.9 var(--display);display:grid;place-items:center;text-align:center;flex:none;letter-spacing:.02em}
+.w-chan-logo span{font-size:8px;letter-spacing:.12em;font-family:var(--sans);font-weight:700}
+.w-chan-logo.net{background:#1d1d1f;box-shadow:inset 0 0 0 2px #d50a0a}
+.w-chan-logo.big{position:absolute;inset:0;width:auto;height:auto;border-radius:0;font-size:52px}
+.w-chan-logo.big span{font-size:14px}
+.w-player{display:block;position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#111}
+.w-player .w-rz-mark.big{background:#a3080a}
+.w-player-ov{position:absolute;left:12px;bottom:12px;right:70px;color:#fff;z-index:1}
+.w-player-btn{position:absolute;right:12px;bottom:12px;width:46px;height:46px;border-radius:50%;background:#fff;color:#000;display:grid;place-items:center;z-index:1}
+.w-player::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.65))}
+.w-grid{display:flex;flex-direction:column;margin:0 var(--pad);background:var(--surface);border-radius:12px;overflow:hidden}
+.w-slot{padding:12px 14px}
+.w-slot+.w-slot{border-top:1px solid var(--line)}
+.w-slot.on{background:var(--surface-2)}
+.w-slot.on .tiny{color:var(--live);font-weight:700}
+
+/* audio */
+.w-aud{width:150px;background:var(--surface);border-radius:12px;padding:12px;position:relative;display:block}
+.w-aud .w-aud-i{position:absolute;right:12px;top:12px;color:var(--text-3)}
+.w-aplayer{background:var(--surface-2);border-radius:14px;padding:16px}
+/* round 5 audio v2: the original motion (900 ms, out of step), in the team's primary, rounded bars that scale from the centre line */
+.w-wave{display:flex;align-items:center;gap:3px;height:44px}
+.w-wave i{flex:1;height:100%;border-radius:99px;background:var(--w,var(--text));transform:scaleY(calc(var(--m) * .2));opacity:.55}
+.w-wave.on i{animation:wave 900ms ease-in-out infinite alternate}
+@keyframes wave{from{transform:scaleY(calc(var(--m) * .18));opacity:.55}to{transform:scaleY(var(--m));opacity:1}}
+:root[data-motion=reduced] .w-wave i{animation:none;transform:scaleY(var(--m));opacity:1}
+@media (prefers-reduced-motion:reduce){.w-wave i{animation:none;transform:scaleY(var(--m));opacity:1}}
+.w-apdelay{padding:12px 14px;border-radius:12px;background:var(--surface-2)}
+
+/* icon well */
+.w-ic{width:40px;height:40px;border-radius:10px;background:var(--surface-2);display:grid;place-items:center;flex:none}
+
+/* where to watch */
+.w-loc{display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;background:var(--surface)}
+.wrapchips{flex-wrap:wrap;overflow:visible}
+.w-wcard{padding:14px}
+.w-wcard.mine{box-shadow:inset 3px 0 0 var(--accent)}
+.w-res{align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--surface)}
+.w-res-i{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#fff;background:var(--status-info)}
+.w-res-i.ok{background:var(--status-positive)}
+.w-res-b{display:flex;flex-wrap:wrap;gap:6px}
+.w-more{margin-top:10px;font:600 12.5px/1 var(--sans);color:var(--text-2);display:flex;align-items:center;gap:2px}
+.w-dot{width:24px;height:24px;border-radius:50%;background:var(--surface-3);display:grid;place-items:center;color:var(--text-3);flex:none}
+.w-dot.ok{background:var(--win);color:#04210f}
+.w-nets{display:flex;flex-wrap:wrap;gap:6px}
+.w-net{font-size:12px;padding:5px 9px;border-radius:6px;background:var(--surface-2);color:var(--text-2)}
+.w-net b{color:var(--text)}
+
+/* plans */
+.w-plans{display:flex;flex-direction:column;gap:10px;padding:0 var(--pad)}
+/* plan card (approved round 5): on the surface; the plan in focus gets a 2 px border in NFL+ blue, the colour of its button */
+.w-plan{background:var(--surface);border-radius:14px;padding:16px;border:2px solid transparent}
+.w-plan.focus{border-color:var(--plus)}
+.w-cmp td:not(:first-child),.w-cmp th:not(:first-child){text-align:center;width:72px}
+.w-cmp td:first-child{white-space:normal;max-width:none;min-width:150px;font-weight:500}
+.w-cmp td .ico{margin:0 auto}
+.w-promise{background:var(--surface);border-radius:12px;padding:14px}
+.w-dazn{background:#0c0c0c;color:#fff;border-radius:14px;padding:18px;box-shadow:inset 0 0 0 1px #2a2a2a}
+.w-dazn .meta{color:#c9c9c9}
+.w-free{background:var(--surface-2);border-radius:12px;padding:12px 14px}
+
+/* watch party */
+.w-party-page{padding-bottom:0}
+.w-party{display:flex;flex-direction:column;height:calc(100% - 52px)}
+/* the matchup surface (forward.css .mu-bg): away gradient into home gradient, the shared scrim over it */
+.w-party-top{position:relative;margin:8px var(--pad) 0;border-radius:14px;padding:14px;color:#fff;background:linear-gradient(90deg in oklab,var(--aa) 0%,var(--ab) 15%,var(--hb) 85%,var(--ha) 100%);overflow:hidden}
+.w-party-top::before{content:"";position:absolute;inset:0;background:var(--scrim)}
+.w-party-top>*{position:relative}
+.w-sync{font-size:11.5px;opacity:.85;display:flex;gap:6px;align-items:center}
+.w-av{width:28px;height:28px;border-radius:50%;display:inline-grid;place-items:center;font:700 12px/1 var(--sans);color:#fff;box-shadow:0 0 0 2px var(--bg);flex:none}
+.w-av.sm{width:24px;height:24px;font-size:11px;box-shadow:none}
+.w-chat{flex:1;min-height:200px;max-height:calc(100vh - 470px);overflow-y:auto;padding:0 var(--pad);display:flex;flex-direction:column;gap:10px}
+.w-msg{display:flex;gap:8px;align-items:flex-end;max-width:85%}
+.w-msg.me{align-self:flex-end}
+.w-bub{background:var(--surface-2);padding:8px 11px;border-radius:14px 14px 14px 4px;font-size:14px;margin-top:2px}
+.w-msg.me .w-bub{background:var(--accent);color:var(--accent-ink);border-radius:14px 14px 4px 14px}
+.w-sys{align-self:center;text-align:center;font-size:11.5px;color:var(--text-3);max-width:90%}
+.w-react{display:flex;justify-content:center;gap:8px;padding:10px 0 6px}
+.w-react button{width:42px;height:38px;border-radius:10px;background:var(--surface-2);font-size:19px}
+.w-takes{display:flex;gap:8px;padding:6px var(--pad) calc(var(--tab-h) + 30px)}
+.w-takes .chip{flex:none}
+.w-float{position:absolute;right:30px;bottom:180px;font-size:34px;animation:wfloat 1.4s ease-out forwards;pointer-events:none;z-index:30}
+@keyframes wfloat{to{transform:translateY(-220px) scale(1.3);opacity:0}}
+.w-link-box{background:var(--surface-2);border-radius:10px;padding:14px;text-align:center;font-size:16px}
+
+/* live overlay below player */
+.w-wpbar{display:flex;height:6px;border-radius:3px;overflow:hidden;gap:2px}
+.w-wpbar i{display:block;height:100%}
+.w-card .thumb img:not(.logo){position:absolute;inset:0;z-index:1}
+.w-card .thumb .play,.w-card .thumb .dur,.w-tl,.w-tr{z-index:2}
+.btn.w-sq{width:40px;padding:0;flex:none}
+.w-more-head{display:flex;align-items:center;justify-content:space-between;padding-top:18px;border-top:1px solid var(--line)}
+.w-cmp{table-layout:fixed}
+.w-cmp th:not(:first-child),.w-cmp td:not(:first-child){width:62px;padding-left:4px;padding-right:4px;white-space:normal}
+.w-cmp td:first-child{min-width:0}
+.w-rzrow .grow{min-width:0}
+.w-chan-logo.big,.w-rz-mark.big{bottom:34%}
+.w-player .w-chan-logo.big{background:none}
+.w-player{background:#013369}
+.w-player:has(.w-rz-mark){background:#a3080a}
+.w-player:has(.net){background:#1d1d1f}
+/* continue watching: how far in you got */
+.vid-resume{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:12px;background:var(--surface-2);font:600 13px/1.3 var(--sans);color:var(--text-2)}
+/* approved round 6: offseason hero (watch-offseason A) */
+.w-off{border-radius:14px;padding:20px;color:#fff;background:linear-gradient(180deg,#1f4e95 0%,#013369 42%)}
+.w-off-eb{display:block;font:700 11px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:#fff}
+.w-off-t{margin-top:10px;font:900 italic 32px/.95 var(--display);padding-bottom:.08em}
+.w-off p{margin:8px 0 0;font:500 14px/1.35 var(--sans);color:#fff}
+.w-off-b{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}.w-off .btn{border-radius:10px}
+.btn.w-off-line{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px #fff}
+/* approved round 6: shortcuts as squared chips (watch-shortcuts B) */
+.w-sc{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:0 var(--pad)}.w-sc::-webkit-scrollbar{display:none}
+.w-sc .sc-season{display:inline-flex;align-items:center;gap:6px;flex:none;white-space:nowrap}
+/* approved round 6: the 24/7 channels as rows (watch-channels A) */
+.row.w-ch{gap:14px;align-items:center}
+.w-ch-logo{width:56px;height:56px;border-radius:10px;color:#fff;font:900 italic 17px/.9 var(--display);display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none}
+.w-ch-logo span{margin-top:3px;font:700 8px/1 var(--sans);letter-spacing:.12em;font-style:normal}
+.w-ch-tag{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.w-ch-m{display:block;height:4px;margin:8px 0 6px;border-radius:2px;background:var(--surface-3,#e3e5ea);overflow:hidden}.w-ch-m b{display:block;height:100%;background:var(--text)}
+.w-ch-btn{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:var(--text);color:var(--bg);flex:none}.w-ch-btn.lock{background:var(--surface-2,#eef0f3);color:var(--text)}
+/* approved round 6: listen live on the game tile (watch-listen A) */
+.w-game .w-gfoot{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+/* approved round 6: what NFL+ adds, said once (watch-locked A) */
+.w-adds{padding:16px;border-radius:12px;background:var(--surface);box-shadow:var(--shadow-card)}
+.w-adds-h{display:flex;align-items:center;gap:10px;font:700 16px/1.2 var(--sans)}
+.w-adds-l{margin:12px 0 14px}
+.w-adds-r{display:flex;align-items:center;gap:12px;padding:10px 0}.w-adds-r+.w-adds-r{border-top:1px solid var(--line)}
+.w-adds-r .grow{display:flex;flex-direction:column;gap:3px;min-width:0}.w-adds-r b{font:700 14px/1.25 var(--sans)}.w-adds-r .grow>span{font:500 12.5px/1.3 var(--sans);color:var(--text-2)}
+/* approved round 6: channel page (channel-page A) */
+.w-player:not(:has(.net)){background:linear-gradient(180deg,#1f4e95 0%,#013369 42%)}
+.w-player:not(:has(.net))::after{content:none}
+.w-player-btn{width:44px;height:44px;border-radius:10px}
+.w-grid{margin:0 var(--pad);display:block}
+.w-grid .w-slot{padding:14px 16px;align-items:flex-start;gap:14px}.w-grid .w-slot+.w-slot{border-top:1px solid var(--line)}
+.w-slot-t{width:66px;flex:none;font:600 13px/1.3 var(--sans);color:var(--text-2);padding-top:2px}
+.w-grid .w-ch-m{margin:8px 0 2px}
+.w-player .w-player-ov span.badge.live.live{text-transform:uppercase!important;letter-spacing:.06em}
+.pod-play{background:none;border:1.5px solid var(--line-2)}
+/* ---------- Watch hero (approved watch-hero2 v3 option A, soft glow) ---------- */
+/* the dark glow: black, each team's colour glowing in softly from its own side behind its logo, the scores on black between */
+.wh{position:relative;overflow:hidden;isolation:isolate;margin:0 calc(-1 * var(--pad));padding:30px var(--pad) 22px;color:#fff;display:flex;flex-direction:column;gap:16px}
+.wh .wh-top{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.wh .hst{display:flex;flex-direction:row;align-items:center;gap:8px}
+.wh .hst-clk,.wh .hst-date{color:#fff}.wh .hst-sub{color:rgba(255,255,255,.78);font:500 13px/1.2 var(--sans)}
+.wh .hst:has(.hst-sub){flex-direction:column;gap:4px}
+.wh-net{font:500 12.5px/1 var(--sans);color:rgba(255,255,255,.72)}
+.wh-sides{display:grid;grid-template-columns:1fr 1fr;align-items:start;gap:12px}
+.wh-side{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;color:#fff}
+.wh-logo{width:64px;height:64px;object-fit:contain;margin-bottom:4px;filter:drop-shadow(0 4px 14px rgba(0,0,0,.45))}
+.wh-sc{font:900 italic 68px/.9 var(--display);padding:2px .05em 0;color:#fff}
+.wh-nm{font:900 italic 21px/1 var(--display);letter-spacing:.02em;text-transform:uppercase;color:#fff}
+.wh-rec{display:inline-flex;align-items:center;gap:6px;min-height:20px;font:600 13px/1.2 var(--stats);color:rgba(255,255,255,.75);margin-top:2px}
+.wh-ball{display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 7px;border-radius:4px;background:rgba(255,255,255,.16);color:#fff;font:700 10.5px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase}
+.wh-sit{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px 10px;font:600 14px/1.3 var(--sans);color:#fff;text-align:center}
+.wh-rz{height:20px;padding:0 7px;border-radius:4px;background:var(--live,#d50a0a);font:700 10.5px/20px var(--sans);letter-spacing:.06em;text-transform:uppercase}
+.wh-drv{font:500 13px/1.2 var(--sans);color:rgba(255,255,255,.75)}.wh-drv b{font:700 13px/1 var(--stats);color:#fff}
+.wh-acts{display:flex;gap:8px;justify-content:center;margin-top:2px}
+.wh .wh-acts .btn{height:44px;border-radius:10px;background:rgba(255,255,255,.14);color:#fff}
+.wh .wh-acts .btn.ink{background:#fff;color:#000;flex:1;max-width:220px}
+.wh .wh-acts .btn.w-sq{width:44px;padding:0}
+.wh-note{font:500 13px/1.35 var(--sans);color:rgba(255,255,255,.72);text-align:center;margin-top:-6px}
+/* soft glow: each colour eases out over many stops (no band edge), centred behind its logo, gone before the middle and the buttons */
+.wh2{--gs:46%;background:
+  radial-gradient(70% 62% at 6% 36%,color-mix(in srgb,var(--ga) var(--gs),transparent) 0%,color-mix(in srgb,var(--ga) calc(var(--gs)*.62),transparent) 26%,color-mix(in srgb,var(--ga) calc(var(--gs)*.3),transparent) 50%,color-mix(in srgb,var(--ga) calc(var(--gs)*.1),transparent) 72%,transparent 92%),
+  radial-gradient(70% 62% at 94% 36%,color-mix(in srgb,var(--gh) var(--gs),transparent) 0%,color-mix(in srgb,var(--gh) calc(var(--gs)*.62),transparent) 26%,color-mix(in srgb,var(--gh) calc(var(--gs)*.3),transparent) 50%,color-mix(in srgb,var(--gh) calc(var(--gs)*.1),transparent) 72%,transparent 92%),
+  #07080b}

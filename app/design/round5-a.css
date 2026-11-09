@@ -1,0 +1,163 @@
+/* Approvals round 5 (molecules), batch a (.r5a-*). The shared lockups (.lk-*) live in lockups.css; only placement here. */
+
+/* ---------------------------------------------------------------- shared lockups */
+
+/* ---------------------------------------------------------------- specimen frame */
+.r5a-frame{padding:14px;border-radius:14px;background:var(--bg);border:1px solid var(--line);max-width:420px}
+.r5a-frame.flush{padding:0;overflow:hidden}
+.r5a-frame.w340{max-width:340px}.r5a-frame.w380{max-width:400px}
+.r5a-frame.r5a-sheet{border-radius:18px 18px 0 0;background:var(--surface);padding:18px 16px}
+.r5a-frame .list{margin:0}
+.r5a-pad0{padding:0!important}
+.r5a-col{display:flex;flex-direction:column;gap:10px}
+.r5a-card{background:var(--surface);border-radius:var(--r-lg,16px);padding:14px}
+.r5a-block{width:100%}
+
+/* ticker */
+.r5a-tk{display:flex;overflow-x:auto;scrollbar-width:none;background:var(--bg-2);border-bottom:1px solid var(--line)}
+.r5a-tkc{flex:none;min-width:132px;padding:10px 12px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:2px}
+.r5a-tkc .badge{align-self:flex-start;margin-bottom:4px}
+.r5a-tkc.end{min-width:0;justify-content:center;border-right:0}
+
+/* game row */
+.r5a-row{display:flex;align-items:center;gap:12px}
+.r5a-row .logo{width:32px;height:32px;flex:none}
+.r5a-rt{display:flex;align-items:baseline;gap:6px}
+.r5a-rr{display:flex;align-items:center;gap:8px}
+.r5a-rr .lk-sc{font-size:calc(19px*var(--fs))}
+.r5a-time{font:500 calc(12.5px*var(--fs))/1.2 var(--sans);color:var(--text-2)}
+
+/* scores item */
+.r5a-scitem{position:relative}
+.r5a-tv{position:absolute;top:8px;right:8px;z-index:2}
+
+/* week strip */
+.r5a-ws{display:flex;align-items:center;gap:8px;padding:6px 0 0 12px;border-bottom:1px solid var(--line)}
+.r5a-season{flex:none;gap:4px;margin-bottom:6px}
+.r5a-wks{display:flex;overflow-x:auto;scrollbar-width:none}
+.r5a-wk{flex:none;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 12px 9px;position:relative;min-width:64px}
+.r5a-wk .l{font:700 calc(13.5px*var(--fs))/1 var(--sans);color:var(--text-2);display:flex;align-items:center;gap:4px}
+.r5a-wk .t-meta{font-size:calc(11.5px*var(--fs))}
+.r5a-wk.on .l{color:var(--text)}
+.r5a-wk.on::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:3px;background:var(--accent)}
+
+/* bye chips and article tags */
+.r5a-bye{gap:6px;padding-left:8px}
+.r5a-bye .logo{width:24px;height:24px}.r5a-bye.tm .logo{width:16px;height:16px}
+.r5a-bye .lk-tri,.r5a-bye .lk-nm{font-size:calc(14px*var(--fs))}
+
+/* news */
+.r5a-nrow{display:flex;align-items:center;gap:12px}
+.r5a-nthumb{flex:none;width:88px;aspect-ratio:4/3;border-radius:8px;overflow:hidden;background:var(--surface-3)}
+.r5a-nthumb img,.r5a-npic img{width:100%;height:100%;object-fit:cover;display:block}
+.r5a-ncard{display:block;background:var(--surface);border-radius:14px;overflow:hidden}
+.r5a-npic{aspect-ratio:16/9;background:var(--surface-3)}
+.r5a-nbody{padding:12px 14px 14px}
+
+/* video */
+.r5a-vc{display:block}
+
+/* poster */
+.r5a-poster{display:block}
+.r5a-pimg{position:relative;aspect-ratio:3/4;border-radius:12px;overflow:hidden;padding:12px;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;color:#fff}
+.r5a-pimg .t-eyebrow{color:#fff}
+.r5a-pimg .t-ds{color:#fff}
+.r5a-pimg>.logo{position:absolute;left:12px;top:12px;width:32px;height:32px}
+.r5a-tr{position:absolute;right:8px;top:8px}
+
+/* watch game tile */
+.r5a-gt{width:200px;background:var(--surface);border-radius:14px;padding:0 12px 12px;overflow:hidden}
+.r5a-gbar{display:flex;height:4px;margin:0 -12px 10px}
+.r5a-gbar i{flex:1}
+
+/* plan */
+.r5a-plan{background:var(--surface);border-radius:14px;padding:14px;border:2px solid transparent}
+.r5a-plan.plus.focus{border-color:var(--plus)}
+.r5a-plan.premium.focus{border-color:var(--plus)}
+.r5a-pn{display:inline-flex;align-items:center;gap:6px}
+.r5a-pn .plus-logo{height:18px;width:auto}
+
+/* sheets */
+.r5a-free{padding:12px 14px;border-radius:12px;background:var(--surface-2)}
+.r5a-frame.r5a-sheet .r5a-free{background:var(--surface-2)}
+
+/* resolver */
+.r5a-res{display:flex;align-items:flex-start;gap:12px;padding:10px 12px;border-radius:12px;background:var(--surface)}
+.r5a-ok,.r5a-info{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#fff}
+.r5a-ok{background:var(--status-positive)}
+.r5a-info{background:var(--status-info)}
+
+/* audio */
+.r5a-ap{padding:14px;border-radius:14px;background:var(--surface-2)}
+.r5a-wave{display:flex;align-items:center;gap:3px;height:44px}
+.r5a-wave i{flex:1;border-radius:2px;background:var(--w)}
+
+/* red zone */
+.r5a-rzh{display:flex;align-items:center;gap:10px}
+.r5a-rzf{gap:10px;min-height:56px}
+.r5a-rzf .lk-l3{flex:1}
+.r5a-rzm{display:none}
+.r5a-dd{font-family:var(--stats);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+
+/* now card */
+.r5a-dd.big{font-size:calc(24px*var(--fs));line-height:1;color:var(--text)}
+.r5a-seg{margin:0;display:inline-flex}
+
+/* win probability */
+.r5a-q{display:flex;justify-content:space-around;margin-top:6px}
+
+/* ---------------------------------------------------------------- v2 (round 5 feedback) */
+/* the one field (app/design/field.js): a flat dark plate, like the drive chart */
+.r5a-dia{max-width:390px}
+/* scores item: no words on the tracker; the down & distance as the supporting line */
+.r5a-scitem .yt-ends{display:none}
+.r5a-scitem .yt-bar{margin-bottom:4px}
+.r5a-scitem .yt-k{margin-top:20px}
+.r5a-scitem .yt-k b{font-size:calc(13.5px*var(--fs))!important;line-height:1.3}
+/* chips with a Display label: no descender space under the caps, nudged to the optical centre */
+.r5a-bye .lk-tri,.r5a-bye .lk-nm{line-height:1;padding-bottom:0;position:relative;top:var(--opt,-2px)}
+.r5a-tags{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.r5a-kind{margin-top:16px}
+/* poster: a quieter eyebrow, an even logo inset, the approved NFL+ tab */
+.r5a-pimg .t-eyebrow{font-size:calc(10px*var(--fs));letter-spacing:.1em}
+.r5a-pimg>.logo{left:12px;top:12px;width:28px;height:28px}
+.r5a-pimg .plus-tab{right:10px}
+/* game tile: the team-to-team bar */
+.r5a-gt .r5a-gbar{display:block;height:6px}
+/* audio: the original wave motion, refined */
+.r5a-wave2{display:flex;align-items:center;gap:3px;height:44px}
+.r5a-wave2 i{flex:1;height:100%;border-radius:99px;background:var(--w);transform:scaleY(calc(var(--m) * .2));opacity:.55;animation:r5aWave 900ms ease-in-out infinite alternate}
+@keyframes r5aWave{from{transform:scaleY(calc(var(--m) * .18));opacity:.55}to{transform:scaleY(var(--m));opacity:1}}
+@media (prefers-reduced-motion:reduce){.r5a-wave2 i{animation:none;transform:scaleY(var(--m));opacity:1}}
+:root[data-motion=reduced] .r5a-wave2 i{animation:none;transform:scaleY(var(--m));opacity:1}
+/* RedZone: the original panel, with its hierarchy fixed */
+.r5a-rz2 .rzp-head .rz-sub{font:700 calc(15px*var(--fs))/1.2 var(--sans)!important;letter-spacing:0!important;text-transform:none!important;color:var(--text)!important}
+:root[data-theme=dark] .r5a-rz2 .rzp-head .rz-sub{color:#fff!important}
+.r5a-rz2 .rzt-labels,.r5a-rz2 .rzt-labels span{font:700 calc(11.5px*var(--fs))/1 var(--stats)!important;font-style:normal!important;letter-spacing:.04em!important;color:var(--text-2)!important}
+.r5a-rz2 .rzt-labels{height:14px}
+.r5a-rzf2{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 16px 2px;padding-top:12px;border-top:1px solid var(--line)}
+.r5a-rzf2 .lk-l3{flex:1}
+/* now card: the down & distance as a 15 px line, the switch on its right */
+.r5a-ddrow{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.r5a-dd2{font-size:calc(15px*var(--fs));line-height:1.3;color:var(--text)}
+/* learn: score bug callouts */
+.r5a-sb{max-width:390px;padding:12px;border-radius:12px;background:var(--surface-2)}
+.r5a-sbr{display:flex;justify-content:space-between;padding:0 8px}
+.r5a-sbr:first-child{margin-bottom:6px}.r5a-sbr:last-child{margin-top:6px}
+.r5a-call{font:600 calc(12px*var(--fs))/1.2 var(--sans);color:var(--text-2)}
+.r5a-sbc{display:flex;align-items:center;gap:14px;padding:10px 14px;border-radius:12px;background:var(--surface)}
+.r5a-sbt{flex:1;min-width:0}
+.r5a-sbs{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.r5a-sbs b{font-size:calc(12.5px*var(--fs));color:var(--text)}
+.r5a-tk .lk-l1{min-height:22px;gap:6px}.r5a-tk .lk-l1 .logo{width:20px;height:20px}
+.r5a-tk .lk-tri{font-size:calc(14px*var(--fs))}.r5a-tk .lk-sc{font-size:calc(17px*var(--fs))}
+.r5a-tkc{min-width:116px;padding:8px 12px}
+/* video card v2: Current keeps the v1 tab so the two can be compared */
+.r5a-v1tab .plus-tab{width:44px;height:46px;padding-bottom:7px;gap:4px}.r5a-v1tab .plus-tab .plus-logo{height:13px}
+
+/* watch game tile v3: solid team colours, no blend */
+.r5a-gt.v3{padding-top:12px}.r5a-gt.v3.a{padding-top:0}
+.r5a-gt.v3.a .r5a-gbar{display:flex;height:6px}
+.r5a-gt.b .lk-l1::before{content:"";flex:none;width:4px;height:20px;border-radius:2px;background:var(--c)}
+.r5a-gl .lk-l1:nth-child(1){--c:var(--ca)}.r5a-gl .lk-l1:nth-child(2){--c:var(--ch)}
+.r5a-gt.c .lk-tri{position:relative}.r5a-gt.c .lk-tri::after{content:"";position:absolute;left:0;right:.1em;bottom:-4px;height:3px;border-radius:1px;background:var(--c)}

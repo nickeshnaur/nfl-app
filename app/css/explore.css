@@ -1,0 +1,69 @@
+/* Explore / Offseason / History */
+.hx-ic{width:36px;height:36px;border-radius:10px;background:var(--surface-2);display:grid;place-items:center;flex:none;color:var(--text-2)}
+.hx-ic .ico{width:19px;height:19px}
+
+/* explore quick row + featured */
+.ex-quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.ex-q{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 4px;border-radius:var(--r-lg);background:var(--surface);font:700 calc(12.5px*var(--fs))/1 var(--sans);color:var(--text)}
+.ex-q-ic{width:40px;height:40px;border-radius:10px;background:var(--surface-2);color:var(--text);display:grid;place-items:center}
+.ex-feat,.hx-feature{display:flex;align-items:center;gap:12px;padding:18px 16px;background:var(--team);color:#fff;position:relative;overflow:hidden}
+.ex-feat-in,.hx-feature-in{flex:1;min-width:0;position:relative;z-index:1}
+.ex-feat .logo.xl,.hx-feature .logo.xl{position:relative;z-index:1;filter:drop-shadow(0 4px 14px rgba(0,0,0,.35))}
+.ex-feat::after,.hx-feature::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--team-2)}
+.ex-feat.ex-neutral{background:var(--surface);color:var(--text)}
+.ex-feat.ex-neutral::after{background:var(--accent)}
+.ex-feat.ex-neutral .ico.lg{color:var(--accent);width:40px;height:40px}
+.hx-sub{font:600 14px/1.3 var(--sans);color:rgba(255,255,255,.82)}
+
+/* history */
+.hx-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.hx-team{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 2px;border-radius:var(--r);background:var(--surface);font:600 11.5px/1.1 var(--sans);text-align:center;color:var(--text-2)}
+.hx-sbn{width:52px;flex:none;text-align:center}
+.hx-num{font:italic 900 17px/1 var(--display);color:var(--text);letter-spacing:.02em}
+.hx-sb .row-main .ellipsis{font-size:14.5px}
+.hx-rec{font-size:17px}
+.hx-hof{border-left:3px solid var(--gold)}
+
+/* offseason */
+.ox-count .h1{font-family:var(--stats);font-weight:700;letter-spacing:-.02em;text-transform:none}
+.ox-clock{background:var(--team);color:#fff;padding:16px;overflow:hidden}
+.ox-clock::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--team-2)}
+.ox-clock-top{display:flex;justify-content:space-between;align-items:center}
+.ox-timer{font:700 22px/1 var(--stats);color:#fff}
+.ox-last{font-size:13px;padding-top:12px;border-top:1px solid rgba(255,255,255,.18)}
+.ox-ov{width:30px;flex:none;text-align:center;font:700 15px/1 var(--stats);color:var(--text-2)}
+.ox-onclock{background:var(--accent-soft)}
+.ox-onclock .ox-ov{color:var(--live)}
+.ox-mine{box-shadow:inset 3px 0 0 var(--accent)}
+.ox-pick{width:148px;padding:12px;display:flex;flex-direction:column}
+.ox-pick .hs{margin-top:10px}
+.ox-pick>.badge{align-self:flex-start}
+.ox-pick .lk-pn{white-space:normal}
+.ox-fa{width:150px;padding:12px}
+.ox-pos{display:flex;flex-direction:column;gap:8px}
+.ox-pos-row{display:flex;align-items:center;gap:10px;font-size:13px}
+.ox-pos-row .b{width:44px;line-height:1}
+.ox-n{width:24px;text-align:right;font:700 calc(15px*var(--fs))/1 var(--stats);font-variant-numeric:tabular-nums;color:var(--text)}
+.ox-date{font:700 13px/1 var(--sans);color:var(--text-2);margin:20px 0 8px}
+/* .list's margin shorthand beats the mt utilities; restore them */
+.list.mt8{margin-top:8px}.list.mt12{margin-top:12px}.list.mt16{margin-top:16px}
+/* watch spots */
+.ws-party{color:#fff;border:0}
+.ws-party .eyebrow,.ws-party .tiny{color:rgba(255,255,255,.9)}
+/* history-champ B (approved 2026-11-07): champion gradient at 180deg, full at 42%, Display caps, white text, squared replay */
+.hx-champ{padding:20px;border-radius:12px;color:#fff;background:linear-gradient(180deg,var(--tg-a) 0%,var(--tg-b) 42%)}
+.hx-champ-t{display:flex;align-items:center;gap:12px;color:#fff}.hx-champ-t>div{flex:1;min-width:0}
+.hx-champ-eb{font:700 11px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:#fff}
+.hx-champ-n{margin-top:8px;font:900 italic 34px/.95 var(--display);padding-bottom:.08em;color:#fff}
+.hx-champ p{margin:6px 0 0;font:500 14px/1.3 var(--sans);color:#fff}
+.hx-champ .btn{border-radius:10px;gap:6px}
+/* sb-filter B: squared season-chip row, logo + tricode, ink when picked */
+.sb-chips{display:flex;gap:8px;flex-wrap:wrap}.sb-chips .sc-season{display:inline-flex;align-items:center;gap:6px}
+.sb-chips .sc-season.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.sb-chips .sc-season .logo{display:block}
+/* multi-filter A + tx-rows B (2026-11-08) */
+.ox-dd{display:flex;gap:8px;flex-wrap:wrap}
+.tx-row{gap:12px;align-items:flex-start}.tx-row .lead-tile{margin-top:2px}.tx-x{font-weight:600;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+/* cap-card B (2026-11-08) */
+.fr-hero.fr-card{border-radius:12px;padding:18px 16px 20px}.fr-card .fr-hero-s b{font-size:clamp(20px,7.4cqw,32px)}.fr-card{container-type:inline-size}
+.cap-v{font:700 15px/1 var(--sans);font-variant-numeric:tabular-nums}
