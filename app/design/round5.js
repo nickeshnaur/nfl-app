@@ -1811,6 +1811,15 @@ DSApprovals.add(6, [
 "issues": ""
 },
 {
+"id": "app-icon",
+"name": "Home screen icon",
+"target": "index.html",
+"where": "iPhone home screen",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
 "id": "btn-family",
 "name": "Buttons: one family",
 "target": "forward.css",

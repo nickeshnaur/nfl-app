@@ -157,4 +157,11 @@ R['hero-lost'] = { id: 'hero-lost', v: 1, ready: true, name: 'Home hero: no "Los
   options: [{ k: 'a', name: 'Conference place on a losing run', note: '' }],
   current: () => V('As the app draws it', 'Home · Chargers (0-4)', SH('Home', phone('').replace(/team=\d+/, 'team=24'))),
   proposed: k => V('Conference place on a losing run', 'Home · Chargers', SH('Home', phone('', '&pv=nolost').replace(/team=\d+/, 'team=24'))) };
+const ICO = (src, label) => `<div style="display:inline-flex;flex-direction:column;align-items:center;gap:6px;padding:18px 22px;border-radius:18px;background:linear-gradient(160deg,#2b3a55,#141a26)"><img src="${src}" alt="" style="width:60px;height:60px;border-radius:13.5px;box-shadow:0 2px 6px rgba(0,0,0,.35)"><span style="font:500 11px/1 var(--sans);color:#fff">${label}</span></div>`;
+R['app-icon'] = { id: 'app-icon', v: 1, ready: true, name: 'Home screen icon', target: 'index.html apple-touch-icon · assets/brand/nfl-app-icon-180.png',
+  changes: ['Your note: "when i add this web app to my desktop, the nfl logo is a little big and should be scaled down so it looks better as an app icon"',
+    'The shield now sits at about 60% of the tile on the app\'s near-black, centred, instead of filling the whole square edge to edge. Shown at iPhone home screen size (60px, rounded corners).'],
+  options: [{ k: 'a', name: 'Shield at 60% on black', note: '' }],
+  current: () => V('Today', 'iPhone home screen', ICO('assets/brand/nfl-shield-180.png', 'NFL')),
+  proposed: k => V('Shield at 60% on black', 'iPhone home screen', ICO('assets/brand/nfl-app-icon-180.png', 'NFL')) };
 })();
