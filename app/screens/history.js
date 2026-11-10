@@ -211,7 +211,7 @@ App.route('history', () => {
     <div class="list">
       ${UI.row({ left: html`<div class="hx-ic">${icon('trophy')}</div>`, title: 'Every Super Bowl', sub: `I through ${last.n} — scores, MVPs, venues`, go: '#/super-bowls' })}
       ${UI.row({ left: html`<div class="hx-ic">${icon('chart')}</div>`, title: 'Record book', sub: 'Career, season and single-game records', go: '#/records' })}
-      ${UI.row({ left: html`<div class="hx-ic">${icon('medal')}</div>`, title: 'Hall of Fame', sub: 'Recent enshrinement classes', go: '#/hof' })}
+      ${UI.row({ left: html`<div class="hx-ic">${icon('star')}</div>`, title: 'Hall of Fame', sub: 'Recent enshrinement classes', go: '#/hof' })}
       ${fav ? UI.row({ left: UI.logo(fav.id, 'md'), title: `${fav.name} history`, sub: 'Titles, eras, icons and recent seasons', go: `#/franchise/${fav.id}` }) : ''}
     </div>
     ${sh('Franchise histories')}
@@ -259,7 +259,7 @@ App.route('hof', () => ({ title: 'Hall of Fame', html: html`
   <p class="pg-intro">Every class is chosen the night before the Super Bowl and enshrined each August in Canton, Ohio.</p>
   ${HOF.map(([y, names]) => html`${sh('Class of ' + y)}<div class="list">${names.map(n => {
     const pid = Object.keys(Dt.D.players).find(id => Dt.D.players[id].n === n), [pos, ab] = HOF_X[n] || [], tm = ab && T(ab);
-    return UI.row({ left: html`<span class="lead-tile">${tm ? UI.logo(tm.id, 'sm') : icon('medal', 'sm')}</span>`, title: n, sub: [pos, tm && tm.name].filter(Boolean).join(' · '), go: pid ? `#/player/${pid}` : null });
+    return UI.row({ left: html`<span class="lead-tile">${tm ? UI.logo(tm.id, 'sm') : icon('star', 'sm')}</span>`, title: n, sub: [pos, tm && tm.name].filter(Boolean).join(' · '), go: pid ? `#/player/${pid}` : null });
   })}</div>`)}
   <div class="pad mt16 tiny">Includes players, coaches and contributors.</div>` }));
 

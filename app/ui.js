@@ -145,9 +145,9 @@ function gameCard(g, opts = {}) {
   const tv = (g.tv || []).join(' · ');
   const foot = opts.foot !== false ? html`<div class="gc-foot">
       ${S.st === 'live' && !hide && S.dd && !(S.yz != null && S.poss) ? html`<span class="grow gc-now"><span class="ellipsis">${icon('football', 'xs')} ${S.dd}</span>${S.drv ? html`<span class="gc-drv">Drive: ${S.drv.n} ${S.drv.n === 1 ? 'play' : 'plays'} · ${S.drv.y} yds · ${S.drv.t}</span>` : ''}</span>` :
-        S.st === 'pre' || S.st === 'live' ? html`<span class="grow ellipsis">${icon('tv', 'xs')} ${tv || 'TBD'}${g.note ? ' · ' + g.note : ''}</span>` :
+        S.st === 'pre' || S.st === 'live' ? html`<span class="grow gc-net"><span class="gc-watch" data-act="sc-watch" data-arg="${g.id}" role="button" aria-label="Where to watch">${icon('tv', 'xs')}<span class="ellipsis">${tv || 'TBD'}</span>${icon('chev', 'xs')}</span>${g.note ? html`<span class="ellipsis gc-note">${g.note}</span>` : ''}</span>` :
         html`<span class="grow ellipsis">${hide ? html`${icon('eyeoff', 'xs')} Spoiler shield on` : (box1(g) || g.vn || '')}</span>`}
-      ${S.st === 'live' && !hide && S.wp != null ? html`<span class="num">${Dt.team(S.wp >= 50 ? g.h : g.a).abbr} ${Math.max(S.wp, 100 - S.wp)}%</span>` : ''}
+      ${S.st === 'live' && !hide && S.wp != null ? html`<span class="num gc-wp">${Dt.team(S.wp >= 50 ? g.h : g.a).abbr} ${Math.max(S.wp, 100 - S.wp)}%<span>win prob.</span></span>` : ''}
     </div>` : '';
   return html`<a class="gcard tap ${mine ? 'mine' : ''}" data-go="#/game/${g.id}">
     <div class="gc-top">${status}<span class="tiny">${opts.weekLabel ? Dt.weekLabel(g.t, g.w) : ''}${S.st === 'pre' && opts.date ? fmt.day(g.ts) : ''}</span></div>

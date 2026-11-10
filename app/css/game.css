@@ -236,3 +236,34 @@
 .pip-sc b{font-weight:800}.pip-sc span{opacity:.75;margin-left:3px}
 .pip-x{position:absolute;right:4px;top:4px;z-index:2;width:30px;height:30px;background:rgba(0,0,0,.6);color:#fff}
 .gc-rz .rz-logo{height:17px;width:auto;max-width:none}
+
+/* ---- game page hero (built Nov 10: pregame-hero v4 + game-hero-live v3): one set across before, live and final.
+   Black, each team's colour glowing in from its own edge; a big helmet bleeding off each screen edge; one centre piece. */
+.gc-hero.gh{padding:14px var(--pad) 16px;background:radial-gradient(30% 130% at 0% 50%,color-mix(in srgb,var(--ga) 58%,#07080b) 0%,color-mix(in srgb,var(--ga) 24%,#07080b) 50%,transparent 100%),radial-gradient(30% 130% at 100% 50%,color-mix(in srgb,var(--gb) 58%,#07080b) 0%,color-mix(in srgb,var(--gb) 24%,#07080b) 50%,transparent 100%),#07080b}
+.gh-meta{text-align:center;font:700 11px/1.2 var(--sans);letter-spacing:.08em;text-transform:uppercase;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gh-row{display:flex;align-items:center;margin-top:14px}
+.gh-s{flex:1 1 0;display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0}
+.gh-s.h{align-items:flex-end}
+.gh-hel{display:block;width:min(132px,34.5vw);margin:-4px 0 0 -48px} /* 132px from 383px wide; a touch smaller on 360px phones */
+.gh-s.h .gh-hel{margin:-4px -48px 0 0}
+.gh-hel svg,.gh-hel img{width:100%;height:auto;display:block}
+.gh-tri{font:900 italic 24px/1 var(--display);letter-spacing:.01em;text-transform:uppercase;color:#fff}
+.gh-rec{font:600 12px/1 var(--stats);color:rgba(255,255,255,.75)}
+.gh-to{display:flex;gap:3px;margin-top:2px}.gh-to i{width:9px;height:3px;border-radius:1px;background:rgba(255,255,255,.25)}.gh-to i.on{background:#f2c200}
+.gh-mid{flex:none;min-width:150px;display:flex;flex-direction:column;align-items:center;gap:7px;padding:0 6px}
+.gh-k{font:700 10.5px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;opacity:.8}
+.gh-cd{display:flex;gap:6px}
+.gh-cd div{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:46px}
+.gh-cd b{font:900 italic 36px/.86 var(--display);color:#fff}
+.gh-cd span{font:700 9.5px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;opacity:.7}
+.gh-sub{font:500 12px/1.25 var(--sans);opacity:.8;text-align:center;text-wrap:balance;max-width:160px}
+.gh-sub>span{white-space:nowrap} /* down & distance · Red zone wraps rather than widening the middle */
+.gh-st{display:flex;align-items:center;gap:7px}
+.gh-clk{font:700 13px/1 var(--stats);letter-spacing:.04em;text-transform:uppercase;color:#fff}
+.gh-sc{display:flex;align-items:center;gap:24px}
+.gh-sc b{font:900 italic 48px/.86 var(--display);color:#fff;min-width:1.1em;text-align:center;position:relative}
+.gh-ball{position:absolute;top:-2px;right:-10px;width:6px;height:6px;border-radius:50%;background:#fff}
+.gh-s.lo .gh-tri,.gh-sc b.lo{opacity:.5}
+.gh-wp{display:flex;align-items:center;gap:8px;margin-top:12px;font:700 11px/1 var(--stats);color:rgba(255,255,255,.85)}
+.gh-wpbar{flex:1;display:flex;height:4px;border-radius:2px;overflow:hidden;gap:2px}.gh-wpbar i{display:block;height:100%}
+.gh .gc-shield{margin-top:12px}

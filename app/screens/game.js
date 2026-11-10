@@ -253,8 +253,40 @@ function crowd(m) {
 }
 
 /* ------------------------------------------------------------------ render: hero */
+/* ---------- the game page hero (built Nov 10: pregame-hero v4 + game-hero-live v3): one set across before, live and final.
+   Tale of the tape: black with each team's colour glowing in from its own edge (near-black teams glow in their second colour),
+   a big helmet bleeding off each screen edge over tricode and record (timeouts once the game starts), and one centre piece:
+   the countdown before kickoff, Live and the clock over the score while live, Final over the score after. Away always left. */
+function heroSet(m) {
+  const { g, S, away, home, st, hide } = m;
+  const glow = t => App.lum(t.color) < .04 ? t.alt : t.color;
+  const vars = `${UI.matchVars(g.a, g.h)};--ga:${glow(away)};--gb:${glow(home)}`;
+  const rec = t => Dt.record(t.id, g.s, Math.min(m.now, g.ts - 1)).str;
+  const tv = (g.tv || [])[0];
+  const to = st === 'pre' ? null : timeouts(m), lost = (a, b) => st === 'post' && !hide && a < b ? 'lo' : '';
+  const dots = n => n == null ? '' : html`<span class="gh-to">${[0, 1, 2].map(i => html`<i class="${i < n ? 'on' : ''}"></i>`)}</span>`;
+  const side = (t, h) => html`<div class="gh-s ${h ? 'h' : ''} ${st === 'pre' ? '' : lost(h ? S.hs : S.as, h ? S.as : S.hs)}"><a class="gh-hel" data-go="#/team/${t.id}">${UI.helmet(t.id, { face: h ? 'left' : 'right' })}</a><b class="gh-tri">${t.abbr}</b><span class="gh-rec">${rec(t)}</span>${dots(to && (h ? to.h : to.a))}</div>`;
+  let mid;
+  if (st === 'pre') {
+    const u = Math.max(0, g.ts - m.now), d = Math.floor(u / 864e5), hh = Math.floor(u / 36e5) % 24, mm = Math.floor(u / 6e4) % 60;
+    const cd = d ? [[d, 'Days'], [hh, 'Hrs'], [mm, 'Min']] : [[hh, 'Hrs'], [mm, 'Min'], [Math.floor(u / 1e3) % 60, 'Sec']];
+    mid = html`<span class="gh-k">Kickoff in</span><div class="gh-cd">${cd.map(([v, l]) => html`<div><b>${String(v).padStart(2, '0')}</b><span>${l}</span></div>`)}</div><span class="gh-sub">${g.tbd ? 'Time TBD' : `${fmt.weekday(g.ts)} ${fmt.time(g.ts)}`}${tv ? ' · ' + tv : ''}</span>`;
+  } else {
+    const ball = t => st === 'live' && !hide && S.poss === t.id ? html`<i class="gh-ball" title="Has the ball"></i>` : '';
+    const top = st === 'live' ? html`<span class="gh-st"><span class="badge live">Live</span>${hide ? '' : html`<b class="gh-clk r-clock-status">${S.label}</b>`}</span>` : html`<span class="gh-st"><b class="gh-clk r-clock-status">${S.label}</b></span>`;
+    mid = html`${top}<div class="gh-sc"><b class="${lost(S.as, S.hs)}">${hide ? '–' : S.as}${ball(away)}</b><b class="${lost(S.hs, S.as)}">${hide ? '–' : S.hs}${ball(home)}</b></div>${st === 'live' && !hide && S.dd ? html`<span class="gh-sub"><span>${S.dd}</span>${S.redzone ? html` · <span>Red zone</span>` : ''}</span>` : ''}`;
+  }
+  const wp = st === 'live' && !hide && S.wp != null ? S.wp : null;
+  const note = g.note && !/super bowl/i.test(g.note) ? ' · ' + g.note : '';
+  return html`<div class="gc-hero gh" style="${raw(vars)}"><div class="gh-meta">${weekName(g)} · ${g.vn || home.venue.name}${note}</div>
+    <div class="gh-row">${side(away, false)}<div class="gh-mid">${mid}</div>${side(home, true)}</div>
+    ${hide ? html`<div class="gc-shield">${icon('eyeoff', 'sm')}<span>Spoiler shield is on for this game</span><button class="btn xs white" data-act="gc-reveal">Reveal</button></div>` : ''}
+    ${wp != null ? html`<div class="gh-wp"><span>${away.abbr} ${100 - wp}%</span><div class="gh-wpbar"><i style="width:${100 - wp}%;background:${App.readable(away, '#111111')}"></i><i style="width:${wp}%;background:${App.readable(home, '#111111')}"></i></div><span>${wp}% ${home.abbr}</span></div>` : ''}</div>`;
+}
+
 /** mini: the slim version that sits under the live stream (no venue line, records or timeouts) */
 function hero(m, mini) {
+  if (!mini) return heroSet(m);
   const { g, S, away, home, st, hide } = m;
   const to = timeouts(m);
   const dots = n => n == null ? '' : html`<div class="gc-to">${[0, 1, 2].map(i => html`<i class="${i < n ? 'on' : ''}"></i>`)}</div>`;

@@ -225,3 +225,10 @@
   radial-gradient(70% 62% at 6% 36%,color-mix(in srgb,var(--ga) var(--gs),transparent) 0%,color-mix(in srgb,var(--ga) calc(var(--gs)*.62),transparent) 26%,color-mix(in srgb,var(--ga) calc(var(--gs)*.3),transparent) 50%,color-mix(in srgb,var(--ga) calc(var(--gs)*.1),transparent) 72%,transparent 92%),
   radial-gradient(70% 62% at 94% 36%,color-mix(in srgb,var(--gh) var(--gs),transparent) 0%,color-mix(in srgb,var(--gh) calc(var(--gs)*.62),transparent) 26%,color-mix(in srgb,var(--gh) calc(var(--gs)*.3),transparent) 50%,color-mix(in srgb,var(--gh) calc(var(--gs)*.1),transparent) 72%,transparent 92%),
   #07080b}
+
+/* watch-pass (built Nov 10): named hero buttons share the row, the main one widest; with three, icons drop so all the names fit */
+.wh .wh-acts{padding:0 var(--pad)}
+.wh .wh-acts .btn{flex:0 1 auto;min-width:0;max-width:none;padding-inline:12px;gap:5px;white-space:nowrap}
+.wh .wh-acts .btn.ink{flex:1 1 auto;max-width:none}
+.wh .wh-acts:has(> .btn:nth-child(3)) .btn{padding-inline:9px}
+.wh .wh-acts:has(> .btn:nth-child(3)) .btn .ico{display:none}

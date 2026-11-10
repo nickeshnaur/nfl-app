@@ -129,6 +129,7 @@ svg{display:block}
 .ico{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
 .ico.sm{width:16px;height:16px}.ico.xs{width:13px;height:13px;stroke-width:2.2}.ico.lg{width:28px;height:28px}
 .ico.fill{fill:currentColor;stroke:none}
+.ico.nf{fill:currentColor;stroke:none}
 
 /* ---------------------------------------------------------------- tab bar */
 .tabbar{position:absolute;left:0;right:0;bottom:0;height:calc(var(--tab-h) + 18px);padding-bottom:18px;display:flex;background:var(--glass);backdrop-filter:saturate(1.6) blur(20px);-webkit-backdrop-filter:saturate(1.6) blur(20px);border-top:1px solid var(--line);z-index:50}
@@ -428,3 +429,15 @@ a.sk-line{display:block;color:inherit}
 .ticker .lk-l1{min-height:22px;gap:6px}.ticker .lk-l1 .logo{width:20px;height:20px}
 .ticker .lk-tri{font-size:calc(14px*var(--fs))}.ticker .lk-sc{font-size:calc(17px*var(--fs))}
 .ticker .tk-cell{min-width:116px;padding:8px 12px}
+
+/* chrome-nosb preview (?pv=nosb): no drawn status bar */
+:root.no-sb{--status-h:env(safe-area-inset-top,0px)}
+:root.no-sb.in-frame{--status-h:max(env(safe-area-inset-top,0px),26px)} /* preview phones: clear the rounded corners */
+:root.no-sb .statusbar{display:none}
+/* v2: the header pads down past the phone's status bar and corners; its glass runs up behind them */
+:root.no-sb .phead{padding-top:var(--status-h)}
+:root.no-sb .hm-stage{margin-top:calc(-52px - var(--status-h))}
+:root.no-sb .hh.hh8{padding-top:calc(68px + var(--status-h))}
+:root.no-sb .fh-pick.hm-stage{padding-top:calc(70px + var(--status-h))}
+:root.no-sb .hh-mini{top:calc(52px + var(--status-h))}
+:root.no-sb .sticky-sub,:root.no-sb .gc-player{top:calc(52px + var(--status-h))}

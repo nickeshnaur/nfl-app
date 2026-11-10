@@ -239,7 +239,8 @@ function leaders(tid, s) {
     pick('defensive', 'sacks', 'Sacks', 'SACKS'), pick('defensive', 'totalTackles', 'Tackles', 'TKL'), pick('interceptions', 'interceptions', 'Interceptions', 'INT'),
   ].filter(Boolean);
   if (!rows.length) return '';
-  return html`<div class="sec"><div class="pad"><div class="gc-card flush ldr"><div class="ldr-head"><div class="t-title">${s} leaders</div></div>
+  // teams-pass (built Nov 10): a section title like the rest of the page instead of a title inside the card
+  return html`<div class="sec">${UI.secHead(`${s} leaders`)}<div class="pad"><div class="gc-card flush ldr">
     ${rows.map(r => html`<a class="ldr-row tm-ldr tap" data-go="#/player/${r.L.pid}"><div class="t-eyebrow">${r.label}</div><div class="tm-ldr-g">${UI.lk3(r.L.pid, { meta: `${(Dt.player(r.L.pid) || {}).pos || ''} · ${r.L.gp} games` })}<div class="ldr-v"><b style="color:${mk}">${r.v}</b><span>${r.unit}</span></div></div></a>`)}</div></div></div>`;
 }
 function divMini(tid, s) {
@@ -256,7 +257,7 @@ function divMini(tid, s) {
 function prCard(tid, s) {
   const pr = s === Dt.seasonForStats() && Dt.powerRank(s), r = pr && pr.of[tid]; if (!r) return '';
   return html`<div class="sec"><a class="card cpad tap tm-pr" data-go="#/power-rankings"><div class="tm-pr-n">${r.rk}</div>
-    <div class="grow"><div class="eyebrow">Power rankings</div><div class="b mt4">${fmt.ord(r.rk)} in the NFL ${UI.prMove(r.mv)}</div><div class="tiny mt4">${r.prev ? (r.mv ? `${r.mv > 0 ? 'Up' : 'Down'} from ${fmt.ord(r.prev)} last week` : `Same as last week`) : 'First rankings of the season'} · <span class="lk-rec">${r.rec}</span></div></div>${icon('chev', 'sm chev')}</a></div>`;
+    <div class="grow"><div class="eyebrow">Power ranking ${UI.prMove(r.mv)}</div><div class="tiny mt4">${r.prev ? (r.mv ? `${r.mv > 0 ? 'Up' : 'Down'} from ${fmt.ord(r.prev)} last week` : `Same as last week`) : 'First rankings of the season'} · <span class="lk-rec">${r.rec}</span></div></div>${icon('chev', 'sm chev')}</a></div>`;
 }
 function statTiles(tid, s) {
   const o = allSeasons(s)[tid]; if (!o || !o.g) return '';
@@ -619,7 +620,7 @@ function switcher(sel, act) {
   const mine = store.p.teams.filter(id => Dt.team(id));
   const prim = store.p.primary && Dt.team(store.p.primary);
   const rest = Dt.D.teams.filter(t => !mine.includes(t.id)).sort((a, b) => (prim && (divKey(b) === divKey(prim)) - (divKey(a) === divKey(prim))) || divKey(a).localeCompare(divKey(b)) || a.name.localeCompare(b.name)).map(t => t.id);
-  const chip = id => { const t = Dt.team(id); return html`<button class="tm-sw ${id === sel ? 'on' : ''} ${mine.includes(id) ? '' : 'tm-sw-other'}" data-act="${act}" data-arg="${id}" style="${raw(tv(t))}" aria-label="${t.full}">${id === sel ? html`<img class="logo sm" src="${t.logoDark || t.logo}" alt="${t.abbr}">` : UI.logo(id, 'sm')}<span>${short(t)}</span>${id === store.p.primary ? html`<i class="tm-star">${icon('star', 'xs')}</i>` : ''}</button>`; };
+  const chip = id => { const t = Dt.team(id); return html`<button class="tm-sw ${id === sel ? 'on' : ''} ${mine.includes(id) ? '' : 'tm-sw-other'}" data-act="${act}" data-arg="${id}" style="${raw(tv(t))}" aria-label="${t.full}">${id === sel ? html`<img class="logo sm" src="${t.logoDark || t.logo}" alt="${t.abbr}">` : UI.logo(id, 'sm')}<span>${short(t)}</span>${id === store.p.primary ? html`<i class="tm-star">${icon('star', 'xs fill')}</i>` : ''}</button>`; };
   return html`<div class="tm-picker"><button class="tm-sw tm-sw-all" data-act="tm-all" data-arg="${act}" aria-label="All 32 teams">${icon('grid', 'sm')}<span>All 32</span></button>
     <div class="tm-switch">${mine.map(chip)}${mine.length ? html`<i class="tm-sw-div" aria-hidden="true"></i>` : ''}${rest.map(chip)}</div></div>`;
 }
@@ -699,7 +700,7 @@ App.route('teams', (params, query, page) => {
       return { title: 'Teams', big: true, right: UI.headRight(), html: html`
         <div class="pad mt8"><div class="tm-intro"><div class="h2">Who's your team?</div>
           <div class="meta mt6">Pick one team to build Home, scores and alerts around. You can follow as many others as you like after that.</div>
-          <button class="btn primary mt16" data-act="tm-quiz-open">${icon('sparkle', 'sm')} Help me pick a team</button></div></div>
+          <button class="btn primary mt16" data-act="tm-quiz-open">${icon('football', 'sm')} Help me pick a team</button></div></div>
         <div class="sec">${allGrid()}</div>` };
     }
     const sel = Dt.team(App.store.tmp.teamSel) ? App.store.tmp.teamSel : (mine.includes(store.p.primary) ? store.p.primary : mine[0]);
@@ -718,7 +719,7 @@ A['tm-primary'] = (el, ev, id) => App.setPrimary(id);
 
 App.route('teams/all', () => ({
   title: 'All teams',
-  html: html`<div class="list mt8">${UI.row({ left: html`<span class="ic-tile">${icon('sparkle', 'sm')}</span>`, title: 'Not sure who to follow?', sub: 'Four quick questions and we\'ll match you', act: 'tm-quiz-open', chev: true })}</div>
+  html: html`<div class="list mt8">${UI.row({ left: html`<span class="ic-tile">${icon('football', 'sm')}</span>`, title: 'Not sure who to follow?', sub: 'Four quick questions and we\'ll match you', act: 'tm-quiz-open', chev: true })}</div>
     <div class="sec">${allGrid()}</div>`,
 }));
 App.heroCol = heroCol;

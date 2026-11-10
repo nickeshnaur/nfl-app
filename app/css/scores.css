@@ -24,7 +24,6 @@
 .sc-day-h{font:700 12px/1 var(--sans);color:var(--text-3);letter-spacing:.04em;text-transform:uppercase;padding:0 var(--pad) 10px}
 .sc-games{display:flex;flex-direction:column;gap:8px;padding:0 var(--pad)}
 .sc-item{position:relative}
-.sc-tv{position:absolute;top:8px;right:8px;z-index:2}
 
 /* polished score card (scoped to Scores) */
 .sc-games .gcard{padding:12px 14px 0}
@@ -149,3 +148,12 @@
 .sc-rz{margin:12px var(--pad) 0}
 
 .mv-tile > .flex{flex-wrap:wrap;gap:6px}
+
+/* scores-pass (built Nov 10): the footer's network is the where-to-watch tap; win probability says what it is */
+.gc-net{display:flex;align-items:center;gap:8px;min-width:0}
+.gc-watch{display:inline-flex;align-items:center;gap:4px;min-width:0;max-width:100%;color:var(--text);font-weight:600;cursor:pointer;padding:6px 0;margin:-6px 0}
+.gc-watch .ellipsis{min-width:0}
+.gc-watch .ico:last-child{color:var(--text-2)}
+.gc-note{min-width:0;color:var(--text-2)}
+.gcard .gc-foot .gc-wp{margin-top:0}
+.gc-wp{flex:none;white-space:nowrap;display:inline-flex;align-items:baseline;gap:4px}.gc-wp span{font:500 12px/1 var(--sans);color:var(--text-3)}

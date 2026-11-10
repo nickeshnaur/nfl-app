@@ -298,7 +298,7 @@
 .mgc-n{margin-top:12px;font:italic 900 32px/1 var(--display);letter-spacing:.02em;text-transform:uppercase}
 .mgc-s{display:flex;align-items:center;gap:5px;margin-top:6px;font:500 15px/1.2 var(--sans)}
 .mgc-s b{font:800 12px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase}
-.mg-btn{margin-top:auto;display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 18px .12em;border-radius:10px;background:var(--mg-d);color:#fff;font:900 italic 15px/1 var(--display);letter-spacing:.02em;text-transform:uppercase}
+.mg-btn{margin-top:auto;display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 16px .1em;border-radius:8px;background:var(--mg-d);color:#fff;font:900 15px/1 var(--display);letter-spacing:.02em;text-transform:uppercase}
 /* list row */
 .mg-list{padding:0 16px}
 .mgr{display:flex;align-items:center;gap:14px;padding:12px 0;color:var(--mg-d)}
@@ -431,8 +431,6 @@
 .hm-st-k{font:700 10.5px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--text-2)}
 .hm-st-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .hm-st-chip{display:inline-flex;align-items:center;height:32px;padding:0 13px;border-radius:99px;background:var(--surface);border:1px solid var(--line);font:700 13px/1 var(--sans);color:var(--text);white-space:nowrap}
-.hm-st-tuned{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font:600 12.5px/1 var(--sans);color:var(--text-2);white-space:nowrap}
-.hm-st-tuned .ico{width:14px;height:14px}
 .hm-sheet .hm-ticker,.hm-sheet .ticker{margin-top:8px}
 /* the stage */
 .fx{overflow:hidden;isolation:isolate;container-type:inline-size;color:#fff;padding:68px var(--pad) 50px}
@@ -880,15 +878,16 @@
 .sec-head .h2,.h2.display{font:900 italic calc(25px*var(--fs))/.95 var(--display);text-transform:uppercase;letter-spacing:.02em}
 /* metadata is never Display: kickoff times and days are Meta */
 
-/* Controls (option A): buttons, segments and chips are one family. Sizes L 48 · M 40 · S 32, squared 10 / 8px,
-   All-Pro Sans bold, sentence case, optically centred (Sans capitals sit .29em high, so the top gets that much more room).
+/* Controls (btn-family v3 B, 2026-11-10): buttons, segments and chips are one family. Sizes L 44 · M 40 · S 32, squared 8 / 6px.
+   Action buttons: All-Pro Display, ALL CAPS, upright (face locked in roles.css); Display capitals sit low, so the bottom gets .1em more room.
+   Chips, segments, pill tabs: All-Pro Sans bold, sentence case, optically centred (Sans capitals sit .29em high, so the top gets that much more).
    Hierarchy: .primary · secondary (plain .btn) · .ghost (tertiary) · .plus / .premium (upsell, NFL+) · .cta (RedZone) · on colour (.white, glass) */
-.btn{height:40px;padding:.29em 16px 0;border-radius:10px;font:700 calc(15px*var(--fs))/1 var(--sans);letter-spacing:0;text-transform:none;gap:8px;background:var(--surface-3);color:var(--text);border:0;box-shadow:none;transition:transform .12s}
-.btn svg{width:16px;height:16px;flex:none;margin-top:-.29em}
-.btn .plus-logo{height:12px;width:auto;margin-top:-.29em}
-.btn.l{height:48px;padding:.29em 20px 0;font-size:calc(16px*var(--fs));border-radius:10px;font-style:normal;text-transform:none;letter-spacing:0}
+.btn{height:40px;padding:0 16px .1em;border-radius:8px;font:900 calc(15px*var(--fs))/1 var(--display);letter-spacing:.02em;text-transform:uppercase;gap:7px;background:var(--surface-3);color:var(--text);border:0;box-shadow:none;transition:transform .12s}
+.btn svg{width:16px;height:16px;flex:none;margin-top:0}
+.btn .plus-logo{height:12px;width:auto;margin-top:0}
+.btn.l{height:44px;padding:0 18px .1em;font-size:calc(17px*var(--fs));border-radius:8px}
 .btn.l svg{width:18px;height:18px}.btn.l .plus-logo{height:13px}
-.btn.sm,.btn.xs{height:32px;padding:.29em 12px 0;border-radius:8px;font-size:calc(13px*var(--fs));gap:6px}
+.btn.sm,.btn.xs{height:32px;padding:0 12px .1em;border-radius:6px;font-size:calc(13px*var(--fs));gap:6px}
 .btn.sm svg,.btn.xs svg{width:14px;height:14px}.btn.sm .plus-logo,.btn.xs .plus-logo{height:10px}
 .btn.sq{width:40px;padding:0}.btn.sm.sq,.btn.xs.sq{width:32px}.btn.sq svg{margin-top:0}
 .btn.primary{background:var(--accent);color:var(--accent-ink,#fff)}
@@ -900,15 +899,15 @@
 .btn.tm-ghost,.btn.fh-ghost,.btn.fx-ghost,.btn.hm-glass{background:rgba(255,255,255,.18);color:#fff;border:0}
 .btn:active{transform:scale(.97)}
 .btn[disabled]{opacity:.4}
-.rzh-bar .btn{height:48px}
+.rzh-bar .btn{height:44px}
 .icon-btn.solid{border-radius:10px}
 .tm-round{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.18)}
-.seg,.pill-tabs{display:flex;gap:2px;padding:4px;border-radius:12px;background:var(--surface-2)}
+.seg,.pill-tabs{display:flex;gap:2px;padding:4px;border-radius:10px;background:var(--surface-2)}
 .pill-tabs{display:inline-flex}
-.seg button,.pill-tabs button{height:32px;padding:.29em 12px 0;border-radius:8px;font:700 calc(13px*var(--fs))/1 var(--sans);color:var(--text-2);box-shadow:none;white-space:nowrap}
+.seg button,.pill-tabs button{height:32px;padding:.29em 12px 0;border-radius:6px;font:700 calc(13px*var(--fs))/1 var(--sans);color:var(--text-2);box-shadow:none;white-space:nowrap}
 :root[data-theme] .seg button.on,:root[data-theme] .pill-tabs button.on{color:#fff;background:linear-gradient(110deg,#0b1526 10%,#4b5667 100%);box-shadow:none;font-weight:700}
 :root[data-theme] .seg button.on[style]{background:linear-gradient(110deg,var(--tg-b),var(--tg-a))}
-.chip{height:32px;padding:.29em 12px 0;border-radius:8px;border:0;box-shadow:inset 0 0 0 1px var(--line-2);font:700 calc(13px*var(--fs))/1 var(--sans);color:var(--text)}
+.chip{height:32px;padding:.29em 12px 0;border-radius:6px;border:0;box-shadow:inset 0 0 0 1px var(--line-2);font:700 calc(13px*var(--fs))/1 var(--sans);color:var(--text)}
 .chip svg,.chip img{margin-top:-.29em}
 .chip.on{background:var(--text);color:var(--bg);box-shadow:none;font-weight:700}
 .chip.accent.on{background:var(--accent);color:var(--accent-ink)}
@@ -1070,3 +1069,6 @@
 .stk-row.me .logo{background:none;padding:0}
 .stk-row .stk-nm.stk-nm{font-family:var(--sans)!important;font-weight:700!important;font-style:normal!important;text-transform:none!important;letter-spacing:0!important;color:var(--text)!important}
 .stk-row.me *{color:var(--text)!important}
+
+/* section-head links ("See all", "1 update"): extra bold, 11px (sec-more v2, built Nov 10) */
+.sec-head .more,.st-card-h .more{font-weight:800;font-size:11px}

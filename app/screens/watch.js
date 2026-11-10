@@ -205,10 +205,10 @@ function hero() {
     let cta;
     if (watchOpt) cta = html`<button class="btn ink" data-act="w-live" data-arg="${g.id}">${icon('play', 'sm')} ${intlFree(g) ? 'Watch free' : 'Watch live'}</button>`;
     else if (tvOpt) cta = html`<button class="btn ink" data-act="w-wtw" data-arg="${g.id}">${icon('tv', 'sm')} On ${tvOpt.label}</button>`;
-    else if (opts.find(o => o.ok && o.k === 'redzone')) cta = html`<button class="btn ink" data-go="#/channel/redzone">${icon('zap', 'sm')} Watch RedZone</button>`;
+    else if (opts.find(o => o.ok && o.k === 'redzone')) cta = html`<button class="btn ink" data-go="#/channel/redzone">${icon('bolt', 'sm')} Watch RedZone</button>`;
     else cta = html`<button class="btn ink" data-act="w-wtw" data-arg="${g.id}">${icon('tv', 'sm')} Where it's on</button>`;
     const note = !watchOpt && !tvOpt && !opts.find(o => o.ok && o.k === 'redzone') ? (intl() ? 'Every game streams live with NFL Game Pass on DAZN.' : Dt.inMarket(g) || Dt.nationalWindow(g) ? 'Stream it on your phone with NFL+, or on TV via the network.' : 'Out of your market — Sunday Ticket carries it, RedZone shows every score.') : '';
-    const acts = html`${cta}${audio ? html`<button class="btn" data-act="w-listen" data-arg="${g.id}">${icon('headphones', 'sm')} Listen</button>` : ''}<button class="btn w-sq" data-go="#/game/${g.id}" aria-label="Gamecast">${icon('scores', 'sm')}</button>`;
+    const acts = html`${cta}${audio ? html`<button class="btn" data-act="w-listen" data-arg="${g.id}">${icon('headphones', 'sm')} Listen</button>` : ''}<button class="btn" data-go="#/game/${g.id}">${icon('scores', 'sm')} Gamecast</button>`;
     return whHero(g, { S, hide, actions: acts, note, mine: isMine(g) });
   }
   // nothing live: phase-aware feature
@@ -295,7 +295,8 @@ function renderWatch() {
 
   // quick entry chips
   // approved round 6 (watch-shortcuts B): one scrolling row of the squared chip (the Scores season chip shape)
-  s.push(html`<div class="w-sc mt16">${[['#/where-to-watch', 'tv', 'Where to watch'], ['#/channel/redzone', 'zap', 'RedZone'], ['#/replays', 'rewind', 'Replays'], ['#/audio', 'headphones', 'Audio'], ['#/podcasts', 'mic', 'Podcasts'], ['#/downloads', 'download', 'Downloads']]
+  // watch-pass (built Nov 10): the hero's CTA and the Live & up next link already go to Where to watch, so the row starts with RedZone
+  s.push(html`<div class="w-sc mt16">${[['#/channel/redzone', 'bolt', 'RedZone'], ['#/replays', 'rewind', 'Replays'], ['#/audio', 'headphones', 'Audio'], ['#/podcasts', 'mic', 'Podcasts'], ['#/downloads', 'download', 'Downloads']]
     .map(([go, i, l]) => html`<button class="sc-season" data-go="${go}">${icon(i, 'sm')}${l}</button>`)}</div>`);
 
   // live now, then what's on soon: the next 24 hours, or the next game day if nothing's that close (Scores has the whole week)
@@ -363,7 +364,7 @@ function renderWatch() {
   // watch parties + downloads
   const party = L.find(isMine) || L[0] || up.find(isMine) || up[0];
   if (later.length) {
-    const adds = [['audio', 'headphones', 'Listen live', 'Radio calls for every game'], ['condensed', 'rewind', 'Condensed games', 'Every snap in about 40 minutes'], ['all22', 'layers', 'All-22 coaches film', 'The film coaches study'], ['redzone', 'zap', 'NFL RedZone', 'Every touchdown from every game']].filter(([f]) => !can(f));
+    const adds = [['audio', 'headphones', 'Listen live', 'Radio calls for every game'], ['condensed', 'rewind', 'Condensed games', 'Every snap in about 40 minutes'], ['all22', 'layers', 'All-22 coaches film', 'The film coaches study'], ['redzone', 'bolt', 'NFL RedZone', 'Every touchdown from every game']].filter(([f]) => !can(f));
     const top = adds.some(([f]) => tierOf(f) === 'premium') ? 'premium' : 'plus';
     s.push(html`<div class="sec pad"><div class="w-adds"><div class="w-adds-h"><span class="ln-logo">${UI.plusLogo()}</span><b>${intl() ? 'What Game Pass adds' : 'What NFL+ adds'}</b></div>
       <div class="w-adds-l">${adds.map(([f, i, t, sub]) => html`<div class="w-adds-r">${icon(i, 'sm')}<span class="grow"><b>${t}</b><span>${sub}</span></span>${badgeFor(f)}</div>`)}</div>

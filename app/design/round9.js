@@ -88,4 +88,86 @@ R['ob-logos'] = { id: 'ob-logos', v: 1, ready: true, name: 'Onboarding: welcome 
   options: Object.entries(OBL).map(([k, x]) => ({ k, name: x[0], note: '' })),
   current: () => V('As the app draws it', 'First run', PH(`<div class="r6ob-wel-cur r9ob-wel">${obV('welcome', '.ob-welcome')}</div>`)),
   proposed: k => V(OBL[k][0], 'First run', PH(`<div class="r6ob-wel-cur r9ob-wel ${OBL[k][2]}">${obV('welcome', '.ob-welcome')}</div>`)) };
+/* ------------------------------------------------------------------ trade deadline (the 2025 deadline, the Trade Deadline moment) */
+const TDL = { b: ['Deadline page in front', 'The deadline is added as the hero\'s first page: Live, the countdown to 4 PM ET big, the deals so far on the right, then your team\'s latest deal (or "no deals yet" and the league\'s latest) and a Tracker button. After it, the hero keeps its usual pages: Next game, Season (the schedule tiles) and Tale of the tape, so four pages on deadline day. After 4 PM it shows the final count.', 'tdB', ''] };
+R['trade-deadline'] = { id: 'trade-deadline', v: 2, ready: true, name: 'Trade deadline day', target: 'home.js homeHero() page 1 · Trade Deadline moment',
+  changes: ['Your note on v1 (picked B): "If we add a component to the hero, which is nice, for a given moment like the trade deadline, we should still feature the next upcoming game and the schedule."',
+    'v2 keeps B\'s deadline page and adds it in front instead of replacing Next game. The Home section (A) is gone. The same rule is now built into bye week, playoff race and cut-down.',
+    'Your ask: "can we include a \'trade deadline\' part of the season so i can see what that\'s like?"',
+    'New in the time machine (In season › Trade Deadline): Tue, Nov 4 2025 at 3:30 PM ET, 30 minutes before the real 2025 deadline. Standings, scores and records are the real 2025 Week 9 ones (Chiefs 5-4, Commanders 3-6).',
+    'Every deal is real, from the league transaction wire: 13 in the two weeks up to the deadline (Sauce Gardner to IND, Quinnen Williams and Logan Wilson to DAL, Jakobi Meyers to JAX, Rashid Shaheed to SEA, Jaire Alexander to PHI and more). Neither the Chiefs nor the Commanders made one.',
+    ...Object.entries(TDL).map(([k, x]) => `${k.toUpperCase()}, ${x[0]}: ${x[1]}`),
+    'A dedicated deadline tracker page isn\'t drawn; "All moves" opens Transactions for now.'],
+  options: Object.entries(TDL).map(([k, x]) => ({ k, name: x[0], note: '' })),
+  current: () => V('As the app draws it', '#/ · Trade Deadline · Chiefs', PH(AS9('', '', 'deadline'))),
+  proposed: k => V(TDL[k][0], '#/ · Trade Deadline · Chiefs, Commanders', ROW9([12, 28].map(t => SH9(t === 12 ? 'Chiefs' : 'Commanders', AS9('', '&pv=' + TDL[k][2] + TDL[k][3], 'deadline', t))).join(''))) };
+
+/* season and offseason states (the user's ask, after the trade deadline: "are there other states of the season / offseason that we should consider?", then "i like your suggestions") */
+const ASK = 'Your ask: "are there other states of the season / offseason that we should consider?" and then "i like your suggestions".';
+const SWIPE = 'Each phone is the real Home at that moment; swipe the hero to see its pages.';
+const stateCard = (id, name, target, moment, other, intro, OPTS, v = 1) => {
+  R[id] = { id, v, ready: true, name, target,
+    changes: [ASK, ...intro, ...Object.entries(OPTS).map(([k, x]) => `${k.toUpperCase()}, ${x[0]}: ${x[1]}`), SWIPE],
+    options: Object.entries(OPTS).map(([k, x]) => ({ k, name: x[0], note: '' })),
+    current: () => V('As the app draws it', `#/ · ${name} · Chiefs`, PH(AS9('', '', moment, 12))),
+    proposed: k => V(OPTS[k][0], `#/ · ${name} · Chiefs, ${other[1]}`, ROW9([[12, 'Chiefs'], other].map(([t, n]) => SH9(n, AS9('', '&pv=' + OPTS[k][2], moment, t))).join(''))) };
+};
+stateCard('season-bye', 'Bye week', 'home.js statePages() · Bye Week moment', 'bye', [29, 'Panthers'],
+  ['New in the time machine (In season › Bye Week): Sun, Oct 11 2026 at 12:30 PM ET, Week 5. The Chiefs and Panthers are the two teams off that week. Today the hero just shows the next game, as if nothing were different.'],
+  { a: ['Back next week', 'Page 1 says it\'s your bye: "Week 5 · Bye week", then the countdown to your next game with both logos, the number of games around the league today and a Scores button. Pages 2 and 3 stay Season and Tale of the tape.', 'byeA'],
+    b: ['Division watch', 'Page 1 turns to your division rivals\' games this week (time, live, or the result), with when you\'re back at the bottom. Pages 2 and 3 stay.', 'byeB'] });
+stateCard('season-race', 'Playoff race', 'home.js statePages() · Playoff Race moment', 'race', [33, 'Ravens'],
+  ['New in the time machine (In season › Playoff Race): Sun, Dec 28 2025 at 11:30 AM ET, Week 17, before the 1 PM games (Christmas and Saturday games already played). Real 2025 standings: the Chiefs are 6-10 and out; the Ravens are 8-8 with one game left, out of the wild cards but still alive for the AFC North behind the 9-6 Steelers.',
+    'Clinched and Eliminated are plain win-count math (ties ignored): out when your best possible total can\'t reach the 7th seed\'s wins today or your division leader\'s; clinched when no team 8th or lower can catch you. Shown from Week 15 on.'],
+  { a: ['Your status', 'Page 1 is your status word big (Clinched, In the hunt, Eliminated) with games left, your seed today on the right, then how far you are from the cut line and who\'s 7th.', 'raceA'],
+    b: ['Standings slice', 'Page 1 is your conference standings around you: five rows with seed and record, your row lit white, a line above 8th where the playoffs stop, and Clinched / Out tags.', 'raceB'] });
+stateCard('season-over', 'Season over', 'home.js statePages() · Season Over moment', 'sbover', [17, 'Patriots'],
+  ['Your note on v1 (picked B): "maybe less negative... "missed the playoffs" or "lost the super bowl" sucks to see"',
+    'v2 is B with every season framed by what it reached: Super Bowl champions, AFC/NFC champions (a Super Bowl team that lost), Conference Championship run, Playoff team, or "2025 in the books" with the record. The line under it is your best win of the season. The Super Bowl page drops the W between the scores, and under the record a losing streak ("Lost 6 straight") gives way to the conference place. Chiefs (no playoffs) and Patriots (lost Super Bowl LX) shown.',
+    'New in the time machine (Offseason › Season Over): Mon, Feb 9 2026 at 9 AM ET, the morning after Super Bowl LX (Seahawks 29, Patriots 13). Today the hero still shows the season pages with nothing left to play.'],
+  { b: ['Your season first', 'Page 1 your season, framed by what it reached, big, with the record and seed above and your best win below; page 2 the Super Bowl final; page 3 what\'s next (countdown to free agency, then the draft).', 'overB'] }, 2);
+stateCard('season-schedule', 'Schedule release', 'home.js statePages() · Schedule Release moment', 'sched', [28, 'Commanders'],
+  ['New in the time machine (Offseason › Schedule Release): Wed, May 13 2026 at 8:30 PM ET, just after all 272 games came out (the app\'s release time). Today the hero shows the Week 1 opener and last season. The pages below show for three days after the release.',
+    'Prime time is a kickoff at 7 PM ET or later. Toughest stretch is the three games in a row whose opponents had the best 2025 records.'],
+  { a: ['Opener, slate, stretch', 'Page 1 the Week 1 opener with a New tag and the countdown; page 2 the slate as three numbers (prime-time games, home games, the bye week); page 3 the toughest stretch as three tiles with each opponent\'s 2025 record.', 'schA'],
+    b: ['All 18 weeks', 'Page 1 the whole season at a glance: 18 squares with each opponent\'s logo, prime time outlined, away games darker, the bye marked; page 2 the opener; page 3 the slate.', 'schB'] });
+stateCard('season-cuts', 'Roster cut-down', 'home.js statePages() · Cut-down Weekend moment', 'cuts', [28, 'Commanders'],
+  ['New in the time machine (Offseason › Cut-down Weekend): Sun, Aug 30 2026 at 4 PM ET, the day after the last preseason game and the busiest cut day in the transaction wire. Today the hero shows the Week 1 opener and last season.',
+    'Data gap: the league\'s transaction wire only carries part of the cuts (the Chiefs show a handful of moves that week, not their full trim to 53), so there\'s no true 53-man count to show. The pages count what the wire has.'],
+  { a: ['Cut tracker', 'Page 1 the cut moves league-wide and your team\'s, big, with a Your roster button; page 2 your team\'s two latest moves; page 3 the Week 1 opener.', 'cutA'],
+    b: ['Your moves first', 'Page 1 your team\'s latest moves; page 2 the Week 1 opener. No league count.', 'cutB'] });
+/* ------------------------------------------------------------------ the Home hero's score line, like the other matchup banners */
+const HMX = {
+  a: ['Like the game page', 'Each team at its edge as on the Next game page (logo over tricode), its score big beside it, and the status in the centre: Final, or Live and the clock. The losing score and tricode dim, as on the game page header. Your team stays on the left.', 'hmA'],
+  b: ['Today\'s line, status in the centre', 'The current one-row layout (logo, tricode, score each side) with the lone letter replaced by the status in the centre, and the losing score and tricode dimmed.', 'hmB'],
+  c: ['Away left, home right', 'A\'s layout, but the teams sit away on the left and home on the right, the way the game page, Watch and Scores do it, before and after kickoff.', 'hmC'],
+};
+const HMS = [['Final, a win', '', 'ts=2026-10-05T14:00:00Z', '12'], ['Final, a loss', '', 'ts=2025-09-15T14:00:00Z', '12'], ['Live', '', 'ts=2026-10-04T22:10:00Z', '12'], ['Before kickoff', '', 'now', '12'], ['Commanders, live', '', 'gameday', '28']];
+const hmPh = pv => ROW9(HMS.map(([t, x, m, tid]) => SH9(t, m.startsWith('ts=') ? AS9('', (pv ? '&pv=' + pv : '') + '&' + m, null, tid) : AS9('', pv ? '&pv=' + pv : '', m, tid))).join(''));
+R['hero-matchup'] = { id: 'hero-matchup', v: 1, ready: true, name: 'Home hero: the score line', target: 'home.js homeHero() page 1 · statePages() Super Bowl final',
+  changes: ['Your note: "this design is different than what we do on other matchup banner, particularly the L in the center is a bit weird. can you work on this and any other matchup designs in the home page hero?"',
+    'The other matchup banners (the game page header, Watch, the Next game page) put the status between the teams (Final, or Live and the clock) and dim the losing score and tricode. None puts a W or L between the scores. Every option here does the same; the eyebrow now carries the week and network instead of repeating Final.',
+    'The line under a final no longer leads with Win or Loss: your record, your division place and your next game.',
+    'The same treatment goes on the Super Bowl final page in Season over (winner and loser, Final in the centre).',
+    ...Object.entries(HMX).map(([k, x]) => `${k.toUpperCase()}, ${x[0]}: ${x[1]}`),
+    'Each phone is the real Home: the Chiefs after the Week 4 win at Las Vegas (2026), after the Week 2 loss to Philadelphia (2025; the Week 9 loss in your screenshot sits behind the deadline page on deadline day), live in the Week 4 game, before the Chargers game, and the Commanders live on Game Day.'],
+  options: Object.entries(HMX).map(([k, x]) => ({ k, name: x[0], note: '' })),
+  current: () => V('As the app draws it', '#/ · Home hero page 1', hmPh('')),
+  proposed: k => V(HMX[k][0], '#/ · Home hero page 1', hmPh(HMX[k][2])) };
+const PBX = {
+  a: ['46px, edge to edge', 'The game page bug\'s own insides at the same sizes: 26px logo discs, 17px tricodes, 24px scores. In the middle, just the Live clock, Final or the kickoff time; no down and distance. 46px tall (the bug is 52px), edge to edge under the status bar, like the Home pin today.', 'pb4a'],
+};
+// each state: the Home phone scrolled so the bar is pinned, beside the game page for the same game at the same moment, scrolled so its score bug is pinned
+const PBS = [['Live · Chiefs', null, '12', '&ts=2026-10-04T22:10:00Z', '401872976'], ['Live · Commanders', 'gameday', '28', '', '401872988']];
+const pbPh = pv => PBS.map(([t, m, tid, ts, gid]) => `<div style="margin-bottom:22px"><div style="font:700 13px/1.2 var(--sans);margin-bottom:8px">${t}</div>${ROW9(
+  SH9('Home · pinned bar', PH(AS9('', (pv ? '&pv=' + pv : '') + ts + AT9('.hm-sheet .sec'), m, tid))) +
+  (gid ? SH9('Game page · pinned score bug (52px)', PH(AS9('game/' + gid, ts + AT9('.gc-body > :last-child'), m, tid))) : SH9('Game page', '<div style="width:220px;font:500 12px/1.4 var(--sans);opacity:.7">Before kickoff the game page has no pinned score bug, so there is nothing to set beside it.</div>')))}</div>`).join('');
+R['pinbar-away'] = { id: 'pinbar-away', v: 5, ready: true, name: 'Home pinned bar: away first', target: 'home.js hhMini · .hh-mini',
+  changes: ['Your note on v4 (A picked): "we don\'t need down and distance"',
+    'A, with the down and distance taken out; nothing else changed.',
+    ...Object.entries(PBX).map(([k, x]) => `${k.toUpperCase()}, ${x[0]}: ${x[1]}`),
+    'Each shows the real Home with the bar pinned, beside the game page with its bug pinned, same game, same moment, same scale: the Chiefs live at Las Vegas, and the Commanders live on Game Day.'],
+  options: Object.entries(PBX).map(([k, x]) => ({ k, name: x[0], note: '' })),
+  current: () => V('As the app draws it', '#/ · scrolled', pbPh('')),
+  proposed: k => V(PBX[k][0], '#/ · scrolled · beside the game page', pbPh(PBX[k][2])) };
 })();

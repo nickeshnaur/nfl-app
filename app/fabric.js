@@ -8,8 +8,10 @@
 /* design previews: ?pv=fab-team,fab-home,pnum turns on an unapproved treatment inside the Approvals phone frames only */
 App.pv = new Set((new URLSearchParams(location.search).get('pv') || '').split(',').filter(Boolean));
 /* &at=<selector> (Approvals previews): scroll the frame so the part under review is in view once it has drawn */
-(function () { const at = new URLSearchParams(location.search).get('at'); if (!at) return; let n = 0;
-  const t = setInterval(() => { const el = document.querySelector(at); if (el) { el.scrollIntoView({ block: 'start' }); } if (el && ++n > 3 || n > 40 && !el) clearInterval(t); if (!el) n++; }, 400); })();
+(function () { let at = new URLSearchParams(location.search).get('at'); if (!at) return; let n = 0;
+  // a trailing '!c' centres the element instead (for things a pinned bar would cover)
+  const c = at.endsWith('!c'); if (c) at = at.slice(0, -2);
+  const t = setInterval(() => { const el = document.querySelector(at); if (el) { el.scrollIntoView({ block: c ? 'center' : 'start' }); } if (el && ++n > 3 || n > 40 && !el) clearInterval(t); if (!el) n++; }, 400); })();
 /* Jersey cloth (v8): the v3 fabric drawn by a WebGL2 shader every frame. A still layer of long diagonal folds, and a soft wave
    whose crests run along those folds and roll slowly across them, the crests bending a little and fading in and out along their
    length. Lit from the top left and soft-lit over the team colour; the dimpled mesh shifts with the slope as each crest passes. */
@@ -43,7 +45,9 @@ void main(){T=T0*M.x;vec2 p=vec2(gl_FragCoord.x,R.y*D-gl_FragCoord.y)/D;
   float k=1.-smoothstep(.02,.12,dot(C,vec3(.2126,.7152,.0722)));
   o+=k*(.1*s+.2*smoothstep(.3,.85,s)+.07*m.a*step(.5,m.r));
   O=vec4(o,1.);}`;
-  function init(cv) { const gl = cv.getContext('webgl2', { antialias: false, premultipliedAlpha: false, preserveDrawingBuffer: true }); if (!gl) return cv._gl = false;
+  function init(cv) { const gl = cv.getContext('webgl2', { antialias: false, premultipliedAlpha: false, preserveDrawingBuffer: true }); if (!gl) { cv.style.visibility = 'hidden'; return cv._gl = false; }
+    // too many live canvases (e.g. a page of phone previews): the browser drops the oldest; hide it so the team colour behind shows, not a blank
+    cv.addEventListener('webglcontextlost', () => { cv.style.visibility = 'hidden'; cv._gl = false; });
     const sh = (t, src) => { const o = gl.createShader(t); gl.shaderSource(o, src); gl.compileShader(o); if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) console.warn(gl.getShaderInfoLog(o)); return o; };
     const pr = gl.createProgram(); gl.attachShader(pr, sh(gl.VERTEX_SHADER, '#version 300 es\nin vec2 a;void main(){gl_Position=vec4(a,0,1);}')); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FS));
     gl.linkProgram(pr); gl.useProgram(pr); gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer()); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);

@@ -71,7 +71,7 @@
 .cm-radio.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .cm-grade{font:italic 900 28px/1 var(--display);margin-top:2px;letter-spacing:.02em}
 .cm-grade.avg{color:var(--text-2)}
-.cm-gbtn{flex:1;height:42px;border-radius:10px;background:var(--surface-2);font:italic 900 17px/1 var(--display);color:var(--text-2);letter-spacing:.02em}
+.cm-gbtn{flex:1;height:44px;padding-bottom:.1em;border-radius:8px;background:var(--surface-2);font:900 17px/1 var(--display);color:var(--text-2);letter-spacing:.02em}
 .cm-gbtn.on{background:var(--accent);color:var(--accent-ink)}
 
 /* ---------------------------------------------------------------- fan life */

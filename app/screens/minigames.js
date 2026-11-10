@@ -13,7 +13,7 @@ const Dt = App.data, UI = App.UI;
 const GAMES = [
   { k: 'rank-em-rush', n: "Rank 'Em Rush", tag: 'Trivia', ic: 'list', sub: 'Test your football IQ', cls: 'mg-rem', art: 'rem' },
   { k: 'shake-break', n: 'Shake & Break', tag: 'Puzzle', ic: 'grid', sub: 'Run the perfect route', cls: 'mg-sb', art: 'sb' },
-  { k: 'gridiron-slate', n: 'Gridiron Slate', tag: 'Strategy', ic: 'sparkle', sub: 'Call the next big play', cls: 'mg-gs', art: 'gs' },
+  { k: 'gridiron-slate', n: 'Gridiron Slate', tag: 'Strategy', ic: 'game', sub: 'Call the next big play', cls: 'mg-gs', art: 'gs' },
 ];
 // sample streaks and fan points until the games are built and keep their own
 const STREAK = { 'shake-break': 5, 'gridiron-slate': 2 };
@@ -31,7 +31,9 @@ function untilNext() {
 }
 const today = () => new Date(time.now()).toDateString();
 const playedToday = () => { const p = store.p.mgPlayed; return p && p.day === today() ? p.games || [] : []; };
-const tag = g => html`<span class="mg-tag">${icon(g.ic, 'xs')}${g.tag}</span>`;
+// text on the game's colour, no field art (mg-plain v2, built Nov 10)
+const art = () => '';
+const tag = g => html`<span class="mg-tag">${g.tag}</span>`;
 
 /** a pennant in your team's colours, with its logo and name */
 function pennant(tm) {
@@ -52,19 +54,17 @@ function profile() {
 /** a game as a card in its own colour: type tag, name, a line or your streak, Play now (See results once played today) */
 function card(g) {
   const done = playedToday().includes(g.k), st = STREAK[g.k];
-  return html`<a class="mgc ${g.cls} tap" data-go="#/mini-games?g=${g.k}">${raw(ART[g.art])}${tag(g)}<span class="mgc-n">${g.n}</span>
+  return html`<a class="mgc ${g.cls} tap" data-go="#/mini-games?g=${g.k}">${art(g.art)}${tag(g)}<span class="mgc-n">${g.n}</span>
     <span class="mgc-s">${st ? html`${icon('bolt', 'xs fill')}<b>${st} day streak</b>` : g.sub}</span><span class="mg-btn">${done ? 'See results' : 'Play now'}</span></a>`;
 }
 /** a game as a list row (the hub, Search & explore) */
 function row(g) {
-  return html`<a class="mgr ${g.cls} tap" data-go="#/mini-games?g=${g.k}"><span class="mgr-art">${raw(ART[g.art])}</span><span class="grow">${tag(g)}<span class="mgr-n">${g.n}</span><span class="mgr-s">${g.sub}</span></span>${icon('chev', 'sm')}</a>`;
+  return html`<a class="mgr ${g.cls} tap" data-go="#/mini-games?g=${g.k}"><span class="mgr-art">${art(g.art)}</span><span class="grow">${tag(g)}<span class="mgr-n">${g.n}</span><span class="mgr-s">${g.sub}</span></span>${icon('chev', 'sm')}</a>`;
 }
 /** Home: the daily strip */
 function strip() {
   return html`<section class="sec">${UI.secHead('NFL Mini Games', 'See all', '#/mini-games')}
-    <div class="pad">${profile()}</div>
-    <div class="hscroll mg-rail mt12">${GAMES.map(card)}</div>
-    <div class="tiny pad mt8">Free to play, just for fun and fan points. New games in ${untilNext()}.</div></section>`;
+    <div class="hscroll mg-rail">${GAMES.map(card)}</div></section>`;
 }
 /** today's games count as seen once you open the hub (the header's games button drops its dot) */
 const seenToday = () => store.p.mgSeen === today();
@@ -74,12 +74,10 @@ App.route('mini-games', (params, query) => {
   const g = GAMES.find(x => x.k === query.g);
   if (!seenToday()) { store.p.mgSeen = today(); store.save(); setTimeout(() => document.querySelectorAll('.phead [data-go="#/mini-games"]').forEach(b => { b.setAttribute('aria-label', 'Mini games'); const d = b.querySelector('.ib-dot'); if (d) d.remove(); }), 0); }
   // the games themselves aren't built yet: a game lands on a placeholder in its colour
-  if (g) return { title: g.n, back: true, html: html`<div class="mg-hold ${g.cls}">${raw(ART[g.art])}${tag(g)}<div class="mgc-n">${g.n}</div><div class="mgc-s">${g.n} will open here.</div></div>` };
+  if (g) return { title: g.n, back: true, html: html`<div class="mg-hold ${g.cls}">${art(g.art)}${tag(g)}<div class="mgc-n">${g.n}</div><div class="mgc-s">${g.n} will open here.</div></div>` };
   return {
     title: 'Mini games',
-    html: html`<div class="pad mt12">${profile()}</div>
-      <div class="sec">${UI.secHead("Today's games")}<div class="list mg-list">${GAMES.map(row)}</div>
-      <div class="tiny pad mt8">Free to play, just for fun and fan points. New games in ${untilNext()}.</div></div>`,
+    html: html`<div class="sec">${UI.secHead("Today's games")}<div class="list mg-list">${GAMES.map(row)}</div></div>`,
   };
 });
 })();

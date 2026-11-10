@@ -37,12 +37,12 @@ function groups(phase) {
       L('#/international', 'globe', 'International fans', 'Games abroad, kickoff in your time zone'),
     ] },
     community: { title: 'Play & community', items: [
-      L('#/mini-games', 'zap', 'Mini games', "Shake & Break and Rank 'Em Rush, new every day", 'new'),
+      L('#/mini-games', 'game', 'Mini games', "Shake & Break and Rank 'Em Rush, new every day", 'new'),
       L('#/pickem', 'target', "Pick 'em", 'Free weekly picks for points — never money'),
       L('#/trivia', 'help', 'Daily trivia', 'Keep your streak alive'),
       L('#/polls', 'chart', 'Fan polls', 'What the fanbase thinks'),
       L('#/community', 'users', 'Squads & chat', 'Your crew, your game threads'),
-      L('#/pro-bowl', 'medal', 'Pro Bowl voting', 'Send your guys to the Games'),
+      L('#/pro-bowl', 'star', 'Pro Bowl voting', 'Send your guys to the Games'),
     ] },
     learn: { title: 'Learn the game', items: [
       L('#/learn', 'book', 'Football 101', 'Short lessons for new fans'),
@@ -51,12 +51,12 @@ function groups(phase) {
     history: { title: 'History', items: [
       L('#/super-bowls', 'trophy', 'Every Super Bowl', 'I through LX'),
       L('#/records', 'chart', 'Record book', 'Career, season, single game'),
-      L('#/hof', 'medal', 'Hall of Fame', 'Recent classes'),
+      L('#/hof', 'star', 'Hall of Fame', 'Recent classes'),
       L('#/history', 'clock', 'Franchise histories', 'All 32 teams'),
     ] },
     watch: { title: 'Watch & listen', items: [
       L('#/where-to-watch', 'tv', 'Where to watch', 'Every game, matched to your services'),
-      L('#/multiview', 'split', 'Multi-game view', 'Follow up to four games at once'),
+      L('#/multiview', 'grid', 'Multi-game view', 'Follow up to four games at once'),
     ] },
   };
   const order = {

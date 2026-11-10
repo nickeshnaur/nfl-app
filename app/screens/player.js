@@ -399,7 +399,7 @@ function overview(pid, p, tm, grp, s, L, career, page, curS) {
   const news = Dt.news({ player: pid }).slice(0, 4);
   const teamNews = news.length ? [] : Dt.news({ team: p.t }).slice(0, 3);
   if (news.length || teamNews.length) out.push(html`<div class="sec">${UI.secHead(news.length ? 'News' : `Latest on the ${tm.name}`)}<div class="list">${(news.length ? news : teamNews).map(a => UI.newsCard(a, 'sm'))}</div></div>`);
-  out.push(html`<div class="pad mt24"><button class="btn ghost block" data-go="#/compare?a=${pid}">${icon('swap', 'sm')} Compare ${p.ln} with another player</button></div>`);
+  // player-pass (built Nov 10): no Compare button at the foot; Compare sits in the hero
   return out;
 }
 function liveRow(pid, g, p) {

@@ -90,8 +90,8 @@ function scoresList(S) {
     : post === all.length ? `All ${all.length} games final` : post ? `${post} of ${all.length} final` : fmt.plural(all.length, 'game');
   const byes = S.t === 2 ? Dt.D.teams.filter(tm => !wk.games.some(g => g.h === tm.id || g.a === tm.id)) : [];
   return html`
-    <div class="sc-week-head pad"><div><div class="h2">${Dt.weekLabel(S.t, S.w)}${S.t === 3 && S.w === 5 ? ' ' + Dt.sbNumeral(S.s) : ''}</div><div class="meta mt4">${range(wk.start, wk.end)} · ${summary}</div></div>
-      ${live.length > 1 ? html`<button class="btn xs ghost" data-go="#/multiview">${icon('split', 'sm')}Multiview</button>` : ''}</div>
+    <div class="sc-week-head pad"><div><div class="h2 display">${Dt.weekLabel(S.t, S.w)}${S.t === 3 && S.w === 5 ? ' ' + Dt.sbNumeral(S.s) : ''}</div><div class="meta mt4">${range(wk.start, wk.end)} · ${summary}</div></div>
+      ${live.length > 1 ? html`<button class="btn xs ghost" data-go="#/multiview">${icon('grid', 'sm')}Multiview</button>` : ''}</div>
     ${live.length ? html`<div class="sc-rz">${UI.rzPanel()}</div>` : ''}
     ${liveNow.length ? html`<div class="sc-day sc-live"><div class="sc-day-h"><i class="sc-live-dot"></i>Live now</div>
       <div class="sc-games">${liveNow.map(g => gameItem(g))}</div></div>` : ''}
@@ -105,8 +105,8 @@ function scoresList(S) {
     </div>`;
 }
 function gameItem(g) {
-  const st = Dt.state(g);
-  return html`<div class="sc-item">${UI.gameCard(g)}${st !== 'post' ? html`<button class="btn sm sq ghost sc-tv" data-act="sc-watch" data-arg="${g.id}" aria-label="Where to watch">${icon('tv', 'sm')}</button>` : ''}</div>`;
+  // scores-pass (built Nov 10): the footer's network is the where-to-watch tap (UI.gameCard), so no corner TV button
+  return html`<div class="sc-item">${UI.gameCard(g)}</div>`;
 }
 
 function scoresView(page) {
@@ -522,7 +522,7 @@ App.route('multiview', (p, q, page) => {
   if (!tmp.mv.length) tmp.mv = live.slice().sort((a, b) => mine(b) - mine(a)).slice(0, 4).map(g => g.id);
   const chosen = tmp.mv.map(id => Dt.game(id));
   const grid = () => html`<div class="mv-grid ${chosen.length <= 2 ? 'one' : ''}">${chosen.map(mvTile)}</div>`;
-  if (!live.length) return { title: 'Multiview', back: true, html: UI.empty('split', 'No games are live right now', 'Multiview follows up to four live games at once.', html`<button class="btn primary mt16" data-act="sc-jump" data-arg="gameday">${icon('clock', 'sm')}Jump to a live Sunday</button>`) };
+  if (!live.length) return { title: 'Multiview', back: true, html: UI.empty('grid', 'No games are live right now', 'Multiview follows up to four live games at once.', html`<button class="btn primary mt16" data-act="sc-jump" data-arg="gameday">${icon('clock', 'sm')}Jump to a live Sunday</button>`) };
   return {
     title: 'Multiview', back: true,
     sub: html`<div class="chips mv-chips">${live.map(g => html`<button class="chip ${tmp.mv.includes(g.id) ? 'on' : ''}" data-act="mv-toggle" data-arg="${g.id}">${Dt.team(g.a).abbr} @ ${Dt.team(g.h).abbr}</button>`)}</div><div style="height:10px"></div>`,
@@ -534,7 +534,7 @@ App.route('multiview', (p, q, page) => {
 A['mv-toggle'] = (el, ev, gid) => {
   const i = tmp.mv.indexOf(gid);
   if (i >= 0) { if (tmp.mv.length > 1) tmp.mv.splice(i, 1); }
-  else { if (tmp.mv.length >= 4) { App.toast({ title: 'Multiview shows up to 4 games', body: 'Remove one first.', icon: 'split' }); return; } tmp.mv.push(gid); }
+  else { if (tmp.mv.length >= 4) { App.toast({ title: 'Multiview shows up to 4 games', body: 'Remove one first.', icon: 'grid' }); return; } tmp.mv.push(gid); }
   App.refresh();
 };
 A['sc-jump'] = (el, ev, k) => App.time.set(k);

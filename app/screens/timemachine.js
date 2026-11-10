@@ -8,7 +8,8 @@ const { html, raw, icon, esc, store, time, fmt } = App;
 const Dt = App.data, UI = App.UI;
 
 const GROUPS = [
-  { n: 'Offseason', keys: ['fa', 'draft', 'summer', 'camp'] },
+  { n: 'In season', keys: ['bye', 'deadline', 'race'] },
+  { n: 'Offseason', keys: ['sbover', 'fa', 'draft', 'sched', 'summer', 'camp', 'cuts'] },
 ];
 const SPEEDS = [1, 10, 60, 300];
 /** each kind of score the game page celebrates */

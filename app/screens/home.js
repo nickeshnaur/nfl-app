@@ -100,6 +100,24 @@ const injShort = s => /Injured Reserve/i.test(s) ? 'IR' : /Physically Unable/i.t
 function countdownHtml(ts) {
   return html`<div class="hm-count" data-countdown="${ts}">${countParts(ts)}</div>`;
 }
+/* ------------------------------------------------------------------ trade deadline (trade-deadline v2, built 2026-11-09: a deadline page added in front of the hero's pages)
+   The deadline is 4 PM ET; deals are the real moves in the data around it, one per player who changed teams. */
+const DEADLINES = [Date.parse('2025-11-04T21:00:00Z')];
+function deadlineNow(now = time.now()) { return DEADLINES.find(d => now > d - 7 * DAY && now < d + DAY) || null; }
+function deadlineDeals(dl, now = time.now()) {
+  const from = new Date(dl - 14 * DAY).toISOString().slice(0, 10), to = fmt.dayKey(now), T = Dt.D.core.teams;
+  const find = x => { x = x.trim(); const l = T.filter(t => t.loc === x); return (T.find(t => t.full === x) || T.find(t => t.name === x) || (l.length === 1 ? l[0] : {})).id; };
+  const P = "([A-Z]{1,3}) ([A-Z][\\w'.-]+(?: [A-Z][\\w'.-]+)+)", TM = '(?:the )?([A-Z][A-Za-z. ]+?)', END = '(?: in exchange| for|$)';
+  const seen = new Set(), out = [];
+  Dt.D.core.tx.filter(r => r.dt >= from && r.dt <= to).forEach(r => r.x.replace(/\.$/, '').split(/\.\s+/).forEach(x => {
+    let m, d;
+    if ((m = x.match(new RegExp(`^(?:Acquired|Received) ${P}.*? from (?:a trade with )?${TM}${END}`)))) d = { pos: m[1], n: m[2], to: r.t, fr: find(m[3]) };
+    else if ((m = x.match(new RegExp(`^Traded ${P}.*? to ${TM}${END}`)))) d = { pos: m[1], n: m[2], fr: r.t, to: find(m[3]) };
+    else if ((m = x.match(new RegExp(`^Acquired .*? from ${TM} (?:in exchange )?for ${P}`)))) d = { pos: m[2], n: m[3], fr: r.t, to: find(m[1]) };
+    if (d && d.to && d.fr && !seen.has(d.n)) { seen.add(d.n); out.push({ ...d, dt: r.dt }); }
+  }));
+  return out;
+}
 function countParts(ts) {
   let s = Math.max(0, Math.floor((ts - time.now()) / 1000));
   const d = Math.floor(s / 86400); s %= 86400; const h = Math.floor(s / 3600); s %= 3600; const m = Math.floor(s / 60); const sec = s % 60;
@@ -221,7 +239,7 @@ function catchupCard() {
   const items = catchupItems();
   if (!items.length) return '';
   const top = items.slice(0, 4);
-  return html`<section class="sec"><div class="sec-head"><div class="h2">${t('Catch me up')}</div><a class="more" data-go="#/catchup">${items.length} updates${icon('chev', 'xs')}</a></div>
+  return html`<section class="sec"><div class="sec-head"><div class="h2">${t('Catch me up')}</div><a class="more" data-go="#/catchup">${items.length} ${items.length === 1 ? 'update' : 'updates'}${icon('chev', 'xs')}</a></div>
     <div class="list">${top.map(i => html`<a class="row tap hm-cu" data-go="${i.go}">${i.tid ? UI.logo(i.tid, 'sm') : icon(i.icon, 'sm')}<div class="row-main"><div class="row-title clamp2">${i.title}</div><div class="row-sub">${i.sub}</div></div></a>`)}</div></section>`;
 }
 
@@ -251,7 +269,7 @@ function fanHeader() {
   return homeHero({ mine, tm, s, st, row, div, dr, hello, who, moment: leagueMoment() });
 }
 
-/** the top of the sheet that slides over the stage: what changed since you last looked, and what Home is tuned for */
+/** the top of the sheet that slides over the stage: what changed since you last looked */
 function sheetTop() {
   const mine = primary(); if (!mine) return html`<div class="hm-grab"></div>`;
   const now = time.now();
@@ -262,21 +280,127 @@ function sheetTop() {
   const inj = items.filter(i => i.kind === 'injury').length; if (inj) chips.push([`${inj} injury update${inj > 1 ? 's' : ''}`, '#/catchup']);
   const mv = items.filter(i => i.kind === 'move').length; if (mv) chips.push([`${mv} roster move${mv > 1 ? 's' : ''}`, '#/catchup']);
   const nw = items.filter(i => i.kind === 'news').length; if (nw) chips.push([`${nw} stor${nw > 1 ? 'ies' : 'y'}`, '#/catchup']);
-  return html`<div class="hm-grab"></div><div class="hm-st">
-    ${chips.length ? html`<div class="hm-st-k">Since you last looked</div><div class="hm-st-chips">${chips.slice(0, 3).map(([l, go]) => html`<a class="hm-st-chip tap" data-go="${go}">${l}</a>`)}</div>` : ''}
-    <a class="hm-st-tuned tap" data-go="#/you">${icon('sliders', 'xs')}Home tuned for: ${fanTraits().map(k => TRAIT[k]).join(' · ')}</a></div>`;
+  return html`<div class="hm-grab"></div>${chips.length ? html`<div class="hm-st"><div class="hm-st-k">Since you last looked</div><div class="hm-st-chips">${chips.slice(0, 3).map(([l, go]) => html`<a class="hm-st-chip tap" data-go="${go}">${l}</a>`)}</div></div>` : ''}`;
 }
 
 /** one sentence: form plus the race */
 
 /** the Home hero (home-hero-height v9): your team on the fabric up top, then three short pages on the team's 700 tint:
  *  the game that matters now, five games around this week, and the tale of the tape against the next opponent */
+/* ------------------------------------------------------------------ season states (built 2026-11-09: bye week B, playoff race B, schedule release B, cut-down A, season over v2). Each returns the hero's pages, or null to leave them as they are. A state's page goes
+   in front and the next game and the season stay after it (your trade-deadline note). */
+const ROUND_NAME = { 1: 'Wild Card', 2: 'Divisional Round', 3: 'Conference Championship', 5: 'Super Bowl' };
+function primeTime(g) { return +new Date(g.ts).toLocaleString('en-US', { hour: 'numeric', hour12: false, timeZone: 'America/New_York' }) >= 19; }
+function raceRows(s, now) {
+  // regular-season games left per team; clinched / out by plain win counts (ties ignored): out when your best possible
+  // total is below both the 7th seed's wins today and your division leader's, in when your wins today beat the best possible total of every team 8th or lower
+  const st = Dt.standings(s, now), left = {};
+  Dt.D.games.forEach(g => { if (g.s === s && g.t === 2 && Dt.state(g, now) !== 'post') [g.h, g.a].forEach(t => { left[t] = (left[t] || 0) + 1; }); });
+  const conf = cf => (st.conf[cf] || []).map(r => ({ ...r, left: left[r.tid] || 0 }));
+  const status = (r, rows) => { const seventh = rows[6], below = rows.slice(7);
+    const lead = Math.max(...rows.filter(x => x.t.div === r.t.div).map(x => x.w));   // the division title is a way in too
+    if (r.w + r.left < seventh.w && r.w + r.left < lead) return 'out';
+    if (rows.indexOf(r) < 7 && below.every(x => r.w > x.w + x.left)) return 'in';
+    return 'hunt'; };
+  return { conf, status };
+}
+function statePages(c, P3) {
+  const { mine, tm, s } = c, now = time.now(), key = time.key;
+  const disc = (id, cls = '') => html`<span class="fx-disc ${cls}"><img src="${team(id).logo}" alt="" loading="lazy"></span>`;
+  const head = (k, more, go) => html`<div class="hh8-ph"><span>${k}</span>${more ? html`<a class="tap" data-go="${go}">${more}${icon('chev', 'xs')}</a>` : ''}</div>`;
+  const btn = (t, go) => html`<a class="btn sm white" data-go="${go}">${t}</a>`;
+  const cd = (ts, sub) => html`<span class="hh8-mid hho-cd"><span class="hh8-big" data-countdown="${ts}">${countParts(ts)}</span>${sub ? html`<small>${sub}</small>` : ''}</span>`;
+  const md = ts => fmt.date(ts).replace(/, \d{4}/, '');
+  const opp = g => html`${Dt.isHome(g, mine) ? 'vs' : 'at'} ${team(Dt.opp(g, mine)).name}`;
+  // bye week: your team has no game in this week of the regular season
+  {
+    const w = Dt.currentWeek(now);
+    if (w && w.t === 2 && !w.games.some(g => involves(g, [mine]))) {
+      const nx = Dt.nextGame(mine), div = Dt.D.core.teams.filter(t => t.conf === tm.conf && t.div === tm.div && t.id !== mine).map(t => t.id);
+      const dg = w.games.filter(g => involves(g, div)).sort((a, b) => a.ts - b.ts);
+      const row = g => { const S = Dt.score(g), rid = div.find(t => involves(g, [t])), hide = Dt.spoiled(g) && S.st !== 'pre';
+        const r = S.st === 'post' && !hide ? Dt.result(g, rid) : null;
+        return html`<a class="hhs-r tap" data-go="#/game/${g.id}">${disc(rid)}<b>${team(rid).name}</b><span>${Dt.isHome(g, rid) ? 'vs' : 'at'} ${team(Dt.opp(g, rid)).abbr}</span><em>${S.st === 'live' ? html`<span class="badge live">Live</span>` : r ? `${r.r} ${r.us}-${r.them}` : `${fmt.weekday(g.ts)} ${fmt.time(g.ts)}`}</em></a>`; };
+      const o1 = html`${head(`Bye week · ${tm.conf} ${tm.div} watch`, 'Standings', '#/standings')}<div class="hhs-list">${dg.slice(0, 3).map(row)}</div>
+        ${nx ? html`<div class="hhs-foot">Back ${md(nx.ts)} ${opp(nx)}</div>` : ''}`;
+      return [o1, ...P3];
+    }
+  }
+  // playoff race: from Week 15 on, the race for the seven seeds in your conference
+  {
+    const w = Dt.currentWeek(now);
+    if (w && w.t === 2 && w.w >= 15) {
+      const R = raceRows(s, now), rows = R.conf(tm.conf), me = rows.find(r => r.tid === mine);
+      if (me) {
+        const i = rows.indexOf(me), from = Math.max(0, Math.min(i - 2, rows.length - 5)), sl = rows.slice(from, from + 5);
+        const o1 = html`${head(`${tm.conf} race · ${Dt.weekLabel(w.t, w.w)}`, 'Playoff picture', '#/playoffs')}<div class="hhs-tbl">${sl.map(r => { const k = R.status(r, rows);
+            return html`<a class="hhs-sr tap ${r.tid === mine ? 'me' : ''} ${r.seed === 8 ? 'cut' : ''}" data-go="#/team/${r.tid}"><i>${r.seed}</i>${disc(r.tid)}<b>${r.t.name}</b><span>${r.w}-${r.l}${r.tie ? '-' + r.tie : ''}</span><em>${k === 'in' ? 'Clinched' : ''}</em></a>`; })}</div>`;
+        return [o1, ...P3];
+      }
+    }
+  }
+  // season over: the Super Bowl has been played and nothing is left
+  if (time.phase() === 'post') {
+    const sb = Dt.D.games.find(g => g.s === s && g.t === 3 && g.w === 5);
+    if (sb && Dt.state(sb, now) === 'post') {
+      const w = sb.hs > sb.as ? sb.h : sb.a, l = Dt.opp(sb, w), r = Dt.result(sb, w);
+      const champ = html`${head(`Super Bowl ${Dt.sbNumeral(s) || ''} · Final`, 'Recap', `#/game/${sb.id}?tab=recap`)}
+        <a class="hm-line tap" data-go="#/game/${sb.id}?tab=recap"><span class="hh8-ms hm-ms ${sb.a !== w ? 'lo' : ''}">${disc(sb.a)}<b>${team(sb.a).abbr}</b></span><strong class="hm-n ${sb.a !== w ? 'lo' : ''}">${sb.as}</strong><span class="hm-st"><b>Final</b></span><strong class="hm-n ${sb.h !== w ? 'lo' : ''}">${sb.hs}</strong><span class="hh8-ms hm-ms r ${sb.h !== w ? 'lo' : ''}">${disc(sb.h)}<b>${team(sb.h).abbr}</b></span></a>
+        <div class="hh8-row"><div class="hh8-kick"><b>The ${team(w).name} are champions</b><span>${fmt.day(sb.ts)} · ${sb.vn || ''}</span></div>${btn('Highlights', `#/game/${sb.id}?tab=recap`)}</div>`;
+      const post = Dt.D.games.filter(g => g.s === s && g.t === 3 && g.w !== 4 && involves(g, [mine])).sort((a, b) => a.ts - b.ts), lastP = post[post.length - 1];
+      // season-over v2 (your note: "maybe less negative"): every season ends on what it reached, never on how it ended
+      const fin = !post.length ? `${s} in the books` : lastP.w === 5 ? (Dt.result(lastP, mine).r === 'W' ? 'Super Bowl champions' : `${tm.conf} champions`) : lastP.w === 3 ? `${tm.conf} Championship run` : 'Playoff team';
+      const wins = Dt.D.games.filter(g => g.s === s && g.t >= 2 && involves(g, [mine]) && Dt.state(g, now) === 'post').map(g => ({ g, r: Dt.result(g, mine) })).filter(x => x.r.r === 'W').sort((x, y) => (y.r.us - y.r.them) - (x.r.us - x.r.them)), bw = wins[0];
+      const reg = Dt.record(mine, s), st = Dt.standings(s, now), me = st.all.find(x => x.tid === mine), a = fxStats(mine, s, st);
+      const wrap = html`${head(`${tm.name} · ${s} season`, 'Schedule', `#/team/${mine}?tab=schedule`)}
+        <div class="hho-f"><span class="hhs-st"><small>${reg.str} · ${fmt.ord(me ? me.seed : 0)} in the ${tm.conf}</small><b>${fin}</b></span></div>
+        <div class="hh8-row"><div class="hh8-kick">${a ? html`<b>${a[0][0]} ${a[0][1].toLowerCase()} · ${fmt.ord(a[0][2])} in NFL</b>` : ''}<span>${bw ? `Best win: ${bw.r.us}-${bw.r.them} ${Dt.isHome(bw.g, mine) ? 'vs' : 'at'} ${team(Dt.opp(bw.g, mine)).abbr}` : `${reg.str} season`}</span></div>${btn('Season stats', `#/team/${mine}?tab=stats`)}</div>`;
+      const nly = Date.parse(`${s + 1}-03-11T20:00:00Z`);
+      const next = html`${head('What\'s next', 'Free agency', '#/free-agency')}<div class="hho-f">${cd(nly, 'until free agency opens')}</div>
+        <div class="hh8-row"><div class="hh8-kick"><b>New league year · ${md(nly)}</b><span>4:00 PM ET · then the draft, Apr 23–25</span></div>${btn('Draft order', '#/draft?y=' + (s + 1))}</div>`;
+      return [wrap, champ, next];
+    }
+  }
+  // schedule release (the three days after it): your 2026 schedule as a reveal
+  if (now >= Dt.SCHEDULE_RELEASE && now < Dt.SCHEDULE_RELEASE + 3 * DAY) {
+    const G = Dt.D.games.filter(g => g.s === 2026 && g.t === 2 && involves(g, [mine])).sort((a, b) => a.ts - b.ts); if (!G.length) return null;
+    const op = G[0], prime = G.filter(primeTime), weeks = G.map(g => g.w), bye = [...Array(18)].map((x, i) => i + 1).find(w => !weeks.includes(w));
+    const opener = html`${head(html`<span class="hh8-lv"><span class="badge live">New</span>2026 schedule</span>`, 'Full schedule', `#/team/${mine}?tab=schedule`)}
+      <a class="hh8-mu tap" data-go="#/game/${op.id}"><span class="hh8-ms">${disc(op.a)}<b>${team(op.a).abbr}</b></span>${cd(op.ts, html`Week 1 ${opp(op)}`)}<span class="hh8-ms r">${disc(op.h)}<b>${team(op.h).abbr}</b></span></a>
+      <div class="hh8-row"><div class="hh8-kick"><b>${fmt.day(op.ts)}</b><span>${fmt.time(op.ts)}${(op.tv || []).length ? ' · ' + op.tv.join(' / ') : ''}</span></div>${btn('Add to calendar', `#/team/${mine}?tab=schedule`)}</div>`;
+    const slate = html`${head('The slate', 'Full schedule', `#/team/${mine}?tab=schedule`)}<div class="hho-n">
+        <span><b>${prime.length}</b><small>Prime time</small><em>Night kickoffs</em></span><span><b>${G.filter(g => Dt.isHome(g, mine)).length}</b><small>At home</small><em>${G.filter(g => !Dt.isHome(g, mine)).length} away</em></span><span><b>${bye || '–'}</b><small>Bye week</small><em>${bye ? 'Week ' + bye : ''}</em></span></div>`;
+    // all 18 weeks at a glance, prime time marked, then the opener
+    const grid = html`${head(html`<span class="hh8-lv"><span class="badge live">New</span>2026 schedule</span>`, 'Full schedule', `#/team/${mine}?tab=schedule`)}<div class="hhs-grid">${[...Array(18)].map((x, i) => { const g = G.find(y => y.w === i + 1);
+        return g ? html`<a class="tap ${primeTime(g) ? 'pt' : ''} ${Dt.isHome(g, mine) ? '' : 'aw'}" data-go="#/game/${g.id}"><i>${i + 1}</i>${disc(Dt.opp(g, mine))}</a>` : html`<span class="by"><i>${i + 1}</i><b>Bye</b></span>`; })}</div>
+      <div class="hhs-key"><span><i class="pt"></i>Prime time</span><span><i class="aw"></i>Away</span></div>`;
+    return [grid, opener, slate];
+  }
+  // cut-down: the last week of August, when rosters go to 53
+  if (key === 'cuts') {
+    const from = '2026-08-24', to = new Date(now).toISOString().slice(0, 10), CUT = /\b(Waived|Released|Placed .* on (?:injured reserve|reserve))/;
+    const rows = Dt.tx().filter(r => r.dt >= from && r.dt <= to && CUT.test(r.x)), my = Dt.tx().filter(r => r.dt >= from && r.dt <= to && r.t === mine);
+    const op = Dt.D.games.find(g => g.s === 2026 && g.t === 2 && involves(g, [mine]));
+    const count = html`${head(html`<span class="hh8-lv"><span class="badge live">Live</span>Cut-down weekend</span>`, 'Tracker', '#/transactions')}
+      <div class="hho-f"><span class="hho-no l"><b>${rows.length}</b><small>Cut moves league-wide</small></span><span class="hho-no"><b>${my.length}</b><small>${tm.name} moves</small></span></div>
+      <div class="hh8-row"><div class="hh8-kick"><b>Every roster goes to 53</b><span>Since Mon, Aug 24</span></div>${btn('Your roster', `#/team/${mine}?tab=roster`)}</div>`;
+    const mv = my.length ? html`${head(`${tm.name} moves`, 'All', '#/transactions')}<div class="hho-mv">${my.slice(0, 2).map(r => html`<span><b>${r.x}</b><small>${md(r.dt + 'T12:00:00Z')}</small></span>`)}</div>` : '';
+    const opn = op ? html`${head('Week 1 opener', 'Full schedule', `#/team/${mine}?tab=schedule`)}
+      <a class="hh8-mu tap" data-go="#/game/${op.id}"><span class="hh8-ms">${disc(op.a)}<b>${team(op.a).abbr}</b></span>${cd(op.ts, opp(op))}<span class="hh8-ms r">${disc(op.h)}<b>${team(op.h).abbr}</b></span></a>
+      <div class="hh8-row"><div class="hh8-kick"><b>${fmt.day(op.ts)}</b><span>${fmt.time(op.ts)}${(op.tv || []).length ? ' · ' + op.tv.join(' / ') : ''}</span></div>${btn('Where to watch', '#/watch')}</div>` : '';
+    return [count, mv, opn].filter(x => String(x).trim());
+  }
+  return null;
+}
 function homeHero(c) {
   const { mine, tm, s, st, row, div, dr, hello, who } = c, now = time.now();
   const rec = row && row.gp ? `${row.w}-${row.l}${row.tie ? '-' + row.tie : ''}` : '0-0';
   const n = row ? parseInt(row.streak.slice(1)) || 0 : 0;
   // under the record: the division place, then the streak (2+) or the conference place
-  const l2 = c.moment ? 'Last season' : row && row.gp ? (n >= 2 ? `${row.streak[0] === 'W' ? 'Won' : 'Lost'} ${n} straight` : `${fmt.ord(row.seed)} in the ${tm.conf}`) : '';
+  // season over (v2): no losing streak under the record once the season is over, the conference place instead
+  const over = time.phase() === 'post' && Dt.D.games.some(g => g.s === s && g.t === 3 && g.w === 5 && Dt.state(g, now) === 'post');
+  const l2 = c.moment ? 'Last season' : row && row.gp ? // only a winning run shows (hero-lost, built Nov 10: positive framing); otherwise the conference place
+    (n >= 2 && row.streak[0] === 'W' ? `Won ${n} straight` : `${fmt.ord(row.seed)} in the ${tm.conf}`) : '';
   const t7 = (tm.shade && tm.shade[700]) || App.mix(tm.color, '#000000', .4);
   const G = Dt.teamGamesAsOf(mine).filter(g => g.t === 2), nx = G.find(g => Dt.state(g, now) !== 'post');
   const recOf = (id, g) => (g && g.t === 1 ? Dt.record(id, g.s, now, 1) : Dt.record(id, s)).str;
@@ -292,26 +416,41 @@ function homeHero(c) {
   if (g) {
     const S = Dt.score(g), oid = Dt.opp(g, mine), o = team(oid), home = Dt.isHome(g, mine), hide = Dt.spoiled(g) && S.st !== 'pre';
     const divGame = o.conf === tm.conf && o.div === tm.div, us = home ? S.hs : S.as, them = home ? S.as : S.hs;
-    const k = S.st === 'live' ? html`<span class="hh8-lv"><span class="badge live">Live</span>${hide ? 'Score hidden' : S.label}</span>` : S.st === 'post' ? `${Dt.weekLabel(g.t, g.w)} · Final${g.ot ? '/OT' : ''}` : `Next up · ${Dt.weekLabel(g.t, g.w)}`;
+    const k = S.st === 'pre' ? `Next up · ${Dt.weekLabel(g.t, g.w)}` : `${Dt.weekLabel(g.t, g.w)}${tv(g) ? ' · ' + tv(g) : ''}`;
     const flag = S.st === 'pre' && divGame ? html`<span class="hh8-flag">Division game</span>` : '';
     let body;
     if (S.st !== 'pre') {
       // live and final: one score line, then the down (or the result) and one button
-      const r = S.st === 'post' && !hide ? Dt.result(g, mine) : null;
       const wp = S.st === 'live' && !hide && S.wp != null ? Math.round(home ? S.wp : 100 - S.wp) : null;
-      const side = (id, sc, rt) => html`<span class="hh8-ss ${rt ? 'r' : ''}">${disc(id)}<b>${team(id).abbr}</b>${sc != null && !hide ? html`<strong>${sc}</strong>` : ''}</span>`;
       const btn = S.st === 'live' ? html`<button class="btn sm white" data-act="gc-watch-id" data-arg="${g.id}">${icon('play', 'sm')}Watch live</button>` : html`<a class="btn sm white" data-go="#/game/${g.id}?tab=recap">${icon('play', 'sm')}Recap</a>`;
-      const sub = hide ? 'Spoiler shield is on' : S.st === 'live' ? (S.dd ? `${S.poss ? team(S.poss).abbr + ' ball · ' : ''}${S.dd}` : S.label) : r ? `${r.r === 'W' ? 'Win' : r.r === 'L' ? 'Loss' : 'Tie'} · ${recOf(mine, g)}` : '';
-      body = html`<a class="hh8-sc tap" data-go="#/game/${g.id}">${side(mine, us)}<span class="hh8-at">${r ? r.r : '–'}</span>${side(oid, them, 1)}</a>
-        <div class="hh8-row"><div class="hh8-kick"><b>${sub}</b>${wp != null ? html`<span class="hh8-wp"><span>Win chance <b>${wp}%</b></span><i><i style="width:${wp}%"></i></i></span>` : ''}</div>${btn}</div>`;
+      const sub = hide ? 'Spoiler shield is on' : S.st === 'live' ? (S.dd ? `${S.poss ? team(S.poss).abbr + ' ball · ' : ''}${S.dd}` : S.label) : `${recOf(mine, g)} · ${fmt.ord(dr)} in ${tm.conf} ${tm.div}`;
+      // the score line (hero-matchup A, approved 2026-11-09) is built like the game page header: away left, home right,
+      // the status in the centre (Final, or Live and the clock), the losing score and tricode dimmed, no letter between the scores
+      const lo = id => S.st === 'post' && !hide && (id === mine ? us < them : them < us) ? 'lo' : '';
+      const scOf = id => id === mine ? us : them;
+      const mid = html`<span class="hm-st">${S.st === 'live' ? html`<span class="badge live">Live</span><b class="r-clock-status">${hide ? '' : S.label}</b>` : html`<b>Final${g.ot ? '/OT' : ''}</b>`}</span>`;
+      const sc = id => hide ? '' : html`<strong class="hm-n ${lo(id)}">${scOf(id)}</strong>`;
+      const edge = (id, rt) => html`<span class="hh8-ms hm-ms ${rt ? 'r' : ''} ${lo(id)}">${disc(id)}<b>${team(id).abbr}</b></span>`;
+      const nxt = S.st === 'post' && next && next !== g ? html`<span>Next: ${Dt.isHome(next, mine) ? 'vs' : 'at'} ${team(Dt.opp(next, mine)).name} · ${fmt.weekday(next.ts)}</span>` : '';
+      body = html`<a class="hm-line tap" data-go="#/game/${g.id}">${edge(g.a)}${sc(g.a)}${mid}${sc(g.h)}${edge(g.h, 1)}</a>
+        <div class="hh8-row"><div class="hh8-kick"><b>${sub}</b>${nxt}${wp != null ? html`<span class="hh8-wp"><span>Win chance <b>${wp}%</b></span><i><i style="width:${wp}%"></i></i></span>` : ''}</div>${btn}</div>`;
     } else {
       // before kickoff: the time to kickoff is the big thing, both teams small either side of it
       const side = (id, rt) => html`<span class="hh8-ms ${rt ? 'r' : ''}">${disc(id)}<b>${team(id).abbr}</b></span>`;
-      body = html`<a class="hh8-mu tap" data-go="#/game/${g.id}?tab=preview">${side(mine)}<span class="hh8-mid"><span class="hh8-big" data-countdown="${g.ts}">${countParts(g.ts)}</span><small>${home ? 'vs' : 'at'} ${o.name} · <span class="hh8-n">${recOf(oid, g)}</span></small></span>${side(oid, 1)}</a>
+      body = html`<a class="hh8-mu tap" data-go="#/game/${g.id}?tab=preview">${side(g.a)}<span class="hh8-mid"><span class="hh8-big" data-countdown="${g.ts}">${countParts(g.ts)}</span><small>${team(g.a).abbr} at ${team(g.h).abbr} · <span class="hh8-n">${recOf(oid, g)}</span></small></span>${side(g.h, 1)}</a>
         <div class="hh8-row"><div class="hh8-kick"><b>${fmt.day(g.ts)}</b><span>${fmt.time(g.ts)}${tv(g) ? ' · ' + tv(g) : ''}</span></div>
           <a class="btn sm white" data-go="#/watch">${icon('tv', 'sm')}Where to watch</a></div>`;
     }
     p1 = html`${head(k)}${flag}<div class="hh8-g ${S.st}">${body}</div>`;
+  }
+  const dlB = deadlineNow();
+  let pd = '';
+  if (dlB && !c.moment) {
+    const deals = deadlineDeals(dlB), my = deals.filter(d => d.to === mine || d.fr === mine), open = now < dlB, d0 = my[0];
+    pd = html`${head(open ? html`<span class="hh8-lv"><span class="badge live">Live</span>Trade deadline</span>` : 'Trade deadline · closed', 'All moves', '#/transactions')}
+      <div class="hho-f">${open ? html`<span class="hh8-mid hho-cd"><span class="hh8-big" data-countdown="${dlB}">${countParts(dlB)}</span><small>until 4 PM ET</small></span>` : html`<span class="hho-no l"><b>${deals.length}</b><small>Deals league-wide</small></span>`}${open ? html`<span class="hho-no"><b>${deals.length}</b><small>Deals so far</small></span>` : ''}</div>
+      <div class="hh8-row"><div class="hh8-kick">${d0 ? html`<b>${d0.to === mine ? 'Added' : 'Sent away'}: ${d0.pos} ${d0.n}</b><span>${d0.to === mine ? 'from' : 'to'} ${team(d0.to === mine ? d0.fr : d0.to).name}${my.length > 1 ? ` · +${my.length - 1} more` : ''}</span>` : html`<b>${tm.name}: no deals yet</b><span>Latest: ${deals[0] ? `${deals[0].n} to ${team(deals[0].to).abbr}` : '—'}</span>`}</div>
+        <a class="btn sm white" data-go="#/transactions">Tracker</a></div>`;
   }
   // page 2: the season
   const done = G.filter(x => Dt.state(x, now) === 'post').length;
@@ -371,13 +510,14 @@ function homeHero(c) {
       const released = now >= Dt.SCHEDULE_RELEASE, op = released ? Dt.D.games.find(g => g.s === 2026 && g.t === 2 && (g.h === mine || g.a === mine)) : null;
       const wk1 = Dt.week(2026, 2, 1), ko = wk1 ? wk1.start : Date.parse('2026-09-10T00:20:00Z');
       const o1 = op ? html`${head(ph === 'camp' ? 'Training camp · Week 1 opener' : 'Week 1 opener')}
-          <a class="hh8-mu tap" data-go="#/game/${op.id}"><span class="hh8-ms">${disc(mine)}<b>${tm.abbr}</b></span>${cd(op.ts, `${Dt.isHome(op, mine) ? 'vs' : 'at'} ${team(Dt.opp(op, mine)).name}`)}<span class="hh8-ms r">${disc(Dt.opp(op, mine))}<b>${team(Dt.opp(op, mine)).abbr}</b></span></a>
+          <a class="hh8-mu tap" data-go="#/game/${op.id}"><span class="hh8-ms">${disc(op.a)}<b>${team(op.a).abbr}</b></span>${cd(op.ts, `${Dt.isHome(op, mine) ? 'vs' : 'at'} ${team(Dt.opp(op, mine)).name}`)}<span class="hh8-ms r">${disc(op.h)}<b>${team(op.h).abbr}</b></span></a>
           <div class="hh8-row"><div class="hh8-kick"><b>${fmt.day(op.ts)}</b><span>${fmt.time(op.ts)}${tv(op) ? ' · ' + tv(op) : ''}</span></div>${btn('Full schedule', `#/team/${mine}?tab=schedule`)}</div>`
         : html`${head('The offseason')}<div class="hho-f">${cd(ko, 'until kickoff 2026')}</div><div class="hh8-row"><div class="hh8-kick"><b>The 2026 schedule drops mid-May</b></div>${btn('Last season', `#/team/${mine}?tab=schedule`)}</div>`;
       off = [o1, nums];
     }
   }
-  const pages = (off || [p1, p2, p3]).filter(x => String(x).trim());
+  const sp = statePages(c, [p1, p2, p3]);
+  const pages = (sp ? [pd, ...sp] : off || [pd, p1, p2, p3]).filter(x => String(x).trim());
   const pg = html`<div class="hh8-pg" onscroll="const i=Math.round(this.scrollLeft/this.clientWidth);this.parentNode.querySelectorAll('.hh8-dots i').forEach((d,n)=>d.classList.toggle('on',n===i))">${pages.map(p => html`<div class="hh8-p">${p}</div>`)}</div>
     <div class="hh8-dots">${pages.map((p, i) => html`<i class="${i ? '' : 'on'}"></i>`)}</div>`;
   return html`<section class="fx hm-stage hh hh8" style="${raw(App.teamVars(tm))};--t7:${t7}">
@@ -391,6 +531,26 @@ function homeHero(c) {
 function hhMini() {
   const mine = primary(); if (!mine || leagueMoment()) return '';
   const tm = team(mine), r = Dt.record(mine, Dt.seasonForStats()), nx = Dt.nextGame(mine), o = nx && team(Dt.opp(nx, mine));
+  // ?pv=pb2a / pb2b, pb3a / pb3b (Approvals preview, pinbar-away v2/v3: B's one row at 40 / 42px): the game page's pinned score bug, slimmer: away first,
+  // logos on white discs, the away-to-home colour blend under the scrim; the game is picked like hero page 1
+  // the game page bug's own sizes (26px discs, 24px scores; no down & distance), 46px edge to edge / 48px inset with its rounded corners
+  // built (pinbar-away v5, Nov 10): A, the bug's insides at 46px edge to edge; older preview flags still draw v2/v3
+  const old = ['pb2a', 'pb2b', 'pb3a', 'pb3b'].some(k => App.pv.has(k)), pb4 = old ? '' : App.pv.has('pb4b') ? ' p4 h48' : ' p4 h46';
+  {
+    const now = time.now(), live = Dt.liveGameFor(mine), last = Dt.lastGame(mine);
+    const g = live || (last && now - last.ts < 2.2 * DAY && (!nx || nx.ts - now > 1.2 * DAY) ? last : null) || nx;
+    if (g) {
+      const S = Dt.score(g), st = S.st, hide = Dt.spoiled(g) && st !== 'pre', slim = !App.pv.has('pb2a'), tall = pb4 || (App.pv.has('pb3a') ? ' h40' : App.pv.has('pb3b') ? ' h42' : '');
+      const away = team(g.a), home = team(g.h);
+      const lost = (a, b) => st === 'post' && !hide && a < b ? ' lost' : '';
+      const ball = tid => st === 'live' && !hide && S.poss === tid ? html`<i class="pb-poss" title="Has the ball"></i>` : '';
+      const side = (t, v, o, right) => html`<div class="pb-t${right ? ' h' : ''}${lost(v, o)}"><span class="pb-disc"><img src="${t.logo}" alt=""></span><b class="lk-tri">${t.abbr}</b>${ball(t.id)}${st === 'pre' ? '' : html`<b class="lk-sc">${hide ? '–' : v}</b>`}</div>`;
+      const mid = st === 'live' ? html`<span class="badge live">${hide ? 'Live' : S.label}</span>${!slim && !hide && S.dd ? html`<span class="pb-dd r-down-distance">${S.dd}</span>` : ''}`
+        : st === 'post' ? html`<span class="badge">Final${g.ot ? '/OT' : ''}</span>` : html`<span class="badge">${fmt.weekday(g.ts)} ${fmt.time(g.ts)}</span>`;
+      const go = st === 'pre' ? `#/game/${g.id}?tab=preview` : `#/game/${g.id}`;
+      return html`<a class="hh-mini pb2 ${pb4 ? '' : slim ? 'b' : 'a'}${tall} tap" data-go="${go}" style="${raw(`--ca:${App.teamFill(away)};--ch:${App.teamFill(home)}`)}">${side(away, S.as, S.hs)}<div class="pb-mid">${mid}</div>${side(home, S.hs, S.as, true)}</a>`;
+    }
+  }
   // while your game is live, the bar carries the score and the clock instead of the kickoff time
   const lg = Dt.liveGameFor(mine);
   if (lg) {
@@ -629,6 +789,12 @@ function rankedNews() {
   const cared = caredTeams(), pl = P().players || [], pr = primary();
   return news().map(a => ({ a, sc: (pr && a.tm.includes(pr) ? 4 : 0) + (a.tm.some(t => cared.includes(t)) ? 2 : 0) + (a.ath.some(x => pl.includes(x)) ? 3 : 0) - (time.now() - Date.parse(a.pub)) / (2 * DAY) }))
     .sort((x, y) => y.sc - x.sc).map(x => x.a);
+}
+/** the News tab's Top (news-pass, built Nov 10): newest first; your team, teams and players only break ties within the same hour */
+function latestNews() {
+  const cared = caredTeams(), pl = P().players || [], pr = primary();
+  return news().map(a => ({ a, t: Math.floor(Date.parse(a.pub) / 3.6e6), sc: (pr && a.tm.includes(pr) ? 4 : 0) + (a.tm.some(t => cared.includes(t)) ? 2 : 0) + (a.ath.some(x => pl.includes(x)) ? 3 : 0) }))
+    .sort((x, y) => (y.t - x.t) || (y.sc - x.sc)).map(x => x.a);
 }
 function recentFinals(n = 8) {
   const now = time.now();
@@ -1013,7 +1179,7 @@ function searchIdle() {
   const trending = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 8).map(x => x[0]);
   const ideas = ['Most passing yards 2025', 'Mahomes vs Allen', 'Rushing TD leaders', 'Week 5 2026'];
   return html`${recent.length ? html`<section class="sec"><div class="sec-head"><div class="h2">Recent</div><a class="more" data-act="srch-clear">Clear</a></div><div class="chips">${recent.map(q => html`<button class="chip" data-act="srch-set" data-arg="${q}">${icon('clock', 'sm')}${q}</button>`)}</div></section>` : ''}
-    <section class="sec"><div class="sec-head"><div class="h2">Ask anything</div></div><div class="chips">${ideas.map(q => html`<button class="chip" data-act="srch-set" data-arg="${q}">${icon('sparkle', 'sm')}${q}</button>`)}</div></section>
+    <section class="sec"><div class="sec-head"><div class="h2">Ask anything</div></div><div class="chips">${ideas.map(q => html`<button class="chip" data-act="srch-set" data-arg="${q}">${icon('search', 'sm')}${q}</button>`)}</div></section>
     ${App.exploreDirectory ? html`<section class="sec"><div class="sec-head"><div class="h2">Explore</div></div></section>${App.exploreDirectory()}` : ''}
     ${trending.length ? html`<section class="sec"><div class="sec-head"><div class="h2">Trending players</div></div><div class="list">${trending.map(pid => UI.playerRow(pid))}</div></section>` : ''}
     <section class="sec"><div class="sec-head"><div class="h2">Browse teams</div><a class="more" data-go="#/teams/all">All 32${icon('chev', 'xs')}</a></div>
@@ -1115,13 +1281,19 @@ App.route('inbox', () => {
 });
 
 /* ------------------------------------------------------------------ News list */
+/** the News list under two small headers: Latest (the last 24 hours) and Earlier this week (news-pass, built Nov 10) */
+function newsGroups(items) {
+  const now = time.now(), fresh = items.filter(a => now - Date.parse(a.pub) < DAY), older = items.filter(a => now - Date.parse(a.pub) >= DAY), both = fresh.length && older.length;
+  const grp = (h, xs) => xs.length ? html`${both ? html`<div class="nw-grp">${h}</div>` : ''}<div class="list ${both ? '' : 'mt12'}">${xs.map(a => UI.newsCard(a, 'sm'))}</div>` : '';
+  return html`${grp('Latest', fresh)}${grp('Earlier this week', older)}`;
+}
 App.route('news', (params, query, page) => {
   const ftab = query.team || (store.tmp.newsTab) || 'all';
   const cared = caredTeams();
   const tabsList = [{ k: 'all', l: 'Top' }].concat(cared.length ? [{ k: 'mine', l: 'My teams' }] : []).concat(cared.slice(0, 4).map(id => ({ k: id, l: team(id).name }))).concat([{ k: 'analysis', l: 'Analysis' }, { k: 'fantasy', l: 'Fantasy' }]);
   if (query.team && !tabsList.find(x => x.k === query.team)) tabsList.splice(1, 0, { k: query.team, l: team(query.team).name });
   let list;
-  if (ftab === 'all') list = rankedNews();
+  if (ftab === 'all') list = latestNews();
   else if (ftab === 'mine') list = news({ teams: cared });
   else if (ftab === 'analysis') list = news().filter(a => a.ty === 'Story');
   else if (ftab === 'fantasy') list = news({ fantasy: true }).filter(a => a.fan);
@@ -1131,7 +1303,7 @@ App.route('news', (params, query, page) => {
     // the News tab: big title and the shared header; pushed (a team's news) it gets a back button instead
     title: query.team ? team(query.team).name + ' news' : t('News'), big: page.isRoot, right: page.isRoot ? UI.headRight() : '',
     sub: UI.chips(tabsList, ftab, 'news-tab'),
-    html: html`<div class="mt12"></div>${lead ? html`<div class="pad">${UI.newsCard(lead, 'lg')}</div><div class="list mt12">${list.slice(1, 40).map(a => UI.newsCard(a, 'sm'))}</div>`
+    html: html`<div class="mt12"></div>${lead ? html`<div class="pad">${UI.newsCard(lead, 'lg')}</div>${newsGroups(list.slice(1, 40))}`
       : UI.empty('news', 'No stories yet', time.now() < Date.parse('2026-10-01') ? 'The news archive in this snapshot starts in October 2026 — try the time machine\'s "Right now".' : 'Nothing here right now.')}`,
   };
 });

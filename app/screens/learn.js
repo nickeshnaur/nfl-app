@@ -346,7 +346,7 @@ A['lr-ans'] = (el, ev, arg) => {
       if (LESSONS.every(l => D[l.id]) && !store.p.badges.includes('student')) store.p.badges.push('student');
       if (!store.p.badges.includes('learner')) store.p.badges.push('learner');
       store.save();
-      if (correct) App.toast({ title: `+${correct * 10} fan points`, body: `Lesson complete: ${L.t}`, icon: 'medal' });
+      if (correct) App.toast({ title: `+${correct * 10} fan points`, body: `Lesson complete: ${L.t}`, icon: 'check' });
     } else { st.awarded = false; D[L.id] = Math.max(D[L.id], correct); store.save(); }
   }
   App.refresh();

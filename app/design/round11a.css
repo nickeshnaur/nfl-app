@@ -1,0 +1,9 @@
+@import url("../css/pv11a.css"); /* the same option styles, scoped to the spec strips by a .btn-a/b/c wrapper */
+/* round 11a: btn-family card */
+.r11a-strip{display:flex;flex-direction:column;gap:14px;padding:18px;border-radius:14px;background:var(--bg);color:var(--text);max-width:393px}
+.r11a-strip.dk{background:#0b0d12;color:#fff}
+.r11a-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.r11a-k{font:600 11px/1.2 var(--sans);color:var(--text-2);margin-bottom:-6px}
+.r11a-mg{position:relative;width:200px;height:96px;padding:12px;border-radius:12px;background:#5ccf74;--mg-d:#0d4a1c;display:flex;align-items:flex-end}
+.r11a-tm{padding:12px;border-radius:12px;display:flex;gap:8px;flex-wrap:wrap}
+.r11a-cols{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}

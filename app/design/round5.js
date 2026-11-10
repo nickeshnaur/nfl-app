@@ -1748,6 +1748,204 @@ DSApprovals.add(6, [
 "issues": ""
 },
 {
+"id": "hero-matchup",
+"name": "Home hero: the score line",
+"target": "home.js",
+"where": "Home",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
+"id": "pinbar-away",
+"name": "Home pinned bar: away first",
+"target": "home.js",
+"where": "Home",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
+"id": "watch-pass",
+"name": "Watch: tidy pass",
+"target": "watch.js",
+"where": "Watch",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
+"id": "teams-pass",
+"name": "Team page: tidy pass",
+"target": "teams.js",
+"where": "Teams · team overview",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
+"id": "player-pass",
+"name": "Player page: tidy pass",
+"target": "player.js",
+"where": "Player page",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
+"id": "home-tuned",
+"name": "Home: no tuned-for line",
+"target": "home.js",
+"where": "Home",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
+"id": "hero-lost",
+"name": "Home hero: no Lost N straight",
+"target": "home.js",
+"where": "Home",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
+"id": "btn-family",
+"name": "Buttons: one family",
+"target": "forward.css",
+"where": "Every button, chip, segment and pill tab",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
+"id": "scores-pass",
+"name": "Scores: tidy pass",
+"target": "scores.js",
+"where": "Scores",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
+"id": "news-pass",
+"name": "News: tidy pass",
+"target": "home.js",
+"where": "News · Top",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
+"id": "pregame-hero",
+"name": "Game page hero: before kickoff",
+"target": "game.js",
+"where": "Game page · Preview tab",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
+"id": "game-hero-live",
+"name": "Game page hero: live and final",
+"target": "game.js",
+"where": "Game page · live and final",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
+"id": "sec-more",
+"name": "Section links: bolder, smaller",
+"target": "forward.css",
+"where": "Every section head",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
+"id": "chrome-nosb",
+"name": "No status bar; time machine on You",
+"target": "core.js",
+"where": "Every screen · You",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
+"id": "mg-plain",
+"name": "Mini games: plain colour cards",
+"target": "minigames.js",
+"where": "Home · Mini games",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
+"id": "nfl-icons",
+"name": "Icons: the NFL app's set",
+"target": "core.js",
+"where": "Everywhere",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
+"id": "trade-deadline",
+"name": "Trade deadline day",
+"target": "home.js",
+"where": "Home",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
+"id": "season-bye",
+"name": "Bye week",
+"target": "home.js",
+"where": "Home",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
+"id": "season-race",
+"name": "Playoff race",
+"target": "home.js",
+"where": "Home",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
+"id": "season-over",
+"name": "Season over",
+"target": "home.js",
+"where": "Home",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
+"id": "season-schedule",
+"name": "Schedule release",
+"target": "home.js",
+"where": "Home",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
+"id": "season-cuts",
+"name": "Roster cut-down",
+"target": "home.js",
+"where": "Home",
+"route": "",
+"sel": "@page",
+"issues": ""
+},
+{
 "id": "you-settings",
 "name": "You page below the card + Settings",
 "target": "you.js route \u00b7 settings/:k",

@@ -162,7 +162,7 @@ App.route('stat-finder', (params, query, page) => {
     const desc = [st.rookie ? 'Rookie' : '', st.grp ? PS.GROUP_NAME[st.grp] : 'players', st.team ? `on the ${Dt.team(st.team).name}` : '', `by ${stt.l.toLowerCase()}`, `· ${st.s}`].filter(Boolean).join(' ');
     return {
       title: 'Stat finder',
-      html: html`<div class="mt12"><label class="sf-q">${icon('sparkle', 'sm')}<input class="sf-input" placeholder="Try: most rushing yards by a rookie 2025" value="${st.q}" enterkeyhint="search"></label></div>
+      html: html`<div class="mt12"><label class="sf-q">${icon('search', 'sm')}<input class="sf-input" placeholder="Try: most rushing yards by a rookie 2025" value="${st.q}" enterkeyhint="search"></label></div>
         <div class="pad mt12 sq-chips">${[['stat', stt.l], ['grp', st.grp ? (GROUPS.find(([k]) => k === st.grp) || [0, st.grp])[1] : 'All positions'], ['s', st.s], ['team', st.team ? Dt.team(st.team).name : 'All teams']].map(([k, l]) => html`<button class="sc-season" data-act="sf-pick" data-arg="${k}">${l}${icon('down', 'xs')}</button>`)}
           <button class="sc-season ${st.minG || st.rookie ? 'on' : ''}" data-act="sf-more">${icon('filter', 'xs')}More${st.minG || st.rookie ? ` · ${(st.minG ? 1 : 0) + (st.rookie ? 1 : 0)}` : ''}</button></div>
         ${st.q || st.grp || st.team || st.rookie || st.stat !== 'passYds' ? '' : html`<div class="list mt12">${PRESETS.slice(0, 4).map((p, i) => UI.row({ left: html`<span class="lead-tile">${icon('search', 'sm')}</span>`, title: p.q, act: 'sf-preset', arg: String(i) }))}</div>`}

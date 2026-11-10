@@ -143,7 +143,7 @@ function fieldViz(g, opts = {}) {
 
   // text
   const p = D.p;
-  const kindIcon = { pass: 'football', inc: 'football', run: 'football', kick: 'football', fg: 'flag', sack: 'zap', pen: 'flag' }[D.kind] || 'football';
+  const kindIcon = { pass: 'football', inc: 'football', run: 'football', kick: 'football', fg: 'flag', sack: 'football', pen: 'flag' }[D.kind] || 'football';
   const playLine = html`<div class="fv-label">${icon(kindIcon, 'sm')}<b>${D.label}</b>${p.dd ? html`<span class="fv-dd">· ${p.dd}</span>` : ''}</div>
     ${opts.compact ? '' : html`<div class="fv-text">${(p.x || '').replace(/\s+/g, ' ').replace(/\(\d+:\d+ - \d\w\w\)\s*/, '')}</div>`}`;
 

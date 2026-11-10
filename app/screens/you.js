@@ -145,6 +145,7 @@ App.route('you', (params, query, page) => {
     html: html`
       ${tm ? fanCard(tm, lv, pr) : oldCard(p, tm, lv, pr)}
 
+      <div class="sec"><div class="list">${UI.row({ left: setIc('clock'), title: 'Time machine', sub: `${fmt.day(time.date())} · ${time.moment().label}`, act: 'time-machine', chev: true })}</div></div>
       <div class="sec"><div class="list">${UI.row({ left: setIc('bell'), title: 'Alerts', sub: unread ? `${unread} new` : 'You\'re all caught up', right: unread ? html`<span class="badge live">${unread}</span>` : '', go: '#/inbox' })}</div></div>
 
       <div class="sec"><div class="sec-head"><div class="h2">Badges</div><a class="more" data-go="#/community">Earn more${icon('chev', 'xs')}</a></div>
@@ -182,9 +183,6 @@ App.route('you', (params, query, page) => {
         ${setRow('info', 'About', null, '#/settings/about')}
       </div></div>
 
-      <div class="sec"><div class="sec-head"><div class="h2">Prototype</div></div>
-        <div class="tiny pad" style="margin:-4px 0 10px">Tools for exploring this proof of concept. They aren't part of the app.</div>
-        <div class="list">${UI.row({ left: setIc('clock'), title: 'Time machine', right: html`<span class="set-val">${time.moment().label}</span>`, act: 'time-machine', chev: true })}</div></div>
       <div class="sec"><div class="sec-head"><div class="h2">Explore as another fan</div></div>
         <div class="tiny pad" style="margin:-4px 0 10px">One tap reshapes the whole app around a different kind of fan.</div>
         <div class="hscroll">${PERSONAS.map(P => { const T = Dt.team(P.teams[0]); return html`<button class="you-persona tap" data-act="you-persona" data-arg="${P.k}">

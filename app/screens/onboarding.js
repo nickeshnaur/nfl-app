@@ -9,7 +9,7 @@ const UI = App.UI, Dt = App.data;
 
 const STEPS = ['welcome', 'level', 'team', 'more', 'players', 'location', 'watch', 'alerts', 'done'];
 const LEVELS = [
-  { k: 'new', ic: 'sparkle', t: 'New to football', d: 'Explain things as I go. Rules, terms, why that just happened.', depth: 1 },
+  { k: 'new', ic: 'football', t: 'New to football', d: 'Explain things as I go. Rules, terms, why that just happened.', depth: 1 },
   { k: 'casual', ic: 'tv', t: 'Casual fan', d: 'Scores, highlights and the big stories. Keep it simple.', depth: 2 },
   { k: 'diehard', ic: 'fire', t: 'Die-hard', d: 'Every snap, every injury report, every roster move.', depth: 3 },
   { k: 'analyst', ic: 'chart', t: 'Stats nerd', d: 'EPA, splits, All-22, advanced numbers. Give me everything.', depth: 3 },
@@ -25,7 +25,6 @@ const TIERS = [
   { k: 'plus', n: 'NFL+', price: '$6.99/mo', inc: ['Live local & primetime games on your phone', 'Live audio for every game', 'NFL Films & ad-free highlights'] },
   { k: 'premium', n: 'NFL+ Premium', price: '$14.99/mo', inc: ['Everything in NFL+', 'NFL RedZone', 'Full & condensed replays, All-22'] },
 ];
-const DIVS = ['AFC East', 'AFC North', 'AFC South', 'AFC West', 'NFC East', 'NFC North', 'NFC South', 'NFC West'];
 
 /* ---------------------------------------------------------------- team-finder quiz */
 const QUIZ = [
@@ -82,6 +81,9 @@ function paint() {
   const tm = ob.primary && Dt.team(ob.primary);
   if (tm) { const a = App.readable(tm); M.style.setProperty('--accent', a); M.style.setProperty('--accent-ink', App.lum(a) > .45 ? '#0a0a0a' : '#fff'); }
   else { M.style.removeProperty('--accent'); M.style.removeProperty('--accent-ink'); }
+  // the Continue button is ink until a team is picked, then the team's real colour with white text, deepened only where white fails 4.5:1 (ob-continue C)
+  M.classList.toggle('ob-picked', !!tm); M.classList.toggle('ob-cta-black', !!tm && App.lum(App.teamFill(tm)) < .004);
+  if (tm) M.style.setProperty('--ob-cta', App.onWhite(App.teamFill(tm))); else M.style.removeProperty('--ob-cta');
   const body = M.querySelector('.ob-body'); if (body && !paint.reset) body.scrollTop = keep; paint.reset = false;
   const inp = M.querySelector('input[data-ob-search]');
   if (inp) { inp.value = q; inp.addEventListener('input', () => { q = inp.value; const sel = inp.selectionStart; paintList(); }); }
@@ -138,17 +140,12 @@ function level() {
       <span class="ob-radio"></span></button>`)}</div>
     <div class="ob-depth"><div class="eyebrow">Detail level</div><div class="ob-depth-bar">${[1, 2, 3].map(d => html`<button class="${ob.depth === d ? 'on' : ''}" data-act="ob-depth" data-arg="${d}">${['Surface', 'Standard', 'Deep'][d - 1]}</button>`)}</div></div>`;
 }
-/** all 32 by division. 'team' picks your one team; 'more' toggles the extras */
+/** all 32 A to Z by city, one grid (ob-alpha A). 'team' picks your one team; 'more' toggles the extras */
 function grid(mode) {
-  // preview only (ob-alpha card): ob.sortBy 'full' (city) or 'name' (nickname) lists all 32 A to Z, no division heads
-  if (ob.sortBy) return html`<div class="ob-teams">${[...Dt.D.teams].sort((a, b) => a[ob.sortBy].localeCompare(b[ob.sortBy])).map(tm => {
+  return html`<div class="ob-teams">${[...Dt.D.teams].sort((a, b) => a.full.localeCompare(b.full)).map(tm => {
     const prim = ob.primary === tm.id, on = mode === 'team' ? prim : ob.teams.includes(tm.id);
     return UI.teamTile(tm.id, { on, act: mode === 'team' ? 'ob-pick' : 'ob-team', badge: prim ? 'star' : '', disabled: mode === 'more' && prim });
   })}</div>`;
-  return html`<div class="ob-teams">${DIVS.map(dv => html`<div class="ob-div">${dv}</div>${Dt.D.teams.filter(t => t.conf + ' ' + t.div === dv).map(tm => {
-    const prim = ob.primary === tm.id, on = mode === 'team' ? prim : ob.teams.includes(tm.id);
-    return UI.teamTile(tm.id, { on, act: mode === 'team' ? 'ob-pick' : 'ob-team', badge: prim ? 'star' : '', disabled: mode === 'more' && prim });
-  })}`)}</div>`;
 }
 function teamStep() {
   return html`<div class="ob-h">Who's your team?</div><div class="ob-s">Pick one. Home, scores and alerts are built around them, and the app wears their colours. You can follow more teams next.</div>

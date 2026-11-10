@@ -281,3 +281,8 @@
 :is(.rank,.pr-rk,.ld-rk,.stk-n,.lk-seed,.st-seed,.br-seed,.po-seed .n,.tm-match-rank,.dr-n b):not(td){font-family:var(--sans)!important;font-style:normal!important;font-weight:700!important;font-variant-numeric:tabular-nums}
 :is(.hm-rec,.gc-rec,.lk-rec,.mx-rec,.stk-rec,.hs-rec,.gcard .gc-team .rec){font-family:var(--sans)!important;font-style:normal!important;font-variant-numeric:tabular-nums}
 :is(.gcard .gc-team .sc,.sb-team .sc,.hm-score,.gc-sc,.cu-score b,.pip-sc,.gc-dscore,.scorebug .sbs){font-family:var(--display)!important;font-weight:900!important;font-style:italic!important}
+
+/* BUTTON RULE (btn-family v3, option B, 2026-11-10). Action buttons (.btn, the Mini games PLAY NOW) speak in All-Pro Display, ALL CAPS,
+   upright: the one place Display isn't italic. Chips, segments and pill tabs stay Sans bold, sentence case (button-label · sans above).
+   :not(#…) only lifts this over the button-label locks above. */
+:is(.btn,.mg-btn,.cm-gbtn):not(#_btn){font-family:var(--display)!important;font-weight:900!important;font-style:normal!important;text-transform:uppercase!important;letter-spacing:.02em!important}

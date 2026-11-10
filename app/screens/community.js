@@ -17,8 +17,8 @@ const ab = id => (team(id) || {}).abbr;
 
 const LEVELS = [[0, 'Rookie'], [200, 'Starter'], [500, 'Pro Bowler'], [1000, 'All-Pro'], [2500, 'Hall of Famer']];
 const BADGES = {
-  rookie: ['star', 'Rookie', 'Joined the app'], learner: ['book', 'Student', 'Finished a Football 101 lesson'], student: ['medal', 'Student of the Game', 'Finished every lesson'],
-  picker: ['pick', 'Picker', 'Made your first pick\'em picks'], sharp: ['target', 'Sharp Eye', '5 correct picks'], trivia: ['help', 'Know-it-all', 'Perfect daily trivia'],
+  rookie: ['star', 'Rookie', 'Joined the app'], learner: ['book', 'Student', 'Finished a Football 101 lesson'], student: ['check', 'Student of the Game', 'Finished every lesson'],
+  picker: ['check', 'Picker', 'Made your first pick\'em picks'], sharp: ['target', 'Sharp Eye', '5 correct picks'], trivia: ['help', 'Know-it-all', 'Perfect daily trivia'],
   voter: ['check', 'Voter', 'Cast a Pro Bowl ballot'], squad: ['users', 'Squad Up', 'Joined a fan squad'], traveler: ['plane', 'Road Tripper', 'Planned an away trip'],
   collector: ['stadium', 'Collector', 'Checked in at a stadium'], grader: ['edit', 'Critic', 'Graded your team'],
 };
@@ -268,7 +268,7 @@ App.route('community', () => {
           ${UI.row({ left: html`<div class="lr-ic">${icon('plus', 'sm')}</div>`, title: 'Start a squad', sub: 'Invite friends with a link', act: 'cm-new-squad' })}</div></div>
       ${w ? html`<div class="sec">${UI.secHead(`Pick'em · ${Dt.weekLabel(w.t, w.w)}`, 'Open', '#/pickem')}
         <a class="card cpad tap" data-go="#/pickem" style="display:block;margin:0 var(--pad)">
-          <div class="flex between"><div><div class="h4">${open.length ? `${picked} of ${w.games.length} picked` : 'Picks are locked for this week'}</div><div class="meta mt4">${ps.n ? `Season: ${ps.right}-${ps.wrong} · ${ps.pts} pts` : 'Free to play. 10 points per correct pick.'}</div></div>${icon('pick')}</div>
+          <div class="flex between"><div><div class="h4">${open.length ? `${picked} of ${w.games.length} picked` : 'Picks are locked for this week'}</div><div class="meta mt4">${ps.n ? `Season: ${ps.right}-${ps.wrong} · ${ps.pts} pts` : 'Free to play. 10 points per correct pick.'}</div></div>${icon('football')}</div>
           <div class="meter mt12"><i style="width:${w.games.length ? picked / w.games.length * 100 : 0}%"></i></div></a></div>` : ''}
       <div class="sec">${UI.secHead('Daily trivia')}
         <a class="card cpad tap" data-go="#/trivia" style="display:block;margin:0 var(--pad)"><div class="flex gap12"><div class="lr-ic lg">${icon('help')}</div><div class="grow">
@@ -333,7 +333,7 @@ App.route('squad/:id', (params, query, page) => {
 
 App.route('pickem', () => {
   const w = pickWeek();
-  if (!w) return { title: 'Pick\'em', html: UI.empty('pick', 'Pick\'em is resting', 'It returns when the regular season kicks off. Meanwhile, try daily trivia.', html`<button class="btn primary mt16" data-go="#/trivia">Play trivia</button>`) };
+  if (!w) return { title: 'Pick\'em', html: UI.empty('football', 'Pick\'em is resting', 'It returns when the regular season kicks off. Meanwhile, try daily trivia.', html`<button class="btn primary mt16" data-go="#/trivia">Play trivia</button>`) };
   const ps = pickStats(), now = time.now();
   const days = {};
   w.games.forEach(g => (days[fmt.dayKey(g.ts)] = days[fmt.dayKey(g.ts)] || []).push(g));
@@ -365,7 +365,7 @@ App.route('pickem', () => {
       <div class="pad-all"><div class="eyebrow">${Dt.weekLabel(w.t, w.w)} · ${w.s}</div><div class="h1 mt8" style="font-size:28px">${w.games.length > 1 ? 'Pick every winner' : 'Pick the winner'}</div>
         <p class="muted mt8">Free to play. 10 points for each correct pick. Picks lock at kickoff.</p>
         <div class="mt12">${UI.statRow([[`${ps.right}-${ps.wrong}`, 'Season'], [ps.pts, 'Points'], [ps.streak, 'Streak']])}</div>
-        ${open ? html`<button class="btn ghost sm mt12" data-act="cm-autopick">${icon('sparkle', 'sm')} Pick the rest with fan favourites</button>` : ''}</div>
+        ${open ? html`<button class="btn ghost sm mt12" data-act="cm-autopick">${icon('refresh', 'sm')} Pick the rest with fan favourites</button>` : ''}</div>
       ${Object.entries(days).map(([d, gs]) => html`<div class="sec" style="margin-top:12px"><div class="pad eyebrow mb8">${fmt.dayLong(gs[0].ts)}</div><div class="cards">${gs.map(pickRow)}</div></div>`)}
       <div class="pad mt24 tiny center">Just for fun — no money, no odds. Your squads see your record on their leaderboards.</div>`,
   };

@@ -114,7 +114,10 @@ const ICONS = {
   layers: '<path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/>', split: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16M3 12h18"/>',
   baby: '<circle cx="12" cy="8" r="4.5"/><path d="M6 21c0-3.5 2.7-6 6-6s6 2.5 6 6"/><path d="M10.5 7.5h.01M13.5 7.5h.01"/>',
 };
-function icon(name, cls = '') { return raw(`<svg class="ico ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ICONS.info}</svg>`); }
+// the NFL app's exported icons (app/icons-nfl.js) where we have them, ours for the rest; '-on' (Fill) when active: selected tab or cls 'fill'
+const nfIcon = name => window.NFL_ICONS && window.NFL_ICONS[name];
+function icon(name, cls = '') { const on = /\bfill\b/.test(cls) && nfIcon(name + '-on'); const nf = on || nfIcon(name); if (nf) return raw(`<svg class="ico nf ${cls}" viewBox="0 0 24 24" aria-hidden="true">${nf}</svg>`);
+  return raw(`<svg class="ico ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ICONS.info}</svg>`); }
 
 /* ------------------------------------------------------------------ persistent store */
 const KEY = 'nfl-ultimate-v1';
@@ -162,12 +165,19 @@ const MOMENTS = [
   { key: 'gameday', label: 'Game Day Sunday', sub: 'Sun, Oct 11 2026 · Week 5, 3:55 PM ET', at: '2026-10-11T19:55:00Z', phase: 'regular', icon: 'football', live: true },
   { key: 'snf', label: 'Sunday Night', sub: 'Sun, Oct 11 2026 · BAL @ ATL, 9:40 PM ET', at: '2026-10-12T01:40:00Z', phase: 'regular', icon: 'moon', live: true },
   { key: 'midweek', label: 'Midweek', sub: 'Wed, Oct 14 2026 · Week 6 prep', at: '2026-10-14T16:00:00Z', phase: 'regular', icon: 'calendar' },
+  { key: 'deadline', label: 'Trade Deadline', sub: 'Tue, Nov 4 2025 · 30 minutes to the 4 PM ET deadline', at: '2025-11-04T20:30:00Z', phase: 'regular', icon: 'swap' },
   { key: 'kickoff', label: 'Kickoff Week', sub: 'Thu, Sep 10 2026 · Opening night', at: '2026-09-10T22:00:00Z', phase: 'regular', icon: 'flag' },
   { key: 'camp', label: 'Training Camp', sub: 'Tue, Jul 28 2026', at: '2026-07-28T15:00:00Z', phase: 'camp', icon: 'whistle' },
   { key: 'summer', label: 'Summer Lull', sub: 'Sat, Jun 20 2026 · The dead zone', at: '2026-06-20T16:00:00Z', phase: 'summer', icon: 'sun' },
   { key: 'draft', label: 'Draft Night', sub: 'Thu, Apr 23 2026 · Round 1, Pittsburgh', at: '2026-04-24T01:10:00Z', phase: 'draft', icon: 'star' },
   { key: 'fa', label: 'Free Agency', sub: 'Wed, Mar 11 2026 · New league year', at: '2026-03-11T21:00:00Z', phase: 'fa', icon: 'swap' },
   { key: 'sb', label: 'Super Bowl LX', sub: 'Sun, Feb 8 2026 · SEA vs NE, 3rd qtr', at: '2026-02-09T01:45:00Z', phase: 'post', icon: 'trophy', live: true },
+  // season and offseason states (time machine groups); each a real instant
+  { key: 'bye', label: 'Bye Week', sub: 'Sun, Oct 11 2026 · Week 5, Chiefs and Panthers off', at: '2026-10-11T16:30:00Z', phase: 'regular', icon: 'calendar' },
+  { key: 'race', label: 'Playoff Race', sub: 'Sun, Dec 28 2025 · Week 17, before the 1 PM games', at: '2025-12-28T16:30:00Z', phase: 'regular', icon: 'trophy' },
+  { key: 'sbover', label: 'Season Over', sub: 'Mon, Feb 9 2026 · The morning after Super Bowl LX', at: '2026-02-09T14:00:00Z', phase: 'post', icon: 'trophy' },
+  { key: 'sched', label: 'Schedule Release', sub: 'Wed, May 13 2026 · 8:30 PM ET, all 272 games out', at: '2026-05-14T00:30:00Z', phase: 'summer', icon: 'calendar' },
+  { key: 'cuts', label: 'Cut-down Weekend', sub: 'Sun, Aug 30 2026 · Rosters to 53', at: '2026-08-30T20:00:00Z', phase: 'camp', icon: 'users' },
   // not listed in the time machine: where its "Scoring plays" jump lands (5 seconds before a real score)
   { key: 'pregame', label: 'Pregame', sub: 'Gates open, about 100 minutes to kickoff', at: '2026-10-11T18:45:00Z', phase: 'regular', icon: 'stadium' },
   { key: 'replay', label: 'Scoring play', sub: 'Five seconds before a real score', at: '2026-10-11T19:55:00Z', phase: 'regular', icon: 'football', live: true },
@@ -401,7 +411,8 @@ function showTab(key, { reset } = {}) {
   }
   curTab = key;
   document.querySelectorAll('.stack').forEach(s => s.classList.toggle('on', s.dataset.tab === key));
-  document.querySelectorAll('#device > .tabbar button').forEach(b => b.classList.toggle('on', b.dataset.tab === key));
+  document.querySelectorAll('#device > .tabbar button').forEach(b => { const on = b.dataset.tab === key, tab = TABS.find(x => x.key === b.dataset.tab), svg = b.querySelector('svg.ico');
+    b.classList.toggle('on', on); if (tab && svg) svg.outerHTML = String(tabIcon(tab, on)); });
   const tbar = document.querySelector('#device > .tabbar'); if (tbar) tbar.style.setProperty('--i', Math.max(0, TABS.findIndex(x => x.key === key)));
   const top = stacks[key][stacks[key].length - 1];
   syncHash(top.hash);
@@ -539,10 +550,12 @@ function onClick(ev) {
 }
 
 /* ------------------------------------------------------------------ chrome: status bar, tab bar, minibar */
+/** a tab's icon: the Fill export while it's the current tab, the outline otherwise */
+const tabIcon = (tab, on) => icon(on && nfIcon(tab.icon + '-on') ? tab.icon + '-on' : tab.icon);
 /** the tab bar's contents (Liquid Glass: a floating capsule with a lens that slides to the current tab). You lives in the header now. */
 function tabBarInner(cur) {
   const liveN = App.data ? App.data.liveCount() : 0;
-  const ic = tab => icon(tab.icon);
+  const ic = tab => tabIcon(tab, tab.key === cur);
   return `<div class="tb-glass"><i class="tb-lens" aria-hidden="true"></i>${TABS.map(tab => `<button data-tab="${tab.key}" class="${tab.key === cur ? 'on' : ''}" aria-label="${esc(t(tab.label))}">${ic(tab)}<span>${esc(t(tab.label))}</span>${tab.key === 'scores' && liveN ? `<span class="tb-badge">${liveN}</span>` : ''}</button>`).join('')}</div>`;
 }
 function renderChrome() {
@@ -584,6 +597,8 @@ function boot() {
   App.data.init();
   applyTheme();
   const dev = root();
+  // no drawn status bar (chrome-nosb v2, built Nov 10): the phone's own sits above, so headers pad down to the safe area
+  document.documentElement.classList.add('no-sb');
   dev.innerHTML = `<div class="statusbar" data-act="time-machine"></div><div id="stacks">${TABS.map(tb => `<div class="stack" data-tab="${tb.key}"></div>`).join('')}</div>
     <div class="minibar" hidden></div><nav class="tabbar"></nav><div class="toasts"></div>`;
   dev.addEventListener('click', onClick);
@@ -612,6 +627,8 @@ function frameMode() {
   store.save = () => {}; time.save = () => {};
   const m = MOMENTS.find(x => x.key === q.get('moment'));
   if (m) { time.key = m.key; time.base = Date.parse(m.at); time.started = Date.now(); time.speed = 1; time.paused = true; }
+  // &ts=<ISO instant>: any instant (an Approvals card showing a particular game state), paused, as an in-season day
+  if (q.get('ts')) { time.key = 'week'; time.base = Date.parse(q.get('ts')); time.started = Date.now(); time.speed = 1; time.paused = true; }
   const tm = q.get('team');
   if (tm) { store.p.primary = tm; if (!store.p.teams.includes(tm)) store.p.teams = [tm, ...store.p.teams]; }
   if (q.get('theme')) store.p.theme = q.get('theme');
