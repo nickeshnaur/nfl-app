@@ -259,7 +259,8 @@ function crowd(m) {
    the countdown before kickoff, Live and the clock over the score while live, Final over the score after. Away always left. */
 function heroSet(m) {
   const { g, S, away, home, st, hide } = m;
-  const glow = t => App.lum(t.color) < .04 ? t.alt : t.color;
+  // every team glows in its official primary (gc-primary, built 2026-11-10)
+  const glow = t => App.teamFill(t);
   const vars = `${UI.matchVars(g.a, g.h)};--ga:${glow(away)};--gb:${glow(home)}`;
   const rec = t => Dt.record(t.id, g.s, Math.min(m.now, g.ts - 1)).str;
   const tv = (g.tv || [])[0];
@@ -307,12 +308,12 @@ function hero(m, mini) {
   const note = g.note && !/super bowl/i.test(g.note) ? ' · ' + g.note : '';
   // apply-glow v3 A (approved build-glow, 2026-11-09): while live the header turns black and each team's
   // real colour glows in softly from its own edge (near-black teams glow in their second colour)
-  const glow = t => App.lum(t.color) < .04 ? t.alt : t.color, glowOn = st === 'live'; // live glow header (approved build-glow, 2026-11-09)
+  const glow = t => App.teamFill(t), glowOn = st === 'live'; // live glow header (approved build-glow, 2026-11-09)
   const gl = glowOn ? `;--ga:${glow(away)};--gb:${glow(home)}` : '';
   return html`<div class="gc-hero mu ${mini ? 'gc-mini' : ''} ${glowOn ? 'gc-glow' : ''}" style="${raw(UI.matchVars(g.a, g.h) + gl)}"><div class="mu-bg"></div>
     <div class="gc-hero-meta">${weekName(g)} · ${g.vn || home.venue.name}${note}</div>
-    <div class="gc-st">${mid}</div>
-    <div class="gc-bug">${side(away, false)}${side(home, true)}</div>
+    ${App.pv.has('minimid') ? '' : html`<div class="gc-st">${mid}</div>`}
+    <div class="gc-bug">${side(away, false)}${App.pv.has('minimid') ? html`<div class="gc-st gc-st-mid">${st === 'live' ? html`<span class="badge live">${hide ? 'Live' : S.label}</span>` : html`<span class="badge">${S.label}</span>`}</div>` : ''}${side(home, true)}</div>
     ${hide ? html`<div class="gc-shield">${icon('eyeoff', 'sm')}<span>Spoiler shield is on for this game</span><button class="btn xs white" data-act="gc-reveal">Reveal</button></div>` :
       st === 'live' && S.dd ? html`<div class="gc-sit"><span class="b">${S.dd}</span>${S.redzone ? raw(' <span class="badge loss">Red zone</span>') : ''}</div>` : ''}
     ${wp != null ? html`<div class="gc-wp"><span>${away.abbr} ${100 - wp}%</span><div class="gc-wpbar"><i style="width:${100 - wp}%;background:${App.readable(away, '#111111')}"></i><i style="width:${wp}%;background:${App.readable(home, '#111111')}"></i></div><span>${wp}% ${home.abbr}</span></div>` : ''}
@@ -1237,7 +1238,8 @@ function view(g, page) {
         // both depend on the player's height, which is only known once the page is on screen
         const mini = el.querySelector('.gc-mini'), pin = el.querySelector('.gc-pin'); let io2 = null;
         const fit = () => {
-          const h = slot.offsetHeight; if (!h) return;
+          if (!slot.offsetHeight) return;
+          const h = 0;  // the player scrolls away with the page (gc-video-scroll), so nothing sits between the header and the tabs
           el.style.setProperty('--plh', h + 'px');
           if (io2) io2.disconnect();
           if (mini && 'IntersectionObserver' in window) { io2 = new IntersectionObserver(([e]) => pin && pin.classList.toggle('show', !e.isIntersecting && e.rootBounds && e.boundingClientRect.top < e.rootBounds.top), { root: el, rootMargin: `-${52 + h}px 0px 0px 0px`, threshold: 0 }); io2.observe(mini); }

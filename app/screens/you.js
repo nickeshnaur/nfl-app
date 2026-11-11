@@ -78,7 +78,7 @@ function fanCard(tm, lv, pr) {
   const got = BADGES.filter(b => (p.badges || []).includes(b[0])), nextB = BADGES.find(b => !(p.badges || []).includes(b[0]));
   const nx = Dt.liveGameFor(tm.id) || Dt.nextGame(tm.id), since = p.since || 2019;
   const favId = (p.players || [])[0], fav = favId ? Dt.player(favId) : (Dt.roster(tm.id).find(x => x.pos === 'QB') || null);
-  return html`<div class="fc" style="${raw(App.teamVars(tm))}">${UI.helmet(tm.id, { cls: 'fc-hel', face: 'left' })}
+  return html`<div class="fc" style="${raw(App.teamVars(tm) + `--t7:${(tm.shade && tm.shade[700]) || App.mix(tm.color, '#000000', .4)};`)}">${UI.helmet(tm.id, { cls: 'fc-hel', face: 'left' })}
     <div class="fc-top"><img src="${tm.logoDark || tm.logo}" alt=""><span class="t-eyebrow grow">Official fan</span><span class="t-stat">No. ${tm.abbr} ${no}</span></div>
     <div class="fc-n t-dxl ${name.join(' ').length > 12 ? 'long' : ''}">${name[0]}${name.length > 1 ? html`<br>${name.slice(1).join(' ')}` : ''}</div>
     <div class="fc-since t-meta">Fan since ${since} · ${fmt.ord(Math.max(1, s - since + 1))} season${nx ? ` · next: ${Dt.isHome(nx, tm.id) ? 'vs' : '@'} ${Dt.team(Dt.opp(nx, tm.id)).name} ${fmt.weekday(nx.ts)}` : ''}</div>

@@ -424,7 +424,7 @@
 .hm-page.on-stage .phead{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom-color:transparent;color:#fff}
 .hm-page.on-stage .phead .icon-btn{color:#fff}
 .hm-stage{position:sticky;top:0;z-index:0;margin-top:-52px}
-.fh-pick.hm-stage{padding-top:70px;padding-bottom:64px}
+.fh-pick.hm-stage{padding-top:70px;padding-bottom:28px}
 .hm-sheet{position:relative;z-index:1;margin-top:-28px;background:var(--bg);border-radius:28px 28px 0 0;box-shadow:0 -12px 32px rgba(0,0,0,.22);padding-bottom:calc(var(--tab-h) + 40px);overflow:clip}
 .hm-grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:10px auto 0}
 .hm-sheet .hm-st{display:flex;flex-direction:row;align-items:center;gap:10px;padding:16px var(--pad) 0}  /* label beside the chips, under the score strip */
@@ -433,7 +433,8 @@
 .hm-st-chip{display:inline-flex;align-items:center;height:32px;padding:0 13px;border-radius:99px;background:var(--surface);border:1px solid var(--line);font:700 13px/1 var(--sans);color:var(--text);white-space:nowrap}
 .hm-sheet .hm-ticker,.hm-sheet .ticker{margin-top:8px}
 /* on Home the scores strip sits on the sheet colour, not a second grey band */
-.hm-sheet{padding-top:16px}
+.hm-sheet{padding-top:0;margin-top:0;border-radius:0;box-shadow:none}  /* no curve: the score strip sits right under the hero, no stroke on top */
+.hm-stage .hh8-band{padding-bottom:18px}  /* was 46px, room for the sheet curve that overlapped it */
 .hm-sheet .ticker{background:var(--bg)}
 .hm-sheet .hm-ticker.ticker{margin-top:0}
 /* the stage */
@@ -1076,3 +1077,10 @@
 
 /* section-head links ("See all", "1 update"): extra bold, 11px (sec-more v2, built Nov 10) */
 .sec-head .more,.st-card-h .more{font-weight:800;font-size:11px}
+
+/* built 2026-11-10 from round 13: gc-video-scroll and side-gutters (:root:root keeps the weight the approved preview had, so these win over the older per-card paddings) */
+/* gc-video-scroll: the game page video scrolls away with the page instead of staying pinned under the header */
+:root:root .gc-player{position:relative;top:auto}
+/* side-gutters: one 16px gutter from the screen edge, and 16px inside every card (today 12, 14, 16 and 18 are all in use; the Teams leaders card sits at 32) */
+:root:root .pad > .gc-card.flush.ldr{margin-left:0;margin-right:0}
+:root:root :is(.tm-next,.gc-card:not(.flush),.card.cpad,.gcard,.card.pad-all,.lv-cu){padding-left:16px;padding-right:16px}

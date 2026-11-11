@@ -1,10 +1,9 @@
 /* round 13 preview styles (Approvals phones only, behind &pv=) */
-/* gc-video-scroll: the game page video scrolls away with the page instead of staying pinned under the header */
-:root.pv-vidscroll .gc-player{position:relative;top:auto}
-/* side-gutters: one 16px gutter from the screen edge, and 16px inside every card (today 12, 14, 16 and 18 are all in use; the Teams leaders card sits at 32) */
-:root.pv-gutter .pad > .gc-card.flush.ldr{margin-left:0;margin-right:0}
-:root.pv-gutter .tm-next,:root.pv-gutter .gc-card:not(.flush),:root.pv-gutter .card.cpad,:root.pv-gutter .gcard,:root.pv-gutter .card.pad-all,:root.pv-gutter .lv-cu{padding-left:16px;padding-right:16px}
 /* text-clip: nothing ends in "…" — list headlines and one-line meta wrap in full; tile headlines get a third line */
 :root.pv-noclip span.grow.ellipsis,:root.pv-noclip .t-meta.ellipsis,:root.pv-noclip .sotd-ln{white-space:normal;overflow:visible;text-overflow:clip}
 :root.pv-noclip .row-title.clamp2,:root.pv-noclip .t-meta.clamp2{-webkit-line-clamp:unset;line-clamp:unset;display:block;overflow:visible}
 :root.pv-noclip .t-title-s.clamp2{-webkit-line-clamp:3;line-clamp:3}
+
+/* round 14 (minimid v2): the docked-video mini hero's status sits centred between the two teams as the score bug's small pill (Final, Halftime, Live clock) */
+.gc-hero.mu .gc-bug .gc-st.gc-st-mid{margin:0;align-self:center;flex:0 0 auto}
+.gc-hero.mu .gc-bug .gc-st.gc-st-mid .hst{flex-direction:column;align-items:center;gap:6px}

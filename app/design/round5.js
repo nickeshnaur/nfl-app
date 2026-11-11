@@ -1820,28 +1820,10 @@ DSApprovals.add(6, [
 "issues": ""
 },
 {
-"id": "gc-video-scroll",
-"name": "Game page: video scrolls away",
-"target": "game.css",
-"where": "Game page, live or replay",
-"route": "",
-"sel": "@page",
-"issues": ""
-},
-{
-"id": "side-gutters",
-"name": "One side gutter",
-"target": "app.css",
-"where": "Every screen",
-"route": "",
-"sel": "@page",
-"issues": ""
-},
-{
-"id": "text-clip",
-"name": "No cut-off text",
-"target": "atoms.css",
-"where": "Every screen",
+"id": "gc-mini-mid",
+"name": "Video mini hero: status in the middle",
+"target": "game.js",
+"where": "Game page with video",
 "route": "",
 "sel": "@page",
 "issues": ""

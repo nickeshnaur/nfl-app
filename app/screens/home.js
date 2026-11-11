@@ -402,7 +402,8 @@ function homeHero(c) {
   const l2 = c.moment ? 'Last season' : row && row.gp ? // only a winning run shows (hero-lost, built Nov 10: positive framing); otherwise the conference place
     (n >= 2 && row.streak[0] === 'W' ? `Won ${n} straight` : `${fmt.ord(row.seed)} in the ${tm.conf}`) : '';
   // ?pv=teamink: the hero shows the team's real primary (or the sheet shade that carries white text) instead of shade 700
-  const t7 = App.inkPv() ? App.teamFill(tm) : (tm.shade && tm.shade[700]) || App.mix(tm.color, '#000000', .4);
+  // the hero's bottom area sits on the sheet's shade 700 (the user's call, 2026-11-10)
+  const t7 = (tm.shade && tm.shade[700]) || App.mix(tm.color, '#000000', .4);
   const G = Dt.teamGamesAsOf(mine).filter(g => g.t === 2), nx = G.find(g => Dt.state(g, now) !== 'post');
   const recOf = (id, g) => (g && g.t === 1 ? Dt.record(id, g.s, now, 1) : Dt.record(id, s)).str;
   const disc = (id, cls = '') => html`<span class="fx-disc ${cls}"><img src="${team(id).logo}" alt="" loading="lazy"></span>`;
