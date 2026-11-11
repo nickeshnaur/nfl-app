@@ -271,7 +271,7 @@ function fanHeader() {
 
 /** the top of the sheet that slides over the stage: what changed since you last looked */
 function sheetTop() {
-  const mine = primary(); if (!mine) return html`<div class="hm-grab"></div>`;
+  const mine = primary(); if (!mine) return '';
   const now = time.now();
   // since you last opened (at least the last day, at most a week)
   const since = Math.min(7 * DAY, Math.max(DAY, now - (P().lastOpen || now - 3 * DAY)));
@@ -280,7 +280,7 @@ function sheetTop() {
   const inj = items.filter(i => i.kind === 'injury').length; if (inj) chips.push([`${inj} injury update${inj > 1 ? 's' : ''}`, '#/catchup']);
   const mv = items.filter(i => i.kind === 'move').length; if (mv) chips.push([`${mv} roster move${mv > 1 ? 's' : ''}`, '#/catchup']);
   const nw = items.filter(i => i.kind === 'news').length; if (nw) chips.push([`${nw} stor${nw > 1 ? 'ies' : 'y'}`, '#/catchup']);
-  return html`<div class="hm-grab"></div>${chips.length ? html`<div class="hm-st"><div class="hm-st-k">Since you last looked</div><div class="hm-st-chips">${chips.slice(0, 3).map(([l, go]) => html`<a class="hm-st-chip tap" data-go="${go}">${l}</a>`)}</div></div>` : ''}`;
+  return html`${chips.length ? html`<div class="hm-st"><div class="hm-st-k">Since you last looked</div><div class="hm-st-chips">${chips.slice(0, 3).map(([l, go]) => html`<a class="hm-st-chip tap" data-go="${go}">${l}</a>`)}</div></div>` : ''}`;
 }
 
 /** one sentence: form plus the race */

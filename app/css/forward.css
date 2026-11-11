@@ -433,7 +433,9 @@
 .hm-st-chip{display:inline-flex;align-items:center;height:32px;padding:0 13px;border-radius:99px;background:var(--surface);border:1px solid var(--line);font:700 13px/1 var(--sans);color:var(--text);white-space:nowrap}
 .hm-sheet .hm-ticker,.hm-sheet .ticker{margin-top:8px}
 /* on Home the scores strip sits on the sheet colour, not a second grey band */
-.hm-sheet .ticker{background:var(--bg);border-top:1px solid var(--line)}
+.hm-sheet{padding-top:16px}
+.hm-sheet .ticker{background:var(--bg)}
+.hm-sheet .hm-ticker.ticker{margin-top:0}
 /* the stage */
 .fx{overflow:hidden;isolation:isolate;container-type:inline-size;color:#fff;padding:68px var(--pad) 50px}
 .fx::before{content:"";position:absolute;inset:0;z-index:-2;background:radial-gradient(110% 60% at 100% 0%,rgba(255,255,255,.2),transparent 60%),radial-gradient(90% 50% at 0% 100%,rgba(0,0,0,.3),transparent 70%)}
