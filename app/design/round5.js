@@ -1820,15 +1820,6 @@ DSApprovals.add(6, [
 "issues": ""
 },
 {
-"id": "head-profile",
-"name": "Header: profile icon",
-"target": "ui.js",
-"where": "Every tab header",
-"route": "",
-"sel": "@page",
-"issues": ""
-},
-{
 "id": "gc-video-scroll",
 "name": "Game page: video scrolls away",
 "target": "game.css",
@@ -1851,15 +1842,6 @@ DSApprovals.add(6, [
 "name": "No cut-off text",
 "target": "atoms.css",
 "where": "Every screen",
-"route": "",
-"sel": "@page",
-"issues": ""
-},
-{
-"id": "search-timemachine",
-"name": "Time machine in Search",
-"target": "home.js",
-"where": "Search",
 "route": "",
 "sel": "@page",
 "issues": ""

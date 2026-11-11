@@ -80,6 +80,8 @@ const clamp = x => Math.max(0, Math.min(100, x));
 
 /* ------------------------------------------------------------------ built from approvals (live in the app now) */
 const BUILT = [
+  { id: 'head-profile', name: 'Header: profile icon', at: '2026-11-10', where: 'ui.js headRight/avatar · Search · Games · Profile (NFL Avatar icon) on every tab root, no notification dots' },
+  { id: 'search-timemachine', name: 'Time machine in Search', at: '2026-11-10', where: 'home.js searchIdle · the You page Time machine row at the top of Search' },
   { id: 'live-data', name: 'Live scores and stats', at: '2026-11-10', where: 'app/live.js · Right now is the real now: ESPN scoreboard + game summaries top up the snapshot (20s while a game is live, else 5 min and on focus); the time machine still replays any past moment' },
   { id: 'color-official', name: 'Team colours: official primary', at: '2026-11-10', where: 'core.js inkPv/whiteOn · white text sits on each team\'s official primary everywhere, heroes included (your call: official colours over contrast)' },
   { id: 'team-tiles', name: 'Team tiles', at: '2026-10-28', where: 'UI.teamTile() · the "All 32" sheet, onboarding "Who\'s your team?" and its rivals, You › Follow another team', spec: 'team-tiles' },
