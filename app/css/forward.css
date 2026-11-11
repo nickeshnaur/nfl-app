@@ -118,7 +118,7 @@
 .mx-stage{position:relative;container-type:inline-size;height:440px;overflow:hidden;isolation:isolate;color:#fff}
 .mx-helmets{position:absolute;inset:0;z-index:-1;pointer-events:none}
 .mx-top{display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 16px 0;text-align:center}
-.mx-meta{font:600 12.5px/1 var(--sans);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.mx-meta{font:600 12.5px/1.25 var(--sans);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .mx-sides{display:flex;justify-content:space-between;gap:12px;padding:12px 18px 0}
 .mx-side{display:flex;flex-direction:column;min-width:0;max-width:50%}
 .mx-side.h{align-items:flex-end;text-align:right}
