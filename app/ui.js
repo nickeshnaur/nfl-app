@@ -301,9 +301,9 @@ function headRight(o = {}) {
     <button class="icon-btn" data-go="#/mini-games" aria-label="Mini games">${icon('game-on')}</button>
     ${o.me === false ? html`<button class="icon-btn" data-act="you-settings" aria-label="Settings">${icon('gear')}</button>` : html`<button class="icon-btn ph-av" data-go="#/you" aria-label="You">${avatar()}</button>`}`;
 }
-/** you: the NFL app's profile icon (Avatar · Signed In), filled once you've given a fan name */
+/** you: the NFL app's profile icon, always the filled version (like Games beside it) */
 function avatar() {
-  return icon(store.p.name ? 'user-on' : 'user');
+  return icon('user-on');
 }
 
 /* ---------------------------------------------------------------- Forward design system */
