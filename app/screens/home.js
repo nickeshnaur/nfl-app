@@ -1311,7 +1311,7 @@ App.route('news', (params, query, page) => {
     title: query.team ? team(query.team).name + ' news' : t('News'), big: page.isRoot, right: page.isRoot ? UI.headRight() : '',
     sub: UI.chips(tabsList, ftab, 'news-tab'),
     html: html`<div class="mt12"></div>${lead ? html`<div class="pad">${UI.newsCard(lead, 'lg')}</div>${newsGroups(list.slice(1, 40))}`
-      : UI.empty('news', 'No stories yet', time.now() < Date.parse('2026-10-01') ? 'The news archive in this snapshot starts in October 2026 — try the time machine\'s "Right now".' : 'Nothing here right now.')}`,
+      : UI.empty('news', 'No stories yet', time.now() < Date.parse('2026-01-01') ? 'The news archive in this snapshot starts in January 2026 — try the time machine\'s "Right now".' : 'Nothing here right now.')}`,
   };
 });
 A['news-tab'] = (el, ev, k) => { store.tmp.newsTab = k; const pg = App.current(); pg.query.team = k === 'all' || k === 'mine' || k === 'analysis' || k === 'fantasy' ? undefined : k; if (!pg.query.team) delete pg.query.team; App.refresh(); };
