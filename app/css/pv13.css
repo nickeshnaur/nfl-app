@@ -4,6 +4,3 @@
 :root.pv-noclip .row-title.clamp2,:root.pv-noclip .t-meta.clamp2{-webkit-line-clamp:unset;line-clamp:unset;display:block;overflow:visible}
 :root.pv-noclip .t-title-s.clamp2{-webkit-line-clamp:3;line-clamp:3}
 
-/* round 14 (minimid v2): the docked-video mini hero's status sits centred between the two teams as the score bug's small pill (Final, Halftime, Live clock) */
-.gc-hero.mu .gc-bug .gc-st.gc-st-mid{margin:0;align-self:center;flex:0 0 auto}
-.gc-hero.mu .gc-bug .gc-st.gc-st-mid .hst{flex-direction:column;align-items:center;gap:6px}

@@ -303,7 +303,6 @@ function hero(m, mini) {
     return html`<div class="gc-side ${isHome ? 'h' : 'a'} ${lost ? 'lost' : ''}"><a class="gc-hel" data-go="#/team/${t.id}">${UI.helmet(t.id, { face: isHome ? 'left' : 'right' })}</a>
       <div class="gc-tx">${score(isHome)}<div class="gc-ab">${t.abbr}</div><div class="gc-rec">${Dt.record(t.id, g.s, Math.min(m.now, g.ts - 1)).str}</div>${dots(to && (isHome ? to.h : to.a))}</div></div>`;
   };
-  const mid = UI.heroStatus(g, S, hide);
   const wp = st === 'live' && !hide && S.wp != null ? S.wp : null;
   const note = g.note && !/super bowl/i.test(g.note) ? ' · ' + g.note : '';
   // apply-glow v3 A (approved build-glow, 2026-11-09): while live the header turns black and each team's
@@ -312,8 +311,7 @@ function hero(m, mini) {
   const gl = glowOn ? `;--ga:${glow(away)};--gb:${glow(home)}` : '';
   return html`<div class="gc-hero mu ${mini ? 'gc-mini' : ''} ${glowOn ? 'gc-glow' : ''}" style="${raw(UI.matchVars(g.a, g.h) + gl)}"><div class="mu-bg"></div>
     <div class="gc-hero-meta">${weekName(g)} · ${g.vn || home.venue.name}${note}</div>
-    ${App.pv.has('minimid') ? '' : html`<div class="gc-st">${mid}</div>`}
-    <div class="gc-bug">${side(away, false)}${App.pv.has('minimid') ? html`<div class="gc-st gc-st-mid">${st === 'live' ? html`<span class="badge live">${hide ? 'Live' : S.label}</span>` : html`<span class="badge">${S.label}</span>`}</div>` : ''}${side(home, true)}</div>
+    <div class="gc-bug">${side(away, false)}<div class="gc-st gc-st-mid">${st === 'live' ? html`<span class="badge live">${hide ? 'Live' : S.label}</span>` : html`<span class="badge">${S.label}</span>`}</div>${side(home, true)}</div>
     ${hide ? html`<div class="gc-shield">${icon('eyeoff', 'sm')}<span>Spoiler shield is on for this game</span><button class="btn xs white" data-act="gc-reveal">Reveal</button></div>` :
       st === 'live' && S.dd ? html`<div class="gc-sit"><span class="b">${S.dd}</span>${S.redzone ? raw(' <span class="badge loss">Red zone</span>') : ''}</div>` : ''}
     ${wp != null ? html`<div class="gc-wp"><span>${away.abbr} ${100 - wp}%</span><div class="gc-wpbar"><i style="width:${100 - wp}%;background:${App.readable(away, '#111111')}"></i><i style="width:${wp}%;background:${App.readable(home, '#111111')}"></i></div><span>${wp}% ${home.abbr}</span></div>` : ''}

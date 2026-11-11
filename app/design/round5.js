@@ -1820,15 +1820,6 @@ DSApprovals.add(6, [
 "issues": ""
 },
 {
-"id": "gc-mini-mid",
-"name": "Video mini hero: status in the middle",
-"target": "game.js",
-"where": "Game page with video",
-"route": "",
-"sel": "@page",
-"issues": ""
-},
-{
 "id": "btn-family",
 "name": "Buttons: one family",
 "target": "forward.css",

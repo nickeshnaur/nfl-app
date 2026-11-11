@@ -18,8 +18,8 @@ R['gc-primary'] = { id: 'gc-primary', v: 1, ready: true, name: 'Game hero: offic
   proposed: () => V('Official primary', 'every team, hero and score bug alike', rows(HERO, 'pro') + IMG('gbne-pin', 'Scrolled: the pinned score bug (unchanged)')) };
 
 const MINI = [['mini-replay', 'Final, replay docked (NFL+ Premium)'], ['mini-live', 'Live at halftime, stream docked']];
-R['gc-mini-mid'] = { id: 'gc-mini-mid', v: 2, ready: true, name: 'Video mini hero: status in the middle', target: 'game.js · hero(m, mini) · .gc-st',
-  changes: ['Your note (v1): "halftime / final is big."', 'v2: the status in the middle is now the pinned score bug\'s small pill (Final, Halftime, or the live clock), not the big hero status.',
+R['gc-mini-mid'] = { id: 'gc-mini-mid', v: 3, ready: true, name: 'Video mini hero: status in the middle', target: 'game.js · hero(m, mini) · .gc-st',
+  changes: ['Your note (v2): "let\'s use a white football possession"', 'v3: the football beside the team with the ball is white instead of yellow.', 'Your note (v1): "halftime / final is big."', 'v2: the status in the middle is now the pinned score bug\'s small pill (Final, Halftime, or the live clock), not the big hero status.',
     'When a game has video, the hero shrinks under the player. Today its status (Final, or Live with the clock) sits on its own line above the score.',
     'Proposed: the status sits centred between the two teams, like the big hero and the pinned score bug. Live stacks the Live badge over the clock so both scores keep their room. The mini hero gets one line shorter.',
     'The proposed crops also carry the colour proposal from "Game hero: official primary colours" (the live mini hero glows green and navy instead of gold and red).'],

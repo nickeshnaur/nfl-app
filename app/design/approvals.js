@@ -80,6 +80,7 @@ const clamp = x => Math.max(0, Math.min(100, x));
 
 /* ------------------------------------------------------------------ built from approvals (live in the app now) */
 const BUILT = [
+  { id: 'gc-mini-mid', name: 'Video mini hero: status in the middle', at: '2026-11-10', where: 'game.js hero(m, mini) · the score bug pill centred between the teams; white possession football' },
   { id: 'gc-primary', name: 'Game hero: official primary colours', at: '2026-11-10', where: 'game.js heroSet / mini hero glow · every team glows in its official primary (no swap to the second colour for dark teams)' },
   { id: 'gc-video-scroll', name: 'Game video scrolls with the page', at: '2026-11-10', where: '.gc-player no longer sticky; tabs pin straight under the header' },
   { id: 'side-gutters', name: 'One 16px gutter', at: '2026-11-10', where: '16px from the screen edge and 16px inside cards (forward.css); Teams leaders card back on the gutter' },

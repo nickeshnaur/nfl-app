@@ -1084,3 +1084,9 @@
 /* side-gutters: one 16px gutter from the screen edge, and 16px inside every card (today 12, 14, 16 and 18 are all in use; the Teams leaders card sits at 32) */
 :root:root .pad > .gc-card.flush.ldr{margin-left:0;margin-right:0}
 :root:root :is(.tm-next,.gc-card:not(.flush),.card.cpad,.gcard,.card.pad-all,.lv-cu){padding-left:16px;padding-right:16px}
+
+/* gc-mini-mid v3 (built 2026-11-10): the docked-video mini hero's status sits centred between the two teams as the score bug's small pill (Final, Halftime, Live clock) */
+.gc-hero.mu .gc-bug .gc-st.gc-st-mid{margin:0;align-self:center;flex:0 0 auto}
+.gc-hero.mu .gc-bug .gc-st.gc-st-mid .hst{flex-direction:column;align-items:center;gap:6px}
+/* the possession football in white */
+:root .gc-hero.mu .gc-poss{color:#fff}
