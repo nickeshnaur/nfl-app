@@ -618,7 +618,7 @@ function leadersFO(m) {
     if (!x) return html`<span class="fo-disc fo-none"></span><div class="fo-v ${r ? 'r' : ''}"><b>–</b></div>`;
     const yd = /(\d+) YDS/i.exec(x.v || ''), rest = String(x.v || '').replace(/,?\s*\d+ YDS/i, '').replace(/^,\s*/, '');
     const go = x.pid && Dt.player(x.pid) ? raw(`data-go="#/player/${x.pid}"`) : '';
-    const v = html`<div class="fo-v ${r ? 'r' : ''}"><b>${yd ? yd[1] : '–'}</b><span class="ellipsis">${shortName(x.n)}</span><span class="ellipsis">${rest}</span></div>`;
+    const v = html`<div class="fo-v ${r ? 'r' : ''}"><b>${yd ? yd[1] : '–'}</b><span class="ellipsis">${shortName(x.n)}</span><span class="fo-x">${rest.split(', ').map((t, i, a) => html`<i>${t}${i < a.length - 1 ? ',' : ''}</i> `)}</span></div>`;  // wraps only between stats, never inside one
     return r ? html`${v}<a class="tap" ${go}>${disc(x, tm)}</a>` : html`<a class="tap" ${go}>${disc(x, tm)}</a>${v}`;
   };
   return html`<div class="gc-card fo"><div class="fo-h">${UI.logo(away.id, 'sm')}<span>${away.name}</span><span class="grow"></span><span>${home.name}</span>${UI.logo(home.id, 'sm')}</div>

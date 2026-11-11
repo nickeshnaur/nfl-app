@@ -25,11 +25,11 @@
 .ap-flag{display:flex;gap:8px;align-items:flex-start;margin:12px 0 0;max-width:760px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--warn) 14%,var(--surface));color:var(--text);font-size:13.5px;line-height:1.4}
 .ap-flag .ic{flex:none;margin-top:2px}
 .ap-prev{margin:12px 0 0;max-width:760px;padding:10px 12px;border-radius:12px;background:var(--surface-2);font-size:13.5px}
-.ap-cmp{display:grid;grid-template-columns:repeat(2,minmax(0,393px));gap:22px;margin-top:18px;align-items:start}
+.ap-cmp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:18px;align-items:start}
 .ap-cmp .ds-frame{width:auto}
 .ap-cmp figcaption.pro{color:var(--plus)}
 .ap-cmp .ds-frame.bleed{padding-top:16px}
-.ap-dec{margin-top:18px;display:flex;flex-direction:column;gap:10px;max-width:808px}
+.ap-dec{margin-top:18px;display:flex;flex-direction:column;gap:10px;max-width:none}
 .ap-dec textarea{width:100%;resize:vertical;min-height:64px;padding:12px 14px;border-radius:14px;border:1px solid var(--line-2);background:var(--bg);color:var(--text);font:400 14px/1.4 var(--sans)}
 .ap-dec textarea.need{border-color:var(--loss);box-shadow:0 0 0 3px color-mix(in srgb,var(--loss) 20%,transparent)}
 .ap-dec-b{display:flex;flex-wrap:wrap;gap:8px;align-items:center}

@@ -18,7 +18,7 @@ function heroCol(c) {
   return x;
 }
 function heroVars(tm) {
-  const c = heroCol(tm.color);
+  const c = App.inkPv() ? App.teamFill(tm) : heroCol(tm.color);
   return `;--team:${c};--tg-a:${c};--tg-b:${c};--tm-tint:${App.lum(c) < .03 ? 'rgba(255,255,255,.2)' : 'rgba(0,0,0,.22)'};`;
 }
 function tv(tm) {
@@ -201,7 +201,7 @@ function hero(tid, opts = {}) {
     const [label, go] = phase === 'draft' ? ['Draft week: see the war room', '#/draft'] : phase === 'fa' ? ['Free agency is open: track every move', '#/free-agency'] : ['Countdown to kickoff: see the schedule', `#/team/${tid}?tab=schedule`];
     card = html`<a class="tm-next tap" data-go="${go}"><div class="grow"><span class="tm-next-k">Offseason</span><b>${label}</b></div>${icon('chev', 'xs')}</a>`;
   }
-  return html`<section class="hero tm-hero tm-hero2" style="${raw(tv(tm) + heroVars(tm))}">${raw(App.fabric('1.5,.1,150,.5,50,0', heroCol(tm.color), tm.alt))}${UI.helmet(tid, { cls: 'hero-helmet', face: 'left' })}
+  return html`<section class="hero tm-hero tm-hero2" style="${raw(tv(tm) + heroVars(tm))}">${raw(App.fabric('1.5,.1,150,.5,50,0', App.inkPv() ? App.teamFill(tm) : heroCol(tm.color), tm.alt))}${UI.helmet(tid, { cls: 'hero-helmet', face: 'left' })}
     <div class="tm-hero-loc">${tm.loc}</div>
     <div class="tm-hero-name t-dxl">${tm.name}</div>
     <div class="tm-rec"><b class="t-dl">${played ? rec.str : '0-0'}</b><span>${place}${tm.coach ? html`<br>HC ${tm.coach}` : ''}</span></div>

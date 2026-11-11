@@ -7,6 +7,7 @@
 "use strict";
 /* design previews: ?pv=fab-team,fab-home,pnum turns on an unapproved treatment inside the Approvals phone frames only */
 App.pv = new Set((new URLSearchParams(location.search).get('pv') || '').split(',').filter(Boolean));
+App.pv.forEach(f => document.documentElement.classList.add('pv-' + f));  // pv-only CSS hooks (app/css/pv13.css)
 /* &at=<selector> (Approvals previews): scroll the frame so the part under review is in view once it has drawn */
 (function () { let at = new URLSearchParams(location.search).get('at'); if (!at) return; let n = 0;
   // a trailing '!c' centres the element instead (for things a pinned bar would cover)

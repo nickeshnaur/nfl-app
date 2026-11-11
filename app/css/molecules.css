@@ -586,12 +586,12 @@
 /* round 7 (approved): leaders face-off, team bars, All 32 stacked rows, Home live deck, Home next-game strip.
    Bars, edges and discs are the real team colour; only fills with white type on them are deepened. */
 .fo{padding:6px 14px 4px}.fo-h,.tb-h{display:flex;align-items:center;gap:8px;padding:8px 0 10px;border-bottom:1px solid var(--line);font:700 13px/1 var(--sans)}
-.fo-r{display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--line)}.fo-h+.fo-r{border-top:0}
+.fo-r{display:grid;grid-template-columns:auto minmax(0,1fr) 54px minmax(0,1fr) auto;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--line)}.fo-h+.fo-r{border-top:0}
 .fo-disc{position:relative;display:block;width:44px;height:44px;flex:none;border-radius:50%;overflow:hidden}
 .fo-disc .hs{width:100%;height:100%;border-radius:0;background:transparent!important;color:transparent;font-size:0}.fo-none{background:var(--line)}
-.fo-v{display:flex;flex-direction:column;gap:4px;min-width:58px}.fo-v.r{align-items:flex-end;text-align:right}
+.fo-v{display:flex;flex-direction:column;gap:4px;min-width:0}.fo-x i{font-style:normal;white-space:nowrap}.fo-v.r{align-items:flex-end;text-align:right}
 .fo-v b{font:900 italic 26px/1 var(--display)}.fo-v span{font:500 12px/1.1 var(--sans);color:var(--text-2)}
-.fo-l{flex:1;text-align:center;font:600 12px/1.25 var(--sans);color:var(--text-2)}
+.fo-l{text-align:center;font:600 11px/1.25 var(--sans);color:var(--text-2)}
 .tb{padding:6px 14px 14px}.tb-r{padding-top:12px}
 .tb-t{display:flex;align-items:baseline;justify-content:space-between;gap:8px}.tb-t span{font:600 13px/1 var(--sans);color:var(--text-2);text-align:center}
 .tb-t b{font:500 15px/1 var(--stats);font-variant-numeric:tabular-nums}.tb-t b.on{font-weight:700}

@@ -63,6 +63,8 @@ const sbNumeral = s => ['LVII', 'LVIII', 'LIX', 'LX', 'LXI'][s - 2022];
 /* ------------------------------------------------------------------ game state relative to App.time */
 function endTs(g) {
   const pbp = D.live[g.id];
+  // a game live right now (app/live.js) runs until the feed calls it final, not until its last play so far
+  if (g.lv) return Math.max(pbp && pbp._end || 0, Date.now() + 120e3);
   if (pbp && pbp._end) return pbp._end;
   return g.ts + GAME_LEN + (g.ot ? 1500e3 : 0);
 }
@@ -140,6 +142,8 @@ function score(g, now = time.now()) {
     const half = L.q === 2 && L.c === '0:00' ? 'Halftime' : null;
     return { st, hs: L.hs, as: L.as, q: L.q, clock: L.c, poss: L.poss, dd: L.dd, yz: L.yz, wp: L.wp, redzone: L.redzone, label: half || `${qn} ${L.c}`, drv: half ? null : driveSoFar(L), L };
   }
+  // live right now but its play-by-play hasn't arrived: the scoreboard's own score and clock
+  if (g.lv) { const v = g.lv, q = v.q > 4 ? 'OT' : fmt.ord(v.q || 1); return { st, hs: g.hs, as: g.as, q: v.q, clock: v.c, poss: v.poss, dd: v.dd, label: v.q === 2 && v.c === '0:00' ? 'Halftime' : `${q} ${v.c || ''}`.trim() }; }
   // without pbp: estimate from linescores
   return { st, label: 'In progress', hs: '–', as: '–' };
 }
@@ -177,7 +181,7 @@ function ensurePbp(gid) {
   return load('pbp/' + gid).then(p => { D.live[gid] = p; flat(p); return p; });
 }
 const ensureBox = s => load('box-' + s);
-const box = gid => { const g = game(gid); return g && NFL.d['box-' + g.s] && NFL.d['box-' + g.s][gid]; };
+const box = gid => { const g = game(gid); return g && ((D.liveBox && D.liveBox[gid]) || (NFL.d['box-' + g.s] && NFL.d['box-' + g.s][gid])); };
 
 /* ------------------------------------------------------------------ calendar context */
 /** the "current" week for the Scores tab default */

@@ -161,7 +161,8 @@ function emit(ev, ...a) { (listeners[ev] || []).slice().forEach(f => { try { f(.
    Every moment is a real instant; the app renders the league exactly as it stood then
    (scores, live play-by-play reconstructed from wallclock stamps, standings, stats). */
 const MOMENTS = [
-  { key: 'now', label: 'Right now', sub: 'Sat, Oct 17 2026 · Week 6 eve', at: '2026-10-18T03:30:00Z', phase: 'regular', icon: 'clock' },
+  // the real current instant (live data from ESPN tops up the snapshot, app/live.js)
+  { key: 'now', label: 'Right now', get sub() { return new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }) + ' · live'; }, get at() { return new Date().toISOString(); }, phase: 'regular', icon: 'clock' },
   { key: 'gameday', label: 'Game Day Sunday', sub: 'Sun, Oct 11 2026 · Week 5, 3:55 PM ET', at: '2026-10-11T19:55:00Z', phase: 'regular', icon: 'football', live: true },
   { key: 'snf', label: 'Sunday Night', sub: 'Sun, Oct 11 2026 · BAL @ ATL, 9:40 PM ET', at: '2026-10-12T01:40:00Z', phase: 'regular', icon: 'moon', live: true },
   { key: 'midweek', label: 'Midweek', sub: 'Wed, Oct 14 2026 · Week 6 prep', at: '2026-10-14T16:00:00Z', phase: 'regular', icon: 'calendar' },
@@ -185,14 +186,17 @@ const MOMENTS = [
   { key: 'week', label: 'In season', sub: 'A day and time you picked', at: '2026-10-11T19:55:00Z', phase: 'regular', icon: 'calendar' },
   { key: 'playoffs', label: 'Divisional Round', sub: 'Sun, Jan 18 2026 · Playoffs', at: '2026-01-18T21:20:00Z', phase: 'post', icon: 'trophy', live: true },
 ];
+const FRAME_NOW = '2026-10-18T03:30:00Z';
 const time = {
   moments: MOMENTS,
-  key: 'now', base: Date.parse(MOMENTS[0].at), started: Date.now(), speed: 1, paused: false,
+  key: 'now', base: Date.now(), started: Date.now(), speed: 1, paused: false,
   init() {
     try {
       const t = JSON.parse(localStorage.getItem(KEY + '-time') || 'null');
       if (t) { this.key = t.key; this.base = t.base; this.speed = t.speed || 1; this.paused = !!t.paused; }
     } catch {}
+    // Right now is always the real now when the app opens
+    if (this.key === 'now') { this.base = Date.now(); this.speed = 1; this.paused = false; }
     this.started = Date.now();
   },
   save() { try { localStorage.setItem(KEY + '-time', JSON.stringify({ key: this.key, base: this.now(), speed: this.speed, paused: this.paused })); } catch {} },
@@ -202,7 +206,7 @@ const time = {
   phase() { return this.moment().phase; },
   set(key, at) {
     const m = MOMENTS.find(x => x.key === key) || MOMENTS[0];
-    this.key = m.key; this.base = at != null ? at : Date.parse(m.at); this.started = Date.now(); this.v = (this.v || 0) + 1;
+    this.key = m.key; this.base = at != null ? at : m.key === 'now' ? Date.now() : Date.parse(m.at); this.started = Date.now(); this.v = (this.v || 0) + 1;
     this.save(); emit('time', this); App.refreshAll();
   },
   jump(ms) { this.base = this.now() + ms; this.started = Date.now(); this.save(); emit('time', this); App.refreshAll(); },
@@ -270,7 +274,17 @@ function teamRoles(team, bg) {
   // always the team's own primary (the user's rule; an accessibility pass comes later). The sheet ladder only steps in
   // when the primary would all but disappear on this background (navy or black on the dark theme)
   const own = pick(ladder, bg, 1.6);
-  return { primary: P.p, g: P.g, mark: own, ink: own, tint: (darkBg ? sh[800] : sh[100]) || mix(P.p, bg, .85), fill: P.p };
+  return { primary: P.p, g: P.g, mark: own, ink: own, tint: (darkBg ? sh[800] : sh[100]) || mix(P.p, bg, .85), fill: inkPv() ? whiteOn(team) : P.p };
+}
+/** white text sits on the team's official primary everywhere (the user's call: official colours over contrast).
+    ?pv=teamink keeps the declined accessible-shade proposal viewable; ?pv=teamold the earlier darkened heroes */
+const inkPv = () => !(App.pv && App.pv.has('teamold'));
+/** ?pv=teamink (cards color-*): the colour white text sits on. The team's primary when white passes 4.5:1 on it,
+    otherwise the first sheet shade (700, then 800) that does; never an invented colour */
+function whiteOn(team) {
+  const P = (App.PALETTE || {})[team && team.abbr]; if (!P) return team && team.color;
+  const sh = P.sh || {}; if (!(App.pv && App.pv.has('teamink'))) return P.p;
+  return [P.p, sh[700], sh[800]].find(c => c && contrast(c, '#ffffff') >= 4.5) || sh[800] || P.p;
 }
 const teamFill = tm => { const r = teamRoles(tm); return r ? r.fill : tm.color; };
 /** a version of the team's colour that reads on the current background: the sheet's Ink role */
@@ -317,7 +331,9 @@ function teamVars(tm) {
   // the team's own colours from the sheet, never darkened; pure black is lifted slightly so heroes don't vanish
   let base = tm.color;
   if (lum(base) < .004) base = '#16171a';
-  const g = tm.grad || [mix(base, '#ffffff', .15), base], deep = (tm.shade && tm.shade[800]) || mix(base, '#000000', .55);
+  let g = tm.grad || [mix(base, '#ffffff', .15), base]; const deep = (tm.shade && tm.shade[800]) || mix(base, '#000000', .55);
+  // ?pv=teamink: white-text surfaces sit on the team colour that passes (each gradient stop that fails falls back to it)
+  if (inkPv() && lum(tm.color) >= .004) { const w = whiteOn(tm); base = w; g = g.map(c => contrast(c, '#ffffff') >= 4.5 ? c : w); }
   return `--team:${base};--team-2:${tm.alt};--tg-a:${g[0]};--tg-b:${g[1]};--tg-deep:${deep};--hero-logo:url('${tm.logoDark || tm.logo}');--helmet:url('${tm.helmet ? new URL(tm.helmet, document.baseURI).href : ''}');--helmet-l:url('${tm.helmetL ? new URL(tm.helmetL, document.baseURI).href : ''}');--accent:${readable(tm)};${(R => R ? `--tm-mark:${R.mark};--tm-ink:${R.ink};--tm-tint:${R.tint};--tm-fill:${R.fill};` : '')(teamRoles(tm))}`;
 }
 
@@ -626,7 +642,8 @@ function frameMode() {
   const q = new URLSearchParams(location.search); if (!q.has('frame')) return;
   store.save = () => {}; time.save = () => {};
   const m = MOMENTS.find(x => x.key === q.get('moment'));
-  if (m) { time.key = m.key; time.base = Date.parse(m.at); time.started = Date.now(); time.speed = 1; time.paused = true; }
+  // moment=now in a frame is the instant the Approvals cards were drawn at (Sat Oct 17 2026), so their crops and offsets hold
+  if (m) { time.key = m.key; time.base = m.key === 'now' ? Date.parse(FRAME_NOW) : Date.parse(m.at); time.started = Date.now(); time.speed = 1; time.paused = true; }
   // &ts=<ISO instant>: any instant (an Approvals card showing a particular game state), paused, as an in-season day
   if (q.get('ts')) { time.key = 'week'; time.base = Date.parse(q.get('ts')); time.started = Date.now(); time.speed = 1; time.paused = true; }
   const tm = q.get('team');
@@ -671,7 +688,7 @@ const App = window.App = {
   NFL, load, html, raw, esc, icon, ICONS, store, time, fmt, t, on, off, emit,
   route, viewOf, go, back, current, refresh, refreshAll, showTab, tabs: TABS, stacks: () => stacks, curTab: () => curTab,
   sheet, closeSheet, updateSheet, modal, closeModal, closeOverlays, toast, actions, renderChrome,
-  tabBarInner, applyTheme, teamVars, teamRoles, teamFill, readable, mix, lum, contrast, onWhite, boot, val, normTeams,
+  tabBarInner, applyTheme, teamVars, teamRoles, teamFill, inkPv, readable, mix, lum, contrast, onWhite, boot, val, normTeams,
 };
 // pages that only borrow the app's code (design-system.html) set APP_NO_BOOT
 document.addEventListener('DOMContentLoaded', () => { if (!window.APP_NO_BOOT) setTimeout(boot, 0); });

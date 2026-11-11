@@ -401,7 +401,8 @@ function homeHero(c) {
   const over = time.phase() === 'post' && Dt.D.games.some(g => g.s === s && g.t === 3 && g.w === 5 && Dt.state(g, now) === 'post');
   const l2 = c.moment ? 'Last season' : row && row.gp ? // only a winning run shows (hero-lost, built Nov 10: positive framing); otherwise the conference place
     (n >= 2 && row.streak[0] === 'W' ? `Won ${n} straight` : `${fmt.ord(row.seed)} in the ${tm.conf}`) : '';
-  const t7 = (tm.shade && tm.shade[700]) || App.mix(tm.color, '#000000', .4);
+  // ?pv=teamink: the hero shows the team's real primary (or the sheet shade that carries white text) instead of shade 700
+  const t7 = App.inkPv() ? App.teamFill(tm) : (tm.shade && tm.shade[700]) || App.mix(tm.color, '#000000', .4);
   const G = Dt.teamGamesAsOf(mine).filter(g => g.t === 2), nx = G.find(g => Dt.state(g, now) !== 'post');
   const recOf = (id, g) => (g && g.t === 1 ? Dt.record(id, g.s, now, 1) : Dt.record(id, s)).str;
   const disc = (id, cls = '') => html`<span class="fx-disc ${cls}"><img src="${team(id).logo}" alt="" loading="lazy"></span>`;
@@ -521,7 +522,7 @@ function homeHero(c) {
   const pg = html`<div class="hh8-pg" onscroll="const i=Math.round(this.scrollLeft/this.clientWidth);this.parentNode.querySelectorAll('.hh8-dots i').forEach((d,n)=>d.classList.toggle('on',n===i))">${pages.map(p => html`<div class="hh8-p">${p}</div>`)}</div>
     <div class="hh8-dots">${pages.map((p, i) => html`<i class="${i ? '' : 'on'}"></i>`)}</div>`;
   return html`<section class="fx hm-stage hh hh8" style="${raw(App.teamVars(tm))};--t7:${t7}">
-    <div class="hh8-id">${raw(App.fabric('1.5,.1,150,.5,50,0', App.heroCol ? App.heroCol(tm.color) : tm.color, tm.alt))}${UI.helmet(mine, { cls: 'fx-hel', face: 'left' })}
+    <div class="hh8-id">${raw(App.fabric('1.5,.1,150,.5,50,0', App.inkPv() ? App.teamFill(tm) : App.heroCol ? App.heroCol(tm.color) : tm.color, tm.alt))}${UI.helmet(mine, { cls: 'fx-hel', face: 'left' })}
       <div class="fx-in"><div class="hh6-hi">${hello}, ${who}</div>
         <a class="fx-name tap" data-go="#/team/${mine}" style="font-size:min(72px, ${(50 / tm.name.length / .62).toFixed(1)}cqi)">${tm.name}</a>
         <div class="hh6-rec"><b>${rec}</b><span>${fmt.ord(dr)} in ${tm.conf} ${tm.div}${l2 ? html`<br>${l2}` : ''}</span></div></div></div>
@@ -1178,7 +1179,9 @@ function searchIdle() {
   news().slice(0, 80).forEach(a => a.ath.forEach(x => { if (Dt.player(x)) counts[x] = (counts[x] || 0) + 1; }));
   const trending = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 8).map(x => x[0]);
   const ideas = ['Most passing yards 2025', 'Mahomes vs Allen', 'Rushing TD leaders', 'Week 5 2026'];
-  return html`${recent.length ? html`<section class="sec"><div class="sec-head"><div class="h2">Recent</div><a class="more" data-act="srch-clear">Clear</a></div><div class="chips">${recent.map(q => html`<button class="chip" data-act="srch-set" data-arg="${q}">${icon('clock', 'sm')}${q}</button>`)}</div></section>` : ''}
+  // &pv=searchtm (preview, card search-timemachine): the You page's Time machine row, at the top of Search too
+  const tmRow = App.pv.has('searchtm') ? html`<section class="sec"><div class="list">${UI.row({ left: html`<span class="set-ic">${icon('clock')}</span>`, title: 'Time machine', sub: `${fmt.day(time.date())} · ${time.moment().label}`, act: 'time-machine', chev: true })}</div></section>` : '';
+  return html`${tmRow}${recent.length ? html`<section class="sec"><div class="sec-head"><div class="h2">Recent</div><a class="more" data-act="srch-clear">Clear</a></div><div class="chips">${recent.map(q => html`<button class="chip" data-act="srch-set" data-arg="${q}">${icon('clock', 'sm')}${q}</button>`)}</div></section>` : ''}
     <section class="sec"><div class="sec-head"><div class="h2">Ask anything</div></div><div class="chips">${ideas.map(q => html`<button class="chip" data-act="srch-set" data-arg="${q}">${icon('search', 'sm')}${q}</button>`)}</div></section>
     ${App.exploreDirectory ? html`<section class="sec"><div class="sec-head"><div class="h2">Explore</div></div></section>${App.exploreDirectory()}` : ''}
     ${trending.length ? html`<section class="sec"><div class="sec-head"><div class="h2">Trending players</div></div><div class="list">${trending.map(pid => UI.playerRow(pid))}</div></section>` : ''}
@@ -1298,6 +1301,8 @@ App.route('news', (params, query, page) => {
   else if (ftab === 'analysis') list = news().filter(a => a.ty === 'Story');
   else if (ftab === 'fantasy') list = news({ fantasy: true }).filter(a => a.fan);
   else list = news({ team: ftab });
+  // a chip that comes up empty (a quiet team, no fantasy stories yet) shows Top rather than nothing
+  if (!list.length && ftab !== 'all') list = latestNews();
   const lead = list[0];
   return {
     // the News tab: big title and the shared header; pushed (a team's news) it gets a back button instead

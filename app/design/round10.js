@@ -164,4 +164,11 @@ R['app-icon'] = { id: 'app-icon', v: 1, ready: true, name: 'Home screen icon', t
   options: [{ k: 'a', name: 'Shield at 60% on black', note: '' }],
   current: () => V('Today', 'iPhone home screen', ICO('assets/brand/nfl-shield-180.png', 'NFL')),
   proposed: k => V('Shield at 60% on black', 'iPhone home screen', ICO('assets/brand/nfl-app-icon-180.png', 'NFL')) };
+R['head-profile'] = { id: 'head-profile', v: 2, ready: true, name: 'Header: profile icon, not team logo', target: 'ui.js avatar() · headRight',
+  changes: ['Your note on v1: "if i\'m signed out it should be the outlined version. let\'s put it as \'search\' \'games\' \'profile\' and use the filled version for games as well"',
+    'Order is now Search · Games · Profile on every tab. Games uses the filled controller. Profile is the filled NFL avatar when you\'re signed in, the outline when you\'re signed out. It still opens You and keeps the alert dot.',
+    'The prototype has no real sign-in yet, so "signed in" here means you gave a fan name in onboarding; "I\'ll look around first" counts as signed out.'],
+  options: [{ k: 'a', name: 'Search · Games · Profile', note: '' }],
+  current: () => V('As the app draws it', 'Home', SH('Home', phone(''))),
+  proposed: k => V('Search · Games · Profile', 'Home, signed in · signed out', `${SH('Signed in', phone('', '&pv=profav'))}${SH('Signed out', phone('', '&pv=profav,anon'))}`) };
 })();

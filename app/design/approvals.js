@@ -80,6 +80,8 @@ const clamp = x => Math.max(0, Math.min(100, x));
 
 /* ------------------------------------------------------------------ built from approvals (live in the app now) */
 const BUILT = [
+  { id: 'live-data', name: 'Live scores and stats', at: '2026-11-10', where: 'app/live.js · Right now is the real now: ESPN scoreboard + game summaries top up the snapshot (20s while a game is live, else 5 min and on focus); the time machine still replays any past moment' },
+  { id: 'color-official', name: 'Team colours: official primary', at: '2026-11-10', where: 'core.js inkPv/whiteOn · white text sits on each team\'s official primary everywhere, heroes included (your call: official colours over contrast)' },
   { id: 'team-tiles', name: 'Team tiles', at: '2026-10-28', where: 'UI.teamTile() · the "All 32" sheet, onboarding "Who\'s your team?" and its rivals, You › Follow another team', spec: 'team-tiles' },
   { id: 'standings', name: 'Standings table', at: '2026-10-28', where: 'UI.stTeam() · .st-card · tr.me · the team page division card and every Standings table', spec: 'standings' },
   { id: 'mini-games', name: 'Mini games', at: '2026-10-28', where: 'App.miniGames.strip() · profile() · card() · row() · the Home strip and the Mini games hub (Gridiron Slate added)', spec: 'mini-games' },
@@ -739,7 +741,8 @@ function render(ctx) {
   const aside = `<aside class="ap-ctx" aria-label="In context"><div class="ap-ctx-h"><b>In context</b><span data-ap-ctx-n>Scroll to a card</span></div><div class="ds-phone ap-ctx-ph"><iframe data-ap-ctx src="index.html?frame&moment=${C.state.moment}&team=${C.state.team}&theme=${C.state.theme}#/home" title="In context"></iframe></div></aside>`;
   // when this round has nothing left waiting on you, the next round's drawn cards come first instead of under it
   const ahead = !ds.some(([p, x]) => p.round === ROUND && (x.status === 'pending' || x.status === 'revised'));
-  return aside + `<section class="ds-sec" id="approvals"><div class="ds-sec-h"><h2>Approvals</h2><p>Proposed changes, side by side with what the app draws today. "Current" is the real component or screen; "Proposed" is a mock-up that only lives on this page until you approve it.</p></div>${intro}${built}${ahead ? '' : roundH}</section>` +
+  // the "In context" side phone is off (Nov 10: the user wanted the full width for side-by-side comparisons)
+  return `<section class="ds-sec" id="approvals"><div class="ds-sec-h"><h2>Approvals</h2><p>Proposed changes, side by side with what the app draws today. "Current" is the real component or screen; "Proposed" is a mock-up that only lives on this page until you approve it.</p></div>${intro}${built}${ahead ? '' : roundH}</section>` +
     (ahead ? next(later) + `<section class="ds-sec" id="ap-round-${ROUND}"><div class="ds-sec-h"><h2>Round ${ROUND} · ${ROUNDS[ROUND]} (decided)</h2></div>${roundH}</section>` : '') +
     tiers.map(t => { const list = show.filter(([p]) => p.tier === t); return list.length ? `<section class="ds-sec" id="ap-${t.toLowerCase()}"><div class="ds-sec-h"><h2>${t}</h2></div>${list.map(([p, x]) => card(p, x)).join('')}</section>` : ''; }).join('') +
     (show.length ? '' : `<p class="ap-empty">Nothing here.</p>`) + (ahead ? '' : next(later));

@@ -320,7 +320,7 @@ function hero(pid, p, tm, grp, L, s) {
   // jersey fabric (apply-player-fabric A) and the outline jersey number behind the headshot (apply-player-num A), approved 2026-11-08
   // approved round 6 (player-hero B): a band on team colour for the name and headshot; a white card overlaps it with the bio and the buttons
   return html`<div class="hero pl-hero ph-band" style="${raw(App.teamVars(tm))}">
-    ${raw(App.fabric('1.5,.1,150,.5,50,0', App.heroCol ? App.heroCol(tm.color) : tm.color, tm.alt))}
+    ${raw(App.fabric('1.5,.1,150,.5,50,0', App.inkPv() ? App.teamFill(tm) : App.heroCol ? App.heroCol(tm.color) : tm.color, tm.alt))}
     ${p.j ? html`<svg class="ph-num" viewBox="0 0 300 260" aria-hidden="true"><text x="0" y="240">${p.j}</text></svg>` : ''}
     <div class="pl-hero-in">
       <div class="pl-hero-txt">

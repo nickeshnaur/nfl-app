@@ -300,12 +300,18 @@ function depth() { return store.p.depth || 2; }
 function headRight(o = {}) {
   const unread = (store.p.bell || []).filter(n => !n.read).length;
   const newGames = App.miniGames && !App.miniGames.seenToday();
+  // ?pv=profav (head-profile v2): Search · Games · Profile, games in its filled icon
+  if (App.pv.has('profav') && o.me !== false) return html`<button class="icon-btn" data-go="#/search" aria-label="Search">${icon('search')}</button>
+    <button class="icon-btn" data-go="#/mini-games" aria-label="Mini games${newGames ? ', new today' : ''}">${icon('game-on')}${newGames ? raw('<i class="ib-dot"></i>') : ''}</button>
+    <button class="icon-btn ph-av" data-go="#/you" aria-label="You${unread ? `, ${unread} unread alert${unread > 1 ? 's' : ''}` : ''}">${avatar()}${unread ? raw('<i class="ib-dot"></i>') : ''}</button>`;
   return html`<button class="icon-btn" data-go="#/mini-games" aria-label="Mini games${newGames ? ', new today' : ''}">${icon('game')}${newGames ? raw('<i class="ib-dot"></i>') : ''}</button>
     <button class="icon-btn" data-go="#/search" aria-label="Search">${icon('search')}</button>
     ${o.me === false ? html`<button class="icon-btn" data-act="you-settings" aria-label="Settings">${icon('gear')}</button>` : html`<button class="icon-btn ph-av" data-go="#/you" aria-label="You${unread ? `, ${unread} unread alert${unread > 1 ? 's' : ''}` : ''}">${avatar()}${unread ? raw('<i class="ib-dot"></i>') : ''}</button>`}`;
 }
 /** you, as a small round avatar: your team's logo on its colour, or a person before you pick a team */
 function avatar() {
+  // ?pv=profav (card head-profile): the NFL app's profile icon (Avatar · Signed In) instead of your team's logo
+  if (App.pv.has('profav')) return icon(store.p.name && !App.pv.has('anon') ? 'user-on' : 'user'); // signed in (a fan name) fills; signed out stays outline
   const tm = store.p.primary && Dt.team(store.p.primary);
   return tm ? html`<span class="av m ph-av-in" style="${raw('background:' + tm.color)}"><img src="${tm.logoDark || tm.logo}" alt=""></span>` : icon('user');
 }
