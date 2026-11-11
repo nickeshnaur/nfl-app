@@ -427,9 +427,9 @@
 .fh-pick.hm-stage{padding-top:70px;padding-bottom:64px}
 .hm-sheet{position:relative;z-index:1;margin-top:-28px;background:var(--bg);border-radius:28px 28px 0 0;box-shadow:0 -12px 32px rgba(0,0,0,.22);padding-bottom:calc(var(--tab-h) + 40px);overflow:clip}
 .hm-grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:10px auto 0}
-.hm-st{padding:12px var(--pad) 6px}
+.hm-sheet .hm-st{display:flex;flex-direction:row;align-items:center;gap:10px;padding:16px var(--pad) 0}  /* label beside the chips, under the score strip */
 .hm-st-k{font:700 10.5px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--text-2)}
-.hm-st-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.hm-st-chips{display:flex;flex-wrap:wrap;gap:6px}
 .hm-st-chip{display:inline-flex;align-items:center;height:32px;padding:0 13px;border-radius:99px;background:var(--surface);border:1px solid var(--line);font:700 13px/1 var(--sans);color:var(--text);white-space:nowrap}
 .hm-sheet .hm-ticker,.hm-sheet .ticker{margin-top:8px}
 /* on Home the scores strip sits on the sheet colour, not a second grey band */

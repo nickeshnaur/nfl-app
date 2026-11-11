@@ -1060,9 +1060,10 @@ App.route('home', () => {
     ].map(([k, f], i) => ({ k, f, i, sc: homeScore(k, C) })).sort((a, b) => b.sc - a.sc || a.i - b.i);
     const blocks = html`
       ${primary() ? fanHeader() : pickHero()}
-      <div class="hm-sheet">${hhMini()}${sheetTop()}
+      <div class="hm-sheet">${hhMini()}
       ${liveDeck()}
       ${ticker()}
+      ${sheetTop()}
       ${ranked2.map(b => b.f())}
       ${later.length ? html`<section class="sec"><div class="sec-head"><div class="h2">More news</div></div><div class="list">${later.map(a => UI.newsCard(a, 'sm'))}</div></section>` : ''}
       <div class="hm-foot tiny center">Scores, stats and news: real data as of ${fmt.date(Dt.D.core.built)} · Time machine: ${esc(time.moment().label)}</div></div>`;
