@@ -1179,8 +1179,8 @@ function searchIdle() {
   news().slice(0, 80).forEach(a => a.ath.forEach(x => { if (Dt.player(x)) counts[x] = (counts[x] || 0) + 1; }));
   const trending = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 8).map(x => x[0]);
   const ideas = ['Most passing yards 2025', 'Mahomes vs Allen', 'Rushing TD leaders', 'Week 5 2026'];
-  // &pv=searchtm (preview, card search-timemachine): the You page's Time machine row, at the top of Search too
-  const tmRow = App.pv.has('searchtm') ? html`<section class="sec"><div class="list">${UI.row({ left: html`<span class="set-ic">${icon('clock')}</span>`, title: 'Time machine', sub: `${fmt.day(time.date())} · ${time.moment().label}`, act: 'time-machine', chev: true })}</div></section>` : '';
+  // the You page's Time machine row, at the top of Search too (search-timemachine, built 2026-11-10)
+  const tmRow = true ? html`<section class="sec"><div class="list">${UI.row({ left: html`<span class="set-ic">${icon('clock')}</span>`, title: 'Time machine', sub: `${fmt.day(time.date())} · ${time.moment().label}`, act: 'time-machine', chev: true })}</div></section>` : '';
   return html`${tmRow}${recent.length ? html`<section class="sec"><div class="sec-head"><div class="h2">Recent</div><a class="more" data-act="srch-clear">Clear</a></div><div class="chips">${recent.map(q => html`<button class="chip" data-act="srch-set" data-arg="${q}">${icon('clock', 'sm')}${q}</button>`)}</div></section>` : ''}
     <section class="sec"><div class="sec-head"><div class="h2">Ask anything</div></div><div class="chips">${ideas.map(q => html`<button class="chip" data-act="srch-set" data-arg="${q}">${icon('search', 'sm')}${q}</button>`)}</div></section>
     ${App.exploreDirectory ? html`<section class="sec"><div class="sec-head"><div class="h2">Explore</div></div></section>${App.exploreDirectory()}` : ''}
@@ -1487,10 +1487,9 @@ function syncBellQuiet() {
   if (NFL.d['box-' + s]) go(); else Dt.ensureBox(s).then(go).catch(() => {});
 }
 function refreshHeadPip() {
-  const unread = (P().bell || []).some(b => !b.read);
-  // alerts settle after the first paint: redraw You if it's showing, so its Alerts row matches the avatar's dot
+  // alerts settle after the first paint: redraw You if it's showing, so its Alerts row is current
   const cur = App.current(); if (cur && cur.hash === '#/you') App.refresh(cur);
-  document.querySelectorAll('.ph-av').forEach(b => { const pip = b.querySelector('.ib-dot'); if (unread && !pip) b.insertAdjacentHTML('beforeend', '<i class="ib-dot"></i>'); if (!unread && pip) pip.remove(); });
+  // the header's profile carries no dot (head-profile, 2026-11-10); unread alerts show on You
 }
 
 App.home = { catchupItems, inboxItems, liveLine, draftState, pickTime };

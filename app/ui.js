@@ -294,26 +294,16 @@ function learnTip(text) {
 /** depth: 1 = surface, 2 = standard, 3 = deep */
 function depth() { return store.p.depth || 2; }
 /** standard right side of a tab-root header: search · inbox · avatar */
-/** the header's right side on every tab root: mini games (a dot until you've opened them today), search, and you:
- *  your team's logo as your avatar, with a dot for unread alerts (they live on your profile).
- *  On You itself ({ me: false }) the avatar gives way to Settings, which jumps to the Settings section. */
+/** the header's right side on every tab root: search, mini games and you (head-profile v2, built 2026-11-10: the NFL app's
+ *  profile icon instead of your team's logo, no notification dots). On You itself ({ me: false }) the profile gives way to Settings. */
 function headRight(o = {}) {
-  const unread = (store.p.bell || []).filter(n => !n.read).length;
-  const newGames = App.miniGames && !App.miniGames.seenToday();
-  // ?pv=profav (head-profile v2): Search · Games · Profile, games in its filled icon
-  if (App.pv.has('profav') && o.me !== false) return html`<button class="icon-btn" data-go="#/search" aria-label="Search">${icon('search')}</button>
-    <button class="icon-btn" data-go="#/mini-games" aria-label="Mini games${newGames ? ', new today' : ''}">${icon('game-on')}${newGames ? raw('<i class="ib-dot"></i>') : ''}</button>
-    <button class="icon-btn ph-av" data-go="#/you" aria-label="You${unread ? `, ${unread} unread alert${unread > 1 ? 's' : ''}` : ''}">${avatar()}${unread ? raw('<i class="ib-dot"></i>') : ''}</button>`;
-  return html`<button class="icon-btn" data-go="#/mini-games" aria-label="Mini games${newGames ? ', new today' : ''}">${icon('game')}${newGames ? raw('<i class="ib-dot"></i>') : ''}</button>
-    <button class="icon-btn" data-go="#/search" aria-label="Search">${icon('search')}</button>
-    ${o.me === false ? html`<button class="icon-btn" data-act="you-settings" aria-label="Settings">${icon('gear')}</button>` : html`<button class="icon-btn ph-av" data-go="#/you" aria-label="You${unread ? `, ${unread} unread alert${unread > 1 ? 's' : ''}` : ''}">${avatar()}${unread ? raw('<i class="ib-dot"></i>') : ''}</button>`}`;
+  return html`<button class="icon-btn" data-go="#/search" aria-label="Search">${icon('search')}</button>
+    <button class="icon-btn" data-go="#/mini-games" aria-label="Mini games">${icon('game-on')}</button>
+    ${o.me === false ? html`<button class="icon-btn" data-act="you-settings" aria-label="Settings">${icon('gear')}</button>` : html`<button class="icon-btn ph-av" data-go="#/you" aria-label="You">${avatar()}</button>`}`;
 }
-/** you, as a small round avatar: your team's logo on its colour, or a person before you pick a team */
+/** you: the NFL app's profile icon (Avatar · Signed In), filled once you've given a fan name */
 function avatar() {
-  // ?pv=profav (card head-profile): the NFL app's profile icon (Avatar · Signed In) instead of your team's logo
-  if (App.pv.has('profav')) return icon(store.p.name && !App.pv.has('anon') ? 'user-on' : 'user'); // signed in (a fan name) fills; signed out stays outline
-  const tm = store.p.primary && Dt.team(store.p.primary);
-  return tm ? html`<span class="av m ph-av-in" style="${raw('background:' + tm.color)}"><img src="${tm.logoDark || tm.logo}" alt=""></span>` : icon('user');
+  return icon(store.p.name ? 'user-on' : 'user');
 }
 
 /* ---------------------------------------------------------------- Forward design system */
