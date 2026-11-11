@@ -672,7 +672,7 @@
 .hh8-band::before{content:"";position:absolute;left:var(--pad);right:var(--pad);top:0;height:1px;background:rgba(255,255,255,.28)}
 .hh8-pg{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 calc(-1*var(--pad))}
 .hh8-pg::-webkit-scrollbar{display:none}
-.hh8-p{position:relative;flex:0 0 100%;box-sizing:border-box;height:136px;overflow:hidden;padding:0 var(--pad);scroll-snap-align:start;display:flex;flex-direction:column}
+.hh8-p{position:relative;flex:0 0 100%;box-sizing:border-box;height:144px;overflow:hidden;padding:0 var(--pad);scroll-snap-align:start;display:flex;flex-direction:column}
 .hh8-ph{display:flex;align-items:center;justify-content:space-between;gap:8px;height:16px;flex:none;font:700 11px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase}
 .hh8-ph a{display:inline-flex;align-items:center;gap:2px;color:#fff;letter-spacing:.08em}
 .hh8-flag{position:absolute;right:var(--pad);top:0;height:16px;display:flex;align-items:center;padding:0 6px;border-radius:4px;background:#fff;color:var(--t7);font:800 10px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase}
@@ -683,10 +683,10 @@
 .hh8-dots i.on{width:18px;background:#fff}
 .hh8 .fx-disc{background:#fff}
 .hh8-g{display:flex;flex-direction:column;flex:1;min-height:0;padding-top:12px}
-.hh8-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto}
+.hh8-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding-top:8px}
 .hh8-row .btn{flex:none;height:36px;padding:0 14px;font-size:13.5px}
-.hh8-kick{display:flex;flex-direction:column;gap:6px;min-width:0}
-.hh8-kick>b{font:700 14px/1.3 var(--sans);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hh8-kick{display:flex;flex-direction:column;gap:2px;min-width:0}
+.hh8-kick>b{font:700 13px/1.3 var(--sans);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hh8-mu{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#fff}
 .hh8-ms{display:flex;flex-direction:column;align-items:center;gap:4px;width:58px}
 .hh8-ms .fx-disc{width:40px;height:40px}
